@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,9 +25,9 @@ public class CarModel extends BaseEntity {
     @JoinColumn(name = "car_class_id")
     private CarClass carClass;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id")
-    private Car car;
+
+    @OneToMany(mappedBy = "carModel", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Car> cars;
 
     private boolean deleted;
 }
