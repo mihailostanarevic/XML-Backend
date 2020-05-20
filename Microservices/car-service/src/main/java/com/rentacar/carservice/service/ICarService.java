@@ -21,6 +21,4 @@ public interface ICarService {
     List<CarResponse> getAllCars() throws Exception;
 
     void addCarAccessories(AddCarAccessoriesRequest request) throws Exception; //u request dva id-a
-
-    // rentCar, cancelCar, setSpentKilometers etc.
 }
