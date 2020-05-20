@@ -16,8 +16,9 @@ import java.util.List;
 @NoArgsConstructor
 public class Car extends BaseEntity {
 
-    @OneToMany(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CarModel> carModels;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_model_id")
+    private CarModel carModel;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "gear_shift_id")
