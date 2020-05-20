@@ -1,4 +1,4 @@
 package com.rentacar.rentservice.service;
 
-public interface IRentService {
+public interface IPricelistService {
 }
