@@ -5,9 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,6 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Ad extends BaseEntity {
+
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "car_id", referencedColumnName = "id")
+    private Car car;
 
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
