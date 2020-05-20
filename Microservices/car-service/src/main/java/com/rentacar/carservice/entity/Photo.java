@@ -20,6 +20,8 @@ public class Photo extends BaseEntity {
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "car_id")
-    private Car car;
+    @JoinColumn(name = "ad_id")
+    private Ad ad;
+
+    private boolean deleted;
 }
