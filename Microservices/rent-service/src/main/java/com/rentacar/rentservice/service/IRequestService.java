@@ -8,15 +8,15 @@ import java.util.UUID;
 
 public interface IRequestService {
 
-    Request createRequest();
+    Request createRequest();            // params
 
-    Request createBundleRequest();
+    Request createBundleRequest();      // params
 
-    Request approveRejectRequest();
+    Request approveRejectRequest();     // params
 
-    Request cancelRequest();
+    Request cancelRequest();            // params
 
-    List<Request> requestHistory();
+    List<Request> requestHistory();     // params
 
     boolean rentACar(UUID carID);
 

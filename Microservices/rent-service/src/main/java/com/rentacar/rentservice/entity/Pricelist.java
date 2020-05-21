@@ -1,12 +1,9 @@
 package com.rentacar.rentservice.entity;
 
 import com.rentacar.rentservice.config.DateTimeConfig;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,13 +17,19 @@ public class Pricelist extends BaseEntity {
 
     private double price;
 
-    private double priceOverdraft;
+    private double pricePerKilometer;
 
+    private double priceCollisionDamageWaiver;
+
+    private double priceOverdraft;      // cena prekoracenja
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "discount_id", referencedColumnName = "id")
     private Discount discount;
 
-    private List<UUID> carGroup;
+//    private List<UUID> carGroup;
 
-    private int duration;       // 1-3 dana, 4-7 dana, 8-15, 16-25, 26+
+    private int duration;
 
     private DateTimeConfig dateOfPublication;
 
