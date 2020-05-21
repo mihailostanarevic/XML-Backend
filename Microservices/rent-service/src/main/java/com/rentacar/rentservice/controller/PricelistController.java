@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.controller;
 
+import com.rentacar.rentservice.service.IPricelistService;
 import com.rentacar.rentservice.service.implementation.PricelistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class PricelistController {
 
     @Autowired
-    PricelistService _pricelistService;
+    IPricelistService _pricelistService;
 
 }

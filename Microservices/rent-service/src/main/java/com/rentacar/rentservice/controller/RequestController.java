@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.controller;
 
+import com.rentacar.rentservice.service.IRequestService;
 import com.rentacar.rentservice.service.implementation.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class RequestController {
 
     @Autowired
-    RequestService _requestService;
+    IRequestService _requestService;
 
 
 }
