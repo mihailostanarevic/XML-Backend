@@ -2,10 +2,12 @@ package com.rentacar.rentservice.service;
 
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.util.enums.RequestStatus;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public interface IRequestService {
 
     Request createRequest();            // params
