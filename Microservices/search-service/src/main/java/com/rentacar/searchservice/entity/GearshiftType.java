@@ -23,7 +23,7 @@ public class GearshiftType extends BaseEntity {
     private String numberOfGears;
 
     @OneToMany(mappedBy = "gearshiftType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ad> ads = new ArrayList<>();
+    private List<Car> cars = new ArrayList<>();
 
     private boolean deleted;
 }

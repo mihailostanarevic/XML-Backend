@@ -19,5 +19,5 @@ logging:
   level:
     com:
       netflix:
-        eureka: OFFclear
+        eureka: OFF
         discovery: OFF

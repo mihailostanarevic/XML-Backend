@@ -3,6 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
 !**/src/test/**
+!**/target/authentification-service-0.0.1-SNAPSHOT.jar
 
 ### STS ###
 .apt_generated

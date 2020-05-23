@@ -24,7 +24,7 @@ public class FuelType extends BaseEntity {
     private boolean gas;
 
     @OneToMany(mappedBy = "fuelType", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ad> ads = new ArrayList<>();
+    private List<Car> cars = new ArrayList<>();
 
     private boolean deleted;
 }

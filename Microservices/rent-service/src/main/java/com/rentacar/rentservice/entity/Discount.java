@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Entity
@@ -20,8 +21,8 @@ public class Discount extends BaseEntity {
 
     private DateTimeConfig dateOfPublication;
 
-    @OneToMany(mappedBy = "pricelist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Pricelist pricelist;
+    @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Pricelist> pricelist;
 
     private boolean deleted;
 

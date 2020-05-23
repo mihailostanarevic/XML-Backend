@@ -2,15 +2,17 @@ package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.request.*;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-    @Autowired
     private IAuthenticationService authService;
+
+    public AuthenticationController(IAuthenticationService authService) {
+        this.authService = authService;
+    }
 
     @PostMapping("/login")
     public void login(LoginCredentialsDTO request) {

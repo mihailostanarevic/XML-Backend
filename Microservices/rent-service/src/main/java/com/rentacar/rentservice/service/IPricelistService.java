@@ -4,7 +4,6 @@ import com.rentacar.rentservice.entity.Pricelist;
 import org.springframework.stereotype.Service;
 
 @SuppressWarnings("SpellCheckingInspection")
-@Service
 public interface IPricelistService {
 
     Pricelist addPricelist();       // params
