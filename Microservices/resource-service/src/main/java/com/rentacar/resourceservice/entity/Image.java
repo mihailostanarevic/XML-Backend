@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -15,6 +16,8 @@ import javax.persistence.Entity;
 public class Image extends BaseEntity {
 
     private String url;
+
+    private UUID ad;
 
     private boolean deleted;
 
