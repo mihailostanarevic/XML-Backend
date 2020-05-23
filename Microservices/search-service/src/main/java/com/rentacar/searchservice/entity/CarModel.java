@@ -25,7 +25,7 @@ public class CarModel extends BaseEntity {
     private CarClass carClass;
 
     @OneToMany(mappedBy = "carModel", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Ad> ad;
+    private List<Car> car;
 
     private boolean deleted;
 }

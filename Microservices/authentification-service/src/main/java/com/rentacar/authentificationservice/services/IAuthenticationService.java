@@ -1,9 +1,7 @@
 package com.rentacar.authentificationservice.services;
 
 import com.rentacar.authentificationservice.dto.request.*;
-import org.springframework.stereotype.Service;
 
-@Service
 public interface IAuthenticationService {
 
     void registerSimpleUser(SimpleUserDetailsDTO request);

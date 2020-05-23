@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.loader.entity.CascadeEntityJoinWalker;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -46,4 +47,7 @@ public class Ad extends BaseEntity {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rating_id", referencedColumnName = "id")
     private Rating rating;
+
+    @ManyToMany(mappedBy = "ads")
+    private List<CarAccessories> accessories;
 }

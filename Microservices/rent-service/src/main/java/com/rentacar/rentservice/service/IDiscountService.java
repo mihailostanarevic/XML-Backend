@@ -4,7 +4,6 @@ import com.rentacar.rentservice.entity.Discount;
 import com.rentacar.rentservice.entity.Pricelist;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface IDiscountService {
 
     Discount addDiscount();     // params

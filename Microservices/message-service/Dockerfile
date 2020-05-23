@@ -1,5 +1,5 @@
 FROM openjdk:8-jdk-alpine
 COPY entrypoint.sh /entrypoint.sh
-COPY target/Message-Service-1.0.0.jar messageservice-1.0.0.jar
+COPY target/message-service-0.0.1-SNAPSHOT.jar messageservice-1.0.0.jar
 RUN chmod +x /entrypoint.sh
 CMD ["/entrypoint.sh"]

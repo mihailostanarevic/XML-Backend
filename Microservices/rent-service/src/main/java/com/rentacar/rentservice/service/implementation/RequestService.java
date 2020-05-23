@@ -5,10 +5,12 @@ import com.rentacar.rentservice.repository.IRequestRepository;
 import com.rentacar.rentservice.service.IRequestService;
 import com.rentacar.rentservice.util.enums.RequestStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
+@Service
 public class RequestService implements IRequestService {
 
     @Autowired

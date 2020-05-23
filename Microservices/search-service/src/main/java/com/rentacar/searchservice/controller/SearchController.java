@@ -4,7 +4,6 @@ import com.rentacar.searchservice.dto.AdvancedSearchParametersDTO;
 import com.rentacar.searchservice.dto.SearchParametersDTO;
 import com.rentacar.searchservice.dto.SearchResultsDTO;
 import com.rentacar.searchservice.services.ISearchService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -12,8 +11,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/search")
 public class SearchController {
 
-    @Autowired
-    private ISearchService searchService;
+    private final ISearchService searchService;
+
+    public SearchController(ISearchService searchService) {
+        this.searchService = searchService;
+    }
 
     @PostMapping("/")
     public SearchResultsDTO searchAds(SearchParametersDTO request) {
