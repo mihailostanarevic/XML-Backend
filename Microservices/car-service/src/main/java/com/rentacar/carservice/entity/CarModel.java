@@ -16,7 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 public class CarModel extends BaseEntity {
 
-    private String description;
+    private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "car_brand_id")
