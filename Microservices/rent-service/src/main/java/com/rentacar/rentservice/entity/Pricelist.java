@@ -1,11 +1,12 @@
 package com.rentacar.rentservice.entity;
 
-import com.rentacar.rentservice.config.DateTimeConfig;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import java.util.Date;
 
 import javax.persistence.*;
-import java.util.List;
-import java.util.UUID;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @Entity
@@ -31,7 +32,7 @@ public class Pricelist extends BaseEntity {
 
     private int duration;
 
-    private DateTimeConfig dateOfPublication;
+    private Date dateOfPublication;
 
     private boolean deleted;
 

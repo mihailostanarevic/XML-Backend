@@ -1,13 +1,16 @@
 package com.rentacar.rentservice.entity;
 
-import com.rentacar.rentservice.config.DateTimeConfig;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import java.util.Date;
+import java.util.Set;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Entity
@@ -19,10 +22,10 @@ public class Discount extends BaseEntity {
 
     private double value;       // procenat popusta
 
-    private DateTimeConfig dateOfPublication;
+    private Date dateOfPublication;
 
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Pricelist> pricelist;
+    private Set<Pricelist> pricelist;
 
     private boolean deleted;
 

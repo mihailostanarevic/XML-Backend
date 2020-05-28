@@ -1,10 +1,13 @@
 package com.rentacar.rentservice.entity;
 
-import com.rentacar.rentservice.config.DateTimeConfig;
 import com.rentacar.rentservice.util.enums.RequestStatus;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
+import java.util.Date;
 import java.util.UUID;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -23,9 +26,9 @@ public class Request extends BaseEntity {
 
     private RequestStatus status;
 
-    private DateTimeConfig receptionTime;       // datum prijema zahteva
+    private Date receptionTime;       // datum prijema zahteva
 
-    private DateTimeConfig pickUpDate;          // datum preuzimanja
+    private Date pickUpDate;          // datum preuzimanja
 
     private Address pickUpAddress;
 
