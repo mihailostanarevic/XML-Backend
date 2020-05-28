@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings("SpellCheckingInspection")
 @RestController
-@RequestMapping("/request")
+@RequestMapping("/rent/request")
 public class RequestController {
     
     private final IRequestService _requestService;
