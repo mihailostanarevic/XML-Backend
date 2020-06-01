@@ -2,6 +2,8 @@ package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.request.*;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,6 +16,10 @@ public class AuthenticationController {
         this.authService = authService;
     }
 
+    @GetMapping("/hello")
+    public ResponseEntity<?> hello(){
+        return new ResponseEntity<>("Hello from auth service", HttpStatus.OK);
+    }
     @PostMapping("/login")
     public void login(LoginCredentialsDTO request) {
         authService.login(request);
