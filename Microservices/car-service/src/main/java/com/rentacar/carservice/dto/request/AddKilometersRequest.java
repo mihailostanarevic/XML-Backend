@@ -3,9 +3,7 @@ package com.rentacar.carservice.dto.request;
 import lombok.Data;
 
 @Data
-public class UpdateCarRequest {
+public class AddKilometersRequest {
 
     private String kilometersTraveled;
-
-    private boolean gas; //fuelType
 }
