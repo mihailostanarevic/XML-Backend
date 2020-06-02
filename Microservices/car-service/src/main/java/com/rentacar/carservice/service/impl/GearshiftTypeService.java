@@ -3,12 +3,14 @@ package com.rentacar.carservice.service.impl;
 import com.rentacar.carservice.dto.request.CreateGearshiftTypeRequest;
 import com.rentacar.carservice.dto.request.UpdateGearshiftTypeRequest;
 import com.rentacar.carservice.dto.response.GearshiftTypeResponse;
+import com.rentacar.carservice.entity.GearshiftType;
 import com.rentacar.carservice.repository.IGearshiftTypeRepository;
 import com.rentacar.carservice.service.IGearshiftTypeService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class GearshiftTypeService implements IGearshiftTypeService {
@@ -21,26 +23,49 @@ public class GearshiftTypeService implements IGearshiftTypeService {
 
     @Override
     public GearshiftTypeResponse createGearshiftType(CreateGearshiftTypeRequest request) throws Exception {
-        return null;
+        GearshiftType gearshiftType = new GearshiftType();
+        gearshiftType.setDeleted(false);
+        gearshiftType.setNumberOfGears(request.getNumberOfGears());
+        gearshiftType.setType(request.getType());
+        GearshiftType savedGearshiftType = _gearshiftTypeRepository.save(gearshiftType);
+        return mapGearshiftTypeToGearshiftTypeResponse(savedGearshiftType);
     }
 
     @Override
     public GearshiftTypeResponse updateGearshiftType(UpdateGearshiftTypeRequest request, UUID id) throws Exception {
-        return null;
+        GearshiftType gearshiftType = _gearshiftTypeRepository.findOneById(id);
+        gearshiftType.setNumberOfGears(request.getNumberOfGears());
+        gearshiftType.setType(request.getType());
+        GearshiftType savedGearshiftType = _gearshiftTypeRepository.save(gearshiftType);
+        return mapGearshiftTypeToGearshiftTypeResponse(savedGearshiftType);
     }
 
     @Override
     public void deleteGearshiftType(UUID id) throws Exception {
-
+        GearshiftType gearshiftType = _gearshiftTypeRepository.findOneById(id);
+        gearshiftType.setDeleted(true);
+        _gearshiftTypeRepository.save(gearshiftType);
     }
 
     @Override
     public GearshiftTypeResponse getGearshiftType(UUID id) throws Exception {
-        return null;
+        GearshiftType gearshiftType = _gearshiftTypeRepository.findOneById(id);
+        return mapGearshiftTypeToGearshiftTypeResponse(gearshiftType);
     }
 
     @Override
     public List<GearshiftTypeResponse> getAllGearshiftTypes() throws Exception {
-        return null;
+        List<GearshiftType> gearshiftTypes = _gearshiftTypeRepository.findAllByDeleted(false);
+        return gearshiftTypes.stream()
+                .map(gearshiftType -> mapGearshiftTypeToGearshiftTypeResponse(gearshiftType))
+                .collect(Collectors.toList());
+    }
+
+    private GearshiftTypeResponse mapGearshiftTypeToGearshiftTypeResponse(GearshiftType gearshiftType) {
+        GearshiftTypeResponse response = new GearshiftTypeResponse();
+        response.setId(gearshiftType.getId());
+        response.setNumberOfGears(gearshiftType.getNumberOfGears());
+        response.setType(gearshiftType.getType());
+        return response;
     }
 }
