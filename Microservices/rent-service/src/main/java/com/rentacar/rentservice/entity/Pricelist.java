@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 
 import javax.persistence.*;
 
@@ -32,7 +33,7 @@ public class Pricelist extends BaseEntity {
 
     private int duration;
 
-    private Date dateOfPublication;
+    private LocalDate dateOfPublication;
 
     private boolean deleted;
 
