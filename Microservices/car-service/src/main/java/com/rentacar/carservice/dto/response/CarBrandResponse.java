@@ -4,8 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 public class CarBrandResponse {
+
+    private UUID id;
+
+    private String name;
+
+    private String country;
 }
