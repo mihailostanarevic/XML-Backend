@@ -1,14 +1,12 @@
 package com.rentacar.authentificationservice.entity;
 
+import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -24,10 +22,14 @@ public class Agent extends BaseEntity {
 
     private String name;
 
-    private String PID;
+    private String tin;
 
     private Date dateFounded;
 
     private String bankAccountNumber;
 
+    private boolean blocked;
+
+    @Enumerated(EnumType.STRING)
+    private RequestStatus requestStatus;
 }

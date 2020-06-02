@@ -8,4 +8,6 @@ import java.util.UUID;
 
 @Repository
 public interface IAgentRepository extends JpaRepository<Agent, UUID> {
+
+    Agent findOneById(UUID id);
 }
