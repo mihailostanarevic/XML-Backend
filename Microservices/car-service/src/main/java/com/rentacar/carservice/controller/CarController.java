@@ -1,6 +1,7 @@
 package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.request.AddCarAccessoriesRequest;
+import com.rentacar.carservice.dto.request.AddKilometersRequest;
 import com.rentacar.carservice.dto.request.CreateCarRequest;
 import com.rentacar.carservice.dto.request.UpdateCarRequest;
 import com.rentacar.carservice.dto.response.CarResponse;
@@ -43,6 +44,11 @@ public class CarController {
     @GetMapping
     public List<CarResponse> getAllCars() throws Exception{
         return _carService.getAllCars();
+    }
+
+    @PutMapping("/add-kilometers/{id}/car")
+    public void addKilometers(@RequestBody AddKilometersRequest request, @PathVariable UUID id) throws Exception{
+        _carService.addKilometers(request, id);
     }
 
     @PutMapping
