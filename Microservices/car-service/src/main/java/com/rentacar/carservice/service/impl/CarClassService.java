@@ -24,6 +24,7 @@ public class CarClassService implements ICarClassService {
     @Override
     public CarClassResponse createCarClass(CreateCarClassRequest request) throws Exception {
         CarClass carClass = new CarClass();
+        carClass.setDeleted(false);
         carClass.setName(request.getName());
         carClass.setDescription(request.getDescription());
         CarClass savedCarClass = _carClassRepository.save(carClass);
