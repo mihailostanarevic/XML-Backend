@@ -1,5 +1,6 @@
 package com.rentacar.authentificationservice.entity;
 
+import com.rentacar.authentificationservice.util.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,7 +23,8 @@ public class User extends BaseEntity{
     @Column(unique = true)
     private String email;
 
-    private String role;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Agent agent;
