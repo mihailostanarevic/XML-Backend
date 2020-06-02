@@ -6,10 +6,8 @@ import com.rentacar.carservice.dto.request.CreateCarRequest;
 import com.rentacar.carservice.dto.request.UpdateCarRequest;
 import com.rentacar.carservice.dto.response.CarResponse;
 import com.rentacar.carservice.entity.Car;
-import com.rentacar.carservice.repository.ICarModelRepository;
-import com.rentacar.carservice.repository.ICarRepository;
-import com.rentacar.carservice.repository.IFuelTypeRepository;
-import com.rentacar.carservice.repository.IGearshiftTypeRepository;
+import com.rentacar.carservice.entity.CarAccessories;
+import com.rentacar.carservice.repository.*;
 import com.rentacar.carservice.service.ICarService;
 import org.springframework.stereotype.Service;
 
@@ -28,11 +26,14 @@ public class CarService implements ICarService {
 
     private final IFuelTypeRepository _fuelTypeRepository;
 
-    public CarService(ICarRepository carRepository, ICarModelRepository carModelRepository, IGearshiftTypeRepository gearshiftTypeRepository, IFuelTypeRepository fuelTypeRepository) {
+    private final ICarAccessoriesRepository _carAccessoriesRepository;
+
+    public CarService(ICarRepository carRepository, ICarModelRepository carModelRepository, IGearshiftTypeRepository gearshiftTypeRepository, IFuelTypeRepository fuelTypeRepository, ICarAccessoriesRepository carAccessoriesRepository) {
         _carRepository = carRepository;
         _carModelRepository = carModelRepository;
         _gearshiftTypeRepository = gearshiftTypeRepository;
         _fuelTypeRepository = fuelTypeRepository;
+        _carAccessoriesRepository = carAccessoriesRepository;
     }
 
     @Override
@@ -89,7 +90,12 @@ public class CarService implements ICarService {
 
     @Override
     public void addCarAccessories(AddCarAccessoriesRequest request) throws Exception {
-
+        Car car = _carRepository.findOneById(request.getCarId());
+        CarAccessories carAccessories = _carAccessoriesRepository.findOneById(request.getCarAccessoriesId());
+        car.getCarAccessories().add(carAccessories);
+        _carRepository.save(car);
+        carAccessories.getCars().add(car);
+        _carAccessoriesRepository.save(carAccessories);
     }
 
     private CarResponse mapCarToCarResponse(Car car) {

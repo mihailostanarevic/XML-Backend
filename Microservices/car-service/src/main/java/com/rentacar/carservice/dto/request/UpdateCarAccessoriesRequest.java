@@ -4,4 +4,6 @@ import lombok.Data;
 
 @Data
 public class UpdateCarAccessoriesRequest {
+
+    private String description;
 }
