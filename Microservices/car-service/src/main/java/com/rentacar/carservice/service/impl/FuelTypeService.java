@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class FuelTypeService implements IFuelTypeService {
@@ -56,7 +57,10 @@ public class FuelTypeService implements IFuelTypeService {
 
     @Override
     public List<FuelTypeResponse> getAllFuelTypes() throws Exception {
-        return null;
+        List<FuelType> fuelTypes = _fuelTypeRepository.findAllByDeleted(false);
+        return fuelTypes.stream()
+                .map(fuelType -> mapFuelTypeToFuelTypeResponse(fuelType))
+                .collect(Collectors.toList());
     }
 
     private FuelTypeResponse mapFuelTypeToFuelTypeResponse(FuelType fuelType) {
