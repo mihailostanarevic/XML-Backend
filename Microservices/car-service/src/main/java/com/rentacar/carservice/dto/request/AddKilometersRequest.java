@@ -3,7 +3,7 @@ package com.rentacar.carservice.dto.request;
 import lombok.Data;
 
 @Data
-public class UpdateCarModelRequest {
+public class AddKilometersRequest {
 
-    private String name;
+    private String kilometersTraveled;
 }

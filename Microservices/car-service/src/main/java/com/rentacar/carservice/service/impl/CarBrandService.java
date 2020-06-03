@@ -3,12 +3,14 @@ package com.rentacar.carservice.service.impl;
 import com.rentacar.carservice.dto.request.CreateCarBrandRequest;
 import com.rentacar.carservice.dto.request.UpdateCarBrandRequest;
 import com.rentacar.carservice.dto.response.CarBrandResponse;
+import com.rentacar.carservice.entity.CarBrand;
 import com.rentacar.carservice.repository.ICarBrandRepository;
 import com.rentacar.carservice.service.ICarBrandService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CarBrandService implements ICarBrandService {
@@ -21,26 +23,49 @@ public class CarBrandService implements ICarBrandService {
 
     @Override
     public CarBrandResponse createCarBrand(CreateCarBrandRequest request) throws Exception {
-        return null;
+        CarBrand carBrand = new CarBrand();
+        carBrand.setDeleted(false);
+        carBrand.setName(request.getName());
+        carBrand.setCountry(request.getCountry());
+        CarBrand savedCarBrand = _carBrandRepository.save(carBrand);
+        return mapCarBrandToCarBrandResponse(savedCarBrand);
     }
 
     @Override
     public CarBrandResponse updateCarBrand(UpdateCarBrandRequest request, UUID id) throws Exception {
-        return null;
+        CarBrand carBrand = _carBrandRepository.findOneById(id);
+        carBrand.setName(request.getName());
+        carBrand.setCountry(request.getCountry());
+        CarBrand savedCarBrand = _carBrandRepository.save(carBrand);
+        return mapCarBrandToCarBrandResponse(savedCarBrand);
     }
 
     @Override
     public void deleteCarBrand(UUID id) throws Exception {
-
+        CarBrand carBrand = _carBrandRepository.findOneById(id);
+        carBrand.setDeleted(true);
+        _carBrandRepository.save(carBrand);
     }
 
     @Override
     public CarBrandResponse getCarBrand(UUID id) throws Exception {
-        return null;
+        CarBrand carBrand = _carBrandRepository.findOneById(id);
+        return mapCarBrandToCarBrandResponse(carBrand);
     }
 
     @Override
     public List<CarBrandResponse> getAllCarBrands() throws Exception {
-        return null;
+        List<CarBrand> carBrands = _carBrandRepository.findAllByDeleted(false);
+        return  carBrands.stream()
+                .map(carBrand -> mapCarBrandToCarBrandResponse(carBrand))
+                .collect(Collectors.toList());
+    }
+
+    private CarBrandResponse mapCarBrandToCarBrandResponse(CarBrand carBrand) {
+        CarBrandResponse response = new CarBrandResponse();
+        response.setId(carBrand.getId());
+        response.setName(carBrand.getName());
+        response.setCountry(carBrand.getCountry());
+        return response;
     }
 }

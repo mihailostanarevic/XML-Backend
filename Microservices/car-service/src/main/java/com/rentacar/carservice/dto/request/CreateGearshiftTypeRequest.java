@@ -4,4 +4,8 @@ import lombok.Data;
 
 @Data
 public class CreateGearshiftTypeRequest {
+
+    private String type;
+
+    private String numberOfGears;
 }

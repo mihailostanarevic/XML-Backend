@@ -1,6 +1,7 @@
 package com.rentacar.carservice.service;
 
 import com.rentacar.carservice.dto.request.AddCarAccessoriesRequest;
+import com.rentacar.carservice.dto.request.AddKilometersRequest;
 import com.rentacar.carservice.dto.request.CreateCarRequest;
 import com.rentacar.carservice.dto.request.UpdateCarRequest;
 import com.rentacar.carservice.dto.response.CarResponse;
@@ -19,6 +20,8 @@ public interface ICarService {
     CarResponse getCar(UUID id) throws Exception;
 
     List<CarResponse> getAllCars() throws Exception;
+
+    void addKilometers(AddKilometersRequest request, UUID id) throws Exception;
 
     void addCarAccessories(AddCarAccessoriesRequest request) throws Exception; //u request dva id-a
 }
