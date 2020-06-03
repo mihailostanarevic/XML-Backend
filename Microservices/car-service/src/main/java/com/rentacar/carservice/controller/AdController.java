@@ -4,6 +4,8 @@ import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.request.UpdateAdRequest;
 import com.rentacar.carservice.dto.response.AdResponse;
 import com.rentacar.carservice.service.IAdService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +19,11 @@ public class AdController {
 
     public AdController(IAdService adService) {
         _adService = adService;
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<?> hello(){
+        return new ResponseEntity<>("Hello from ads service", HttpStatus.OK);
     }
 
     @PostMapping

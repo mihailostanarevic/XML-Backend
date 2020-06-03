@@ -6,13 +6,15 @@ services:
     container_name: postgres
     restart: always
     environment:
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_ROOT_PASSWORD=postgres
       - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=rent_a_car
-      - REGISTRY_HOST=eureka-serviceregistry
     ports:
       - 5432:5432
-    tty: true
+    volumes:
+      - postgresdata:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   eureka-serviceregistry:
     build: ./Eureka
@@ -20,63 +22,71 @@ services:
      - "8761:8761"
     container_name: eureka-serviceregistry
     tty: true
-    depends_on: 
-      - postgresDB
 
-  #ad-service:
-    #build: ./car-service
-    #ports:
-    #- "8082:8082"
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-    #tty: true
-    #depends_on:
-      #- eureka-serviceregistry
+  ad-service:
+    build: ./car-service
+    ports:
+    - "8082:8082"
+    container_name: ad-service
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+      - POSTGRES_HOST=postgresDB
+    tty: true
+    depends_on:
+      - postgresDB
+      - eureka-serviceregistry
 
   auth-service:
     build: ./authentification-service
     ports:
-    - "8081:8080"
+    - "8081:8081"
     container_name: auth-service
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
-      - DATABASE_USERNAME= postgres
-      - DATABASE_PASSWORD= postgres
-      - DATABASE_DOMAIN= postgres
-      - POSTGRES_DB= rent_a_car
+      - POSTGRES_HOST=postgresDB
     tty: true
     depends_on:
+      - postgresDB
       - eureka-serviceregistry
 
   #rent-service:
-   # build: ./rent-service
+    #build: ./rent-service
     #ports:
     #- "8083:8083"
+    #container_name: rent-service
     #environment:
-    #  - REGISTRY_HOST=eureka-serviceregistry
+      #- REGISTRY_HOST=eureka-serviceregistry
+      #- POSTGRES_HOST=postgresDB
     #tty: true
     #depends_on:
-    #  - eureka-serviceregistry
+      #- eureka-serviceregistry
+      #- postgresDB
 
-  #search-service:
-   # build: ./search-service
-    #ports:
-    #- "8084:8084"
-    #environment:
-     # - REGISTRY_HOST=eureka-serviceregistry
-    #tty: true
-    #depends_on:
-     # - eureka-serviceregistry
+  search-service:
+    build: ./search-service
+    ports:
+    - "8084:8084"
+    container_name: search-service
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+      - POSTGRES_HOST=postgresDB
+    tty: true
+    depends_on:
+      - postgresDB
+      - eureka-serviceregistry
 
-  #resource-service:
-   # build: ./resource-service
-    #ports:
-    #- "8086:8086"
-    #environment:
-     # - REGISTRY_HOST=eureka-serviceregistry
-    #tty: true
-    #depends_on:
-     # - eureka-serviceregistry
+  resource-service:
+    build: ./resource-service
+    ports:
+      - "8086:8086"
+    container_name: resource-service
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+      - POSTGRES_HOST=postgresDB
+    tty: true
+    depends_on:
+      - postgresDB
+      - eureka-serviceregistry
 
   #report-service:
    # build: ./report-service
@@ -94,19 +104,10 @@ services:
     - "8080:8080"
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
-      - DATABASE_USERNAME= postgres
-      - DATABASE_PASSWORD= postgres
-      - DATABASE_DOMAIN= postgres
-    tty: true
     container_name: zuul
+    tty: true
     depends_on:
       - eureka-serviceregistry
-      #- ad-service
-      - auth-service
-      #- rent-service
-      #- search-service
-      #- report-service
-      #- resource-service
-  
-
-  
+      - postgresDB
+volumes: 
+  postgresdata: 
