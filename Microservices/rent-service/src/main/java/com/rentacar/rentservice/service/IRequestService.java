@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.service;
 
+import com.rentacar.rentservice.dto.RequestDTO;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.util.enums.RequestStatus;
 import org.springframework.stereotype.Service;
@@ -9,9 +10,11 @@ import java.util.UUID;
 
 public interface IRequestService {
 
-    Request createRequest();            // params
+    void processRequests(List<RequestDTO> requestList);
 
-    Request createBundleRequest();      // params
+    Request createRequest(RequestDTO requestDTO);
+
+    Request createBundleRequest(List<RequestDTO> requestList);
 
     Request approveRejectRequest();     // params
 

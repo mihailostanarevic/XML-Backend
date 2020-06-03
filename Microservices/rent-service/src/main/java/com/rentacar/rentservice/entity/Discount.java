@@ -9,7 +9,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import java.util.Date;
+import java.sql.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -22,7 +23,7 @@ public class Discount extends BaseEntity {
 
     private double value;       // procenat popusta
 
-    private Date dateOfPublication;
+    private LocalDate dateOfPublication;
 
     @OneToMany(mappedBy = "discount", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pricelist> pricelist;

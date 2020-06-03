@@ -12,7 +12,7 @@ public class RentController {
 
     @GetMapping("/hello")
     public ResponseEntity<?> healthCheck(){
-        return new ResponseEntity<>(String.format("Hello from Rent service"), HttpStatus.OK);
+        return new ResponseEntity<>("Hello from Rent service", HttpStatus.OK);
     }
 
 }

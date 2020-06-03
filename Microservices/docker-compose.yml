@@ -2,7 +2,7 @@ version: '3'
 services:
 
   postgresDB:
-    image: 'postgres'
+    image: postgres:latest
     container_name: postgres
     restart: always
     environment:
@@ -108,6 +108,12 @@ services:
     tty: true
     depends_on:
       - eureka-serviceregistry
+      #- ad-service
+      - auth-service
+      #- rent-service
+      #- search-service
+      #- report-service
+      #- resource-service
       - postgresDB
 volumes: 
   postgresdata: 
