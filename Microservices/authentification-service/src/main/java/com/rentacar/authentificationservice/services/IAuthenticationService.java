@@ -7,7 +7,7 @@ public interface IAuthenticationService {
     void registerSimpleUser(SimpleUserDetailsDTO request);
     void registerAdmin(AdminDetailsDTO request);
     void registerAgent(AgentDetailsDTO request);
-    void login(LoginCredentialsDTO request);
+    String login(LoginCredentialsDTO request);
     void changePassword(ChangePasswordDTO request);
     void banUser(ChangePasswordDTO request);
     void updateSimpleUser(UpdateUserRequestDTO request);

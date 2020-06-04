@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
 import java.util.UUID;
 
 @Data
@@ -21,10 +20,10 @@ public class RequestDTO {
 
     private String receptionDate;
 
-    private String pickUpDate;
+    private String pickUpDate;      // format -> "2016-06-12"
 
-    private String pickUpTime;
-
+    private String pickUpTime;      // format -> "06:30"
+    
     private String returnDate;
 
     private String returnTime;

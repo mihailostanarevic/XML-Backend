@@ -12,4 +12,5 @@ public interface IGearshiftTypeRepository extends JpaRepository<GearshiftType, U
 
         GearshiftType findOneById(UUID id);
         List<GearshiftType> findAllByDeleted(boolean deleted);
+        GearshiftType findOneByType(String type);
 }

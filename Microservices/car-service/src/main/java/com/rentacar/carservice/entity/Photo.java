@@ -14,7 +14,6 @@ import javax.persistence.ManyToOne;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Photo extends BaseEntity {
 
     private String url;
@@ -24,4 +23,8 @@ public class Photo extends BaseEntity {
     private Ad ad;
 
     private boolean deleted;
+
+    public Photo() {
+        this.deleted = false;
+    }
 }
