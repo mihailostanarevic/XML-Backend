@@ -58,7 +58,7 @@ public class RequestService implements IRequestService {
         for (RequestDTO requestDTO : requestList) {
             carIds = sb.append(requestDTO.getCarID().toString() + ",").toString();
         }
-        carIds = carIds.substring(0, carIds.length() - 1);      // obrisi zarez na kraju
+        carIds = carIds.substring(0, carIds.length() - 1);      // obrisem zarez na kraju
         request.setCarID(carIds);
         createRequestWithoutCarID(request, requestList.get(0));
         _requestRepository.save(request);

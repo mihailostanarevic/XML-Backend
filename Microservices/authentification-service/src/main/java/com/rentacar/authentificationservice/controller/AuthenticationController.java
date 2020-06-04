@@ -16,10 +16,26 @@ public class AuthenticationController {
         this.authService = authService;
     }
 
+    @GetMapping("/verify")
+    public boolean verify(String token) {
+        return true;
+    }
+
+
+
+
+
+
+
+
+
+
+
     @GetMapping("/hello")
     public ResponseEntity<?> hello(){
         return new ResponseEntity<>("Hello from auth service", HttpStatus.OK);
     }
+
     @PostMapping("/login")
     public void login(LoginCredentialsDTO request) {
         authService.login(request);
@@ -69,4 +85,5 @@ public class AuthenticationController {
     public void deleteUser(ChangePasswordDTO request){
         authService.deleteUser(request);
     }
+
 }

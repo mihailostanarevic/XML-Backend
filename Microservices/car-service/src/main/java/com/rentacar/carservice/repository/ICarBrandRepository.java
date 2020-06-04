@@ -13,4 +13,6 @@ public interface ICarBrandRepository extends JpaRepository<CarBrand, UUID> {
     CarBrand findOneById(UUID id);
 
     List<CarBrand> findAllByDeleted(boolean deleted);
+
+    CarBrand findOneByName(String name);
 }

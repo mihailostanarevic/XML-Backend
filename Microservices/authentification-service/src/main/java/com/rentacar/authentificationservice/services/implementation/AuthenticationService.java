@@ -23,8 +23,8 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public void login(LoginCredentialsDTO request) {
-
+    public String login(LoginCredentialsDTO request) {
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
     }
 
     @Override

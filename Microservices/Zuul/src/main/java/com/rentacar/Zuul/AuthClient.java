@@ -5,10 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(name = "auth")
-@Service
 public interface AuthClient {
 
-    @GetMapping("/verify")
-    boolean verify();
+    @GetMapping("/auth/verify")
+    boolean verify(String token);
 
 }
