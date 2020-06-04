@@ -21,7 +21,7 @@ public class Admin extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    private String name;
+    private String firstName;
 
     private String lastName;
 }

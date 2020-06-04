@@ -21,16 +21,6 @@ public class AuthenticationController {
         return true;
     }
 
-
-
-
-
-
-
-
-
-
-
     @GetMapping("/hello")
     public ResponseEntity<?> hello(){
         return new ResponseEntity<>("Hello from auth service", HttpStatus.OK);
