@@ -23,23 +23,24 @@ services:
     container_name: eureka-serviceregistry
     tty: true
 
-  ad-service:
-    build: ./car-service
-    ports:
-    - "8082:8082"
-    container_name: ad-service
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-      - POSTGRES_HOST=postgresDB
-    tty: true
-    depends_on:
-      - postgresDB
-      - eureka-serviceregistry
+  #ad-service:
+    #build: ./car-service
+    #ports:
+    #- "8082:8082"
+    #container_name: ad-service
+    #environment:
+      #- REGISTRY_HOST=eureka-serviceregistry
+      #- POSTGRES_HOST=postgresDB
+    #tty: true
+    #depends_on:
+      #- postgresDB
+      #- eureka-serviceregistry
 
   auth-service:
     build: ./authentification-service
     ports:
     - "8081:8081"
+    restart: always
     container_name: auth-service
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
@@ -62,38 +63,51 @@ services:
       #- eureka-serviceregistry
       #- postgresDB
 
-  search-service:
-    build: ./search-service
-    ports:
-    - "8084:8084"
-    container_name: search-service
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-      - POSTGRES_HOST=postgresDB
-    tty: true
-    depends_on:
-      - postgresDB
-      - eureka-serviceregistry
+  #search-service:
+    #build: ./search-service
+   # ports:
+    #- "8084:8084"
+    #container_name: search-service
+    #environment:
+      #- REGISTRY_HOST=eureka-serviceregistry
+      #- POSTGRES_HOST=postgresDB
+    #tty: true
+    #depends_on:
+      #- postgresDB
+      #- eureka-serviceregistry
 
-  resource-service:
-    build: ./resource-service
-    ports:
-      - "8086:8086"
-    container_name: resource-service
-    environment:
-      - REGISTRY_HOST=eureka-serviceregistry
-      - POSTGRES_HOST=postgresDB
-    tty: true
-    depends_on:
-      - postgresDB
-      - eureka-serviceregistry
+  #resource-service:
+    #build: ./resource-service
+    #ports:
+      #- "8086:8086"
+    #container_name: resource-service
+    #environment:
+      #- REGISTRY_HOST=eureka-serviceregistry
+      #- POSTGRES_HOST=postgresDB
+    #tty: true
+    #depends_on:
+      #- postgresDB
+      #- eureka-serviceregistry
 
   #report-service:
    # build: ./report-service
     #ports:
     #- "8087:8087"
     #environment:
-     # - REGISTRY_HOST=eureka-serviceregistry
+      #- REGISTRY_HOST=eureka-serviceregistry
+      #- POSTGRES_HOST=postgresDB
+    #tty: true
+    #depends_on:
+     # - eureka-serviceregistry
+
+  #message-service:
+   # build: ./message-service
+    #ports:
+    #- "8085:8085"
+    #restart: always
+    #container_name: message-service
+    #environment:
+      #- REGISTRY_HOST=eureka-serviceregistry
     #tty: true
     #depends_on:
      # - eureka-serviceregistry
@@ -102,18 +116,13 @@ services:
     build: ./Zuul
     ports:
     - "8080:8080"
+    restart: always
     environment:
       - REGISTRY_HOST=eureka-serviceregistry
     container_name: zuul
     tty: true
     depends_on:
       - eureka-serviceregistry
-      #- ad-service
-      - auth-service
-      #- rent-service
-      #- search-service
-      #- report-service
-      #- resource-service
       - postgresDB
 volumes: 
   postgresdata: 

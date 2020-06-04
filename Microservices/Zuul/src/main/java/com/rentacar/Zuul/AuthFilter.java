@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Logger;
 
 @SuppressWarnings({"IfStatementWithIdenticalBranches", "SpellCheckingInspection"})
 @Component
@@ -14,6 +15,8 @@ public class AuthFilter extends ZuulFilter {
 
     @Autowired
     private AuthClient authClient;
+
+    private Logger logger = Logger.getLogger("Zuul service");
 
     @Override
     public String filterType() {
@@ -49,14 +52,12 @@ public class AuthFilter extends ZuulFilter {
         }
 
         String token = request.getHeader("Auth-Token");
-        System.out.println("token: " + token);
         try {
             if(authClient.verify(token)) {
-                System.out.println("tokenIF: " + token);
                 ctx.addZuulRequestHeader("Auth-Token", token);
             }
         } catch (FeignException.NotFound e) {
-            setFailedRequest("Consumer does not exist!", 403);
+            setFailedRequest("User does not exist!", 403);
         }
 
         return null;
