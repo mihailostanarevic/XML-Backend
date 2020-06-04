@@ -16,8 +16,8 @@ public class AuthenticationController {
         this.authService = authService;
     }
 
-    @GetMapping("/verify")
-    public boolean verify(String token) {
+    @GetMapping("/verify/{token}")
+    public boolean verify(@PathVariable("token") String token) {
         return true;
     }
 
