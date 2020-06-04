@@ -2,11 +2,13 @@ package com.rentacar.Zuul;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 
+@SuppressWarnings({"IfStatementWithIdenticalBranches", "SpellCheckingInspection"})
 @Component
 public class AuthFilter extends ZuulFilter {
 
@@ -39,9 +41,23 @@ public class AuthFilter extends ZuulFilter {
 
     @Override
     public Object run() {
-
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
+
+        if(request.getHeader("Auth-Token") == null) {
+            return null;
+        }
+
+        String token = request.getHeader("Auth-Token");
+        System.out.println("token: " + token);
+        try {
+            if(authClient.verify(token)) {
+                System.out.println("tokenIF: " + token);
+                ctx.addZuulRequestHeader("Auth-Token", token);
+            }
+        } catch (FeignException.NotFound e) {
+            setFailedRequest("Consumer does not exist!", 403);
+        }
 
         return null;
     }

@@ -38,6 +38,7 @@ public class Request extends BaseEntity {
 
     private LocalTime returnTime;           // vreme vracanja
 
+    // TODO uzeti od agenta grad
     private Address pickUpAddress;
 
     private boolean deleted;

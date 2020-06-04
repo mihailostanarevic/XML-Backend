@@ -1,14 +1,12 @@
 package com.rentacar.carservice.repository;
 
-import com.rentacar.carservice.entity.Ad;
+import com.rentacar.carservice.entity.Date;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.UUID;
 
 @Repository
-public interface IAdRepository extends JpaRepository<Ad, UUID> {
-
-    Ad findOneById(UUID id);
+public interface IDateRepository extends JpaRepository<Date, UUID> {
 
 }

@@ -2,6 +2,7 @@ package com.rentacar.carservice.service;
 
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.request.UpdateAdRequest;
+import com.rentacar.carservice.dto.request.UpdateCarAvailability;
 import com.rentacar.carservice.dto.response.AdResponse;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface IAdService {
     List<AdResponse> getAllAdsByFuelType(UUID id) throws Exception;
 
     List<AdResponse> getAllAdsByGas() throws Exception;
+
+    boolean updateAdAvailability(UpdateCarAvailability updateCarAvailability);
 }

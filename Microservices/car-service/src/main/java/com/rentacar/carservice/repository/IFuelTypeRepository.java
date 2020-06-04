@@ -13,4 +13,6 @@ public interface IFuelTypeRepository extends JpaRepository<FuelType, UUID> {
     FuelType findOneById(UUID id);
 
     List<FuelType> findAllByDeleted(boolean deleted);
+
+    FuelType findOneByType(String type);
 }
