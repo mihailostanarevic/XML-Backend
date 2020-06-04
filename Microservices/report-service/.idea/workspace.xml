@@ -1,41 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0d8d4241-c601-4d48-98fb-8d3d542f422f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../Zuul/src/main/java/com/rentacar/Zuul/AuthFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Zuul/src/main/java/com/rentacar/Zuul/AuthFilter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Zuul/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../Zuul/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../authentification-service/src/main/java/com/rentacar/authentificationservice/entity/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/../authentification-service/src/main/java/com/rentacar/authentificationservice/entity/Agent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/CarServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/CarServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/controller/AdController.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/controller/AdController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/dto/request/AddAdRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/dto/request/AddAdRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/dto/response/AdResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/dto/response/AdResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/dto/response/CarResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/dto/response/CarResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/entity/Ad.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/entity/Ad.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/entity/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/entity/Car.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/entity/Photo.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/entity/Photo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/IAdRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/IAdRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/ICarBrandRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/ICarBrandRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/ICarClassRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/ICarClassRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/ICarModelRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/ICarModelRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/IFuelTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/IFuelTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/IGearshiftTypeRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/repository/IGearshiftTypeRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/service/IAdService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/service/IAdService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/service/impl/AdService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/service/impl/AdService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/service/impl/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../car-service/src/main/java/com/rentacar/carservice/service/impl/CarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../rent-service/src/main/java/com/rentacar/rentservice/dto/RequestDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/../rent-service/src/main/java/com/rentacar/rentservice/dto/RequestDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../rent-service/src/main/java/com/rentacar/rentservice/entity/Request.java" beforeDir="false" afterPath="$PROJECT_DIR$/../rent-service/src/main/java/com/rentacar/rentservice/entity/Request.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../rent-service/src/main/java/com/rentacar/rentservice/service/implementation/RequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/../rent-service/src/main/java/com/rentacar/rentservice/service/implementation/RequestService.java" afterDir="false" />
+    <list default="true" id="087fc7f1-d014-4c21-9b96-25ec72e68fd5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/report-service.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/ReportServiceApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/controller/ReportController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/dto/request/ReportRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/dto/response/ReportResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/entity/BaseEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/entity/Report.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/repository/IReportRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/service/IReportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/rentacar/reportservice/service/implementation/ReportService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/rentacar/reportservice/ReportServiceApplicationTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
-  <component name="ProjectId" id="1cCpJcMfahVHzKDG9lItnvbKIkA" />
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="ProjectId" id="1cCs6VDS3NXFdp49KG7eSTcZg8V" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -44,56 +50,61 @@
   </component>
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../car-service" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
-    <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
+  </component>
+  <component name="RunManager">
+    <configuration name="ReportServiceApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.rentacar.reportservice.ReportServiceApplication" />
+      <module name="report-service" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.rentacar.reportservice.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.ReportServiceApplication" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0d8d4241-c601-4d48-98fb-8d3d542f422f" name="Default Changelist" comment="" />
-      <created>1590042358713</created>
+      <changelist id="087fc7f1-d014-4c21-9b96-25ec72e68fd5" name="Default Changelist" comment="" />
+      <created>1590043734299</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1590042358713</updated>
-      <workItem from="1590087356860" duration="86000" />
-      <workItem from="1590087449379" duration="57000" />
-      <workItem from="1590087775450" duration="39000" />
-      <workItem from="1590092117099" duration="36000" />
-      <workItem from="1590095984905" duration="48000" />
-      <workItem from="1591024067426" duration="822000" />
+      <updated>1590043734299</updated>
     </task>
     <servers />
   </component>
-  <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
-  </component>
   <component name="WindowStateProjectService">
-    <state x="531" y="253" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog" timestamp="1590043099491">
+    <state x="488" y="73" key="#com.intellij.ide.util.MemberChooser" timestamp="1590050852898">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="531" y="253" key="#com.intellij.ide.util.projectWizard.JdkChooserPanel.MyDialog/0.0.1366.728@0.0.1366.728" timestamp="1590043099491" />
-    <state x="549" y="187" key="FileChooserDialogImpl" timestamp="1591226280128">
-      <screen x="0" y="0" width="1536" height="864" />
-    </state>
-    <state x="549" y="187" key="FileChooserDialogImpl/0.0.1536.864@0.0.1536.864" timestamp="1591226280128" />
-    <state x="419" y="123" key="RollbackChangesDialog" timestamp="1591024875653">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="419" y="123" key="RollbackChangesDialog/0.0.1536.824@0.0.1536.824" timestamp="1591024875653" />
-    <state x="163" y="0" key="SettingsEditor" timestamp="1590043246875">
+    <state x="488" y="73" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1590050852898" />
+    <state width="1323" height="179" key="GridCell.Tab.0.bottom" timestamp="1590060070764">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="163" y="0" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1590043246875" />
-    <state x="339" y="162" key="run.anything.popup" timestamp="1590043195888">
+    <state width="1323" height="179" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1590060070764" />
+    <state width="1323" height="179" key="GridCell.Tab.0.center" timestamp="1590060070764">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="339" y="162" key="run.anything.popup/0.0.1366.728@0.0.1366.728" timestamp="1590043195888" />
+    <state width="1323" height="179" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1590060070764" />
+    <state width="1323" height="179" key="GridCell.Tab.0.left" timestamp="1590060070764">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1590060070764" />
+    <state width="1323" height="179" key="GridCell.Tab.0.right" timestamp="1590060070764">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state width="1323" height="179" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1590060070764" />
   </component>
 </project>
