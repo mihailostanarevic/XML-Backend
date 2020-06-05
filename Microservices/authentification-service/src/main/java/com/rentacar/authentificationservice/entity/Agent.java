@@ -33,6 +33,4 @@ public class Agent extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
-    private String city;
-
 }

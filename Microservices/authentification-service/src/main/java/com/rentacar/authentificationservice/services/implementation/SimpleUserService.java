@@ -24,14 +24,14 @@ public class SimpleUserService implements ISimpleUserService {
     @Override
     public void blockSimpleUserByAdmin(UUID id) throws Exception {
         SimpleUser simpleUser = _simpleUserRepository.findOneById(id);
-        simpleUser.setBlocked(true);
+//        simpleUser.setBlocked(true);
         _simpleUserRepository.save(simpleUser);
     }
 
     @Override
     public void unblockSimpleUserByAdmin(UUID id) throws Exception {
         SimpleUser simpleUser = _simpleUserRepository.findOneById(id);
-        simpleUser.setBlocked(false);
+//        simpleUser.setBlocked(false);
         _simpleUserRepository.save(simpleUser);
     }
 

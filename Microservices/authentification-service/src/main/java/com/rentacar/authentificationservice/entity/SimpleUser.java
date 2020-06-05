@@ -19,7 +19,7 @@ public class SimpleUser extends BaseEntity {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
-    private String name;
+    private String firstName;
 
     private String lastName;
 
@@ -31,7 +31,7 @@ public class SimpleUser extends BaseEntity {
 
     private String country;
 
-    private boolean blocked;
+//    private boolean blocked;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus; //approving when user register
