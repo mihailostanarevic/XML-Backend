@@ -1,4 +1,4 @@
-package com.rentacar.authentificationservice.config.config;
+package com.rentacar.authentificationservice.config;
 
 import com.rentacar.authentificationservice.auth.RestAuthenticationEntryPoint;
 import com.rentacar.authentificationservice.auth.TokenAuthenticationFilter;
@@ -33,7 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    private UserDetailsServiceImpl jwtUserDetailsService;
+    private UserDetailsService jwtUserDetailsService;
 
     // Neautorizovani pristup zasticenim resursima
     @Autowired
@@ -71,10 +71,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().and()
                 .addFilterBefore(new TokenAuthenticationFilter(tokenUtils, jwtUserDetailsService),
                         BasicAuthenticationFilter.class);
-
-        http .requiresChannel()
-                .anyRequest()
-                .requiresSecure();
 
         http.csrf().disable();
     }

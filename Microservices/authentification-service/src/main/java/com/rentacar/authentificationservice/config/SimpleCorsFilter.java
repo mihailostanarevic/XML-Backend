@@ -1,4 +1,4 @@
-package com.rentacar.authentificationservice.config.config;
+package com.rentacar.authentificationservice.config;
 
 import org.springframework.stereotype.Component;
 

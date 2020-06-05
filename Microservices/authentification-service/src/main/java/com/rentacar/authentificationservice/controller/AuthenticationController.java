@@ -1,9 +1,12 @@
 package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.request.*;
+import com.rentacar.authentificationservice.dto.response.UserResponseDTO;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
+import com.rentacar.authentificationservice.util.enums.GeneralException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,9 +29,9 @@ public class AuthenticationController {
         return new ResponseEntity<>("Hello from auth service", HttpStatus.OK);
     }
 
-    @PostMapping("/login")
-    public void login(LoginCredentialsDTO request) {
-        authService.login(request);
+    @PutMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginCredentialsDTO request) throws GeneralException {
+        return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
     }
 
     @PostMapping("/admin")
