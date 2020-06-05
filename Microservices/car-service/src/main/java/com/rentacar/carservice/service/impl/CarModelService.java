@@ -61,6 +61,8 @@ public class CarModelService implements ICarModelService {
 
     private CarModelResponse mapCarModelToCarModelResponse(CarModel carModel) {
         CarModelResponse response = new CarModelResponse();
+        response.setBrandName(carModel.getCarBrand().getName());
+        response.setClassName(carModel.getCarClass().getName());
         response.setId(carModel.getId());
         response.setName(carModel.getName());
         return response;
