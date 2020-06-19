@@ -6,9 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Entity
@@ -21,38 +19,34 @@ public class Ad extends BaseEntity {
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
 
-    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    private UUID agent;
 
-    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Photo> photos = new ArrayList<>();
+    private boolean available; //is rented or available
 
-    private UUID agentID;           // agent who added this ad
-
-    private boolean available;      //is rented or available
-
-    private String limitedDistance;     //is distance which user can travel limited
+    private boolean limitedDistance; //is distance which user can travel limited
 
     private String availableKilometersPerRent; //if distance is limited
 
-    private String priceFromTo;     // cena od-do
+    private int seats; //child seats
 
-    private int seats;               //child seats
+    private boolean cdw;
 
-    private boolean cdw;            // collision damage waver
+    @OneToMany(mappedBy = "ad")
+    private Set<Photo> adPhotos;
 
-    private LocalDate date;         //date when ad was created
-
-    @OneToMany(mappedBy = "ad_id", cascade = CascadeType.ALL)
-    private List<Date> reservedTerms;     // zauzeti termini
+    private LocalDate creationDate; //date when ad was created
 
     private boolean deleted;
+
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //
+    private List<Rating> ratings;
+
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //
+    private List<Comment> comments;
 
     public Ad() {
         this.available = true;
         this.deleted = false;
-        this.date = LocalDate.now();
-        this.comments = new ArrayList<>();
-        this.photos = new ArrayList<>();
+        this.creationDate = LocalDate.now();
     }
 }

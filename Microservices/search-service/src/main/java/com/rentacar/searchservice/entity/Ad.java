@@ -5,49 +5,52 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.loader.entity.CascadeEntityJoinWalker;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Ad extends BaseEntity {
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id", referencedColumnName = "id")
     private Car car;
 
-    @JsonFormat(pattern = "dd-MM-yyyy")
-    private Date creationDate;
+    //kod requesta UUID od ad-a
 
-    private boolean available;
+    private UUID agent;
 
-    private boolean limited;
+    private boolean limitedDistance; //is distance which user can travel limited
 
-    private String availableKm;
+    private String availableKilometersPerRent; //if distance is limited
 
-    private int childSeats;
+    private int seats; //child seats
 
-    private boolean cdw; //Collison Damage Waiver
+    private boolean cdw;
 
-    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Photo> photos;
+    @OneToMany(mappedBy = "ad")
+    private Set<Photo> adPhotos;
+
+    private LocalDate creationDate; //date when ad was created
 
     private boolean deleted;
 
-    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments = new ArrayList<>();
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //
+    private List<Rating> ratings;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rating_id", referencedColumnName = "id")
-    private Rating rating;
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //
+    private List<Comment> comments;
 
-    @ManyToMany(mappedBy = "ads")
-    private List<CarAccessories> accessories;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
+    private Address address;
+
+    public Ad() {
+        this.deleted = false;
+        this.creationDate = LocalDate.now();
+    }
 }

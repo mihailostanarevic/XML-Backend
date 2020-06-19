@@ -1,4 +1,4 @@
-package com.rentacar.rentservice.entity;
+package com.rentacar.authentificationservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,10 +24,7 @@ public class Address extends BaseEntity {
 
     private String country;
 
-    @OneToMany(mappedBy = "pickUpAddress", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Request> request;
-
-    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AgentAddress> agent = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Agent> agents = new HashSet<>();
 
 }

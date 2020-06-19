@@ -1,30 +1,36 @@
 package com.rentacar.carservice.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 @Entity
 @Getter
 @Setter
-@AllArgsConstructor
 public class Photo extends BaseEntity {
 
-    private String url;
+    private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ad_id")
-    private Ad ad;
+    private String type;
+
+    @Column(name = "pic_byte", length = 1000)
+    private byte[] picByte;
 
     private boolean deleted;
 
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Ad ad;
+
     public Photo() {
         this.deleted = false;
+    }
+
+    public Photo(String name, String type, byte[] picByte, boolean deleted, Ad ad) {
+        this.name = name;
+        this.type = type;
+        this.picByte = picByte;
+        this.deleted = deleted;
+        this.ad = ad;
     }
 }

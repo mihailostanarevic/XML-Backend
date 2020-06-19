@@ -35,7 +35,7 @@ public class Car extends BaseEntity {
     )
     List<CarAccessories> carAccessories = new ArrayList<>();
 
-    @OneToOne(mappedBy = "car")
+    @OneToOne(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Ad ad;
 
     private String kilometersTraveled;

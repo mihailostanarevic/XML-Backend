@@ -6,7 +6,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,12 +13,17 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CarAccessories extends BaseEntity {
+public class Address extends BaseEntity {
 
-    private String description;
+    private String street;
 
-    @ManyToMany(mappedBy = "carAccessories")
-    private List<Car> cars = new ArrayList<>();
+    private int number;
 
-    private boolean deleted;
+    private String city;
+
+    private String country;
+
+    @OneToMany(mappedBy = "address", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Ad> ads;
+
 }

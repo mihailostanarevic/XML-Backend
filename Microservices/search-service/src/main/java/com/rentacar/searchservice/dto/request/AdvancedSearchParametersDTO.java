@@ -1,4 +1,4 @@
-package com.rentacar.searchservice.dto;
+package com.rentacar.searchservice.dto.request;
 
 import lombok.Data;
 

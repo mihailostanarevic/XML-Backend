@@ -18,9 +18,9 @@ import java.util.List;
 @NoArgsConstructor
 public class GearshiftType extends BaseEntity {
 
-    private String type;
+    private String type; //ili enum {automatic, manual, semiautomatic}
 
-    private String numberOfGears;
+    private String numberOfGears; //ili enum {four, five, six , seven, eight, nine, ten} poslednjih nekoliko se odnose na automatike
 
     @OneToMany(mappedBy = "gearshiftType", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Car> cars = new ArrayList<>();

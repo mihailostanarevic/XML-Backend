@@ -38,7 +38,7 @@ public class Car extends BaseEntity {
     @OneToOne(mappedBy = "car", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private Ad ad;
 
-    private double kilometersTraveled;
+    private String kilometersTraveled;
 
     private boolean deleted;
 }
