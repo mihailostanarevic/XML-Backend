@@ -6,9 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @SuppressWarnings("SpellCheckingInspection")
@@ -16,31 +18,26 @@ import java.util.UUID;
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 public class Request extends BaseEntity {
 
-    // TODO(A) izmeniti ovo na Set<Car>, da ne bih morao splitovati
-    private String carID;
+    private UUID customer_id;
 
-    private UUID customerID;
-
-    private UUID agentID;
-
+    @Enumerated(EnumType.STRING) //
     private RequestStatus status;
 
     private LocalDate receptionDate;       // datum prijema zahteva
 
-    private LocalDate pickUpDate;          // datum preuzimanja
-
-    private LocalTime pickUpTime;           // vreme preuzimanja
-
-    private LocalDate returnDate;           // datum vracanja
-
-    private LocalTime returnTime;           // vreme vracanja
-
-    // TODO uzeti od agenta grad
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address pickUpAddress;
 
     private boolean deleted;
+
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RequestAd> requestAds = new HashSet<RequestAd>();
+
+    public Request() {
+        this.receptionDate = LocalDate.now();
+    }
 
 }

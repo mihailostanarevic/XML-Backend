@@ -21,15 +21,12 @@ import java.util.Set;
 @AllArgsConstructor
 public class User extends BaseEntity implements Serializable {
 
-    @Column(unique = true)
-    private String username;
+    @Column(unique = true, nullable = false)
+    private String username; //email
 
+    @Column(nullable = false)
     private String password;
 
-    @Column(unique = true)
-    private String email;
-
-    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)

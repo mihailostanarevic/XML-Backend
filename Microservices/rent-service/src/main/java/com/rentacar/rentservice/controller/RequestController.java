@@ -25,4 +25,5 @@ public class RequestController {
         return new ResponseEntity<>("Hello from Rent service", HttpStatus.OK);
     }
 
+
 }

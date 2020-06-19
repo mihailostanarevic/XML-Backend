@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,7 +26,7 @@ public class SimpleUser extends BaseEntity {
 
     private String lastName;
 
-    private String ssn; //lazni JMBG
+    private String ssn; //jmbg
 
     private String address;
 
@@ -31,8 +34,8 @@ public class SimpleUser extends BaseEntity {
 
     private String country;
 
-//    private boolean blocked;
-
     @Enumerated(EnumType.STRING)
-    private RequestStatus requestStatus; //approving when user register
+    private RequestStatus requestStatus;
+
+    private LocalDateTime confirmationTime;
 }

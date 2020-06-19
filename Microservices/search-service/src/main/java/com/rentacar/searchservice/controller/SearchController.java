@@ -1,10 +1,11 @@
 package com.rentacar.searchservice.controller;
 
-import com.rentacar.searchservice.dto.AdvancedSearchParametersDTO;
-import com.rentacar.searchservice.dto.SearchParametersDTO;
-import com.rentacar.searchservice.dto.SearchResultsDTO;
+import com.rentacar.searchservice.dto.request.AdvancedSearchParametersDTO;
+import com.rentacar.searchservice.dto.response.SearchResultResponse;
 import com.rentacar.searchservice.services.ISearchService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -17,15 +18,8 @@ public class SearchController {
         this.searchService = searchService;
     }
 
-    @PostMapping("/")
-    public SearchResultsDTO searchAds(SearchParametersDTO request) {
-        return searchService.searchAds(request);
+    @GetMapping("/light")
+    public List<SearchResultResponse> search(@RequestParam(value="city") String city, @RequestParam(value="from") String from, @RequestParam(value="to") String to){
+        return searchService.searchAds(city, from, to);
     }
-
-    @PostMapping("/advanced")
-    public SearchResultsDTO advancedSearchAds(AdvancedSearchParametersDTO request) {
-        return searchService.advancedSearchAds(request);
-    }
-
-
 }

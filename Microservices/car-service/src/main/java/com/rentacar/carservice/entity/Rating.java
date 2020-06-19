@@ -1,19 +1,22 @@
-package com.rentacar.searchservice.entity;
+package com.rentacar.carservice.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class Rating extends BaseEntity{
+@NoArgsConstructor
+public class Rating extends BaseEntity {
 
     private String grade; //rating
 
