@@ -1,7 +1,7 @@
 package com.rentacar.authentificationservice.services.implementation;
 
 import com.rentacar.authentificationservice.dto.request.*;
-import com.rentacar.authentificationservice.dto.response.UserResponseDTO;
+import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.entity.User;
 import com.rentacar.authentificationservice.entity.UserDetailsImpl;
 import com.rentacar.authentificationservice.repository.IAuthorityRepository;
@@ -9,7 +9,6 @@ import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.security.TokenUtils;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
 import com.rentacar.authentificationservice.util.enums.GeneralException;
-import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -52,7 +51,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public UserResponseDTO login(LoginCredentialsDTO request) throws GeneralException {
+    public UserResponse login(LoginCredentialsDTO request) throws GeneralException {
         User user = _userRepository.findOneByUsername(request.getUsername());
 
         String mail = request.getUsername();
@@ -78,7 +77,7 @@ public class AuthenticationService implements IAuthenticationService {
             jwt = _tokenUtils.generateToken(userLog.getUsername());
             expiresIn = _tokenUtils.getExpiredIn();
         }
-        UserResponseDTO userResponse = mapUserToUserResponse(user);
+        UserResponse userResponse = mapUserToUserResponse(user);
         userResponse.setToken(jwt);
         userResponse.setTokenExpiresIn(expiresIn);
 
@@ -115,8 +114,8 @@ public class AuthenticationService implements IAuthenticationService {
 
     }
 
-    private UserResponseDTO mapUserToUserResponse(User user) {
-        UserResponseDTO userResponse = new UserResponseDTO();
+    private UserResponse mapUserToUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
         if(user.getSimpleUser() != null){
             userResponse.setId(user.getSimpleUser().getId());
         }else if(user.getAgent() != null){

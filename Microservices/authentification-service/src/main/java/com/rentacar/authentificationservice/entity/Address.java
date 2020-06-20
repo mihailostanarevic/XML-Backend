@@ -16,13 +16,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Address extends BaseEntity {
 
-    private String street;
-
-    private int number;
-
-    private String city;
-
-    private String country;
+    private String name;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Agent> agents = new HashSet<>();

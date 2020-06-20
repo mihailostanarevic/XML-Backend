@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.UUID;
 
 @Data
-public class UserResponseDTO {
+public class UserResponse {
 
     private UUID id;
 

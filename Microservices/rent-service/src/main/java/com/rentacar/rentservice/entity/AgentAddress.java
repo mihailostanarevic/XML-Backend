@@ -15,9 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class AgentAddress extends  BaseEntity{
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address address;
+    private String address;
 
     private UUID agentID;
 }

@@ -10,7 +10,9 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
+@SuppressWarnings("SpellCheckingInspection")
 @Entity
 @Getter
 @Setter
@@ -26,7 +28,7 @@ public class SimpleUser extends BaseEntity {
 
     private String lastName;
 
-    private String ssn; //jmbg
+    private String ssn;                 //jmbg
 
     private String address;
 
@@ -38,4 +40,13 @@ public class SimpleUser extends BaseEntity {
     private RequestStatus requestStatus;
 
     private LocalDateTime confirmationTime;
+
+//    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private Set<UUID> requestIDs;
+
+//    @OneToMany(mappedBy = "simpleUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<UUID> ratingsIDs;
+
+//    @OneToMany(mappedBy = "simpleUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<UUID> commentsIDs;
 }

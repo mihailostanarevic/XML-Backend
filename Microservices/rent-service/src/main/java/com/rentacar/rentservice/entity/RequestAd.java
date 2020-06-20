@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+@SuppressWarnings("SpellCheckingInspection")
 @Entity
 @Getter
 @Setter
@@ -21,7 +22,11 @@ public class RequestAd extends BaseEntity {
     @JoinColumn(name = "request_id")
     private Request request;
 
-    private UUID ad_id;
+    @Column(name = "ad_id")
+    private UUID adID;
+
+    @Column(name = "agent_id")
+    private UUID agentID;
 
     private LocalDate pickUpDate;          // datum preuzimanja
 

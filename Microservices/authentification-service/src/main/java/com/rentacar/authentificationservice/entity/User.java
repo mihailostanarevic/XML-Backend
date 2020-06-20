@@ -13,6 +13,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity(name = "user_entity")
 @Getter
@@ -56,6 +57,10 @@ public class User extends BaseEntity implements Serializable {
         this.authorities.forEach(authority -> auth_list.addAll(authority.getPermissions()));
         return auth_list;
     }
+
+//    private List<UUID> messagesSent = new ArrayList<>();
+//
+//    private List<UUID> messagesReceived = new ArrayList<>();
 
     public Set<Authority> getRoles() {
         return this.authorities;
