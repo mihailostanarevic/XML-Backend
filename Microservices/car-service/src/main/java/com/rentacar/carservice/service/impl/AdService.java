@@ -1,5 +1,6 @@
 package com.rentacar.carservice.service.impl;
 
+import com.rentacar.carservice.client.AuthClient;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.response.AdResponse;
 import com.rentacar.carservice.dto.response.AddressDTO;
@@ -31,14 +32,16 @@ public class AdService implements IAdService {
     private final IFuelTypeRepository _fuelTypeRepository;
     private final ICarRepository _carRepository;
     private final IPhotoRepository _photoRepository;
+    private final AuthClient _authClient;
 
-    public AdService(IAdRepository adRepository, ICarModelRepository carModelRepository, IGearshiftTypeRepository gearshiftTypeRepository, IFuelTypeRepository fuelTypeRepository, ICarRepository carRepository, IPhotoRepository photoRepository) {
+    public AdService(IAdRepository adRepository, ICarModelRepository carModelRepository, IGearshiftTypeRepository gearshiftTypeRepository, IFuelTypeRepository fuelTypeRepository, ICarRepository carRepository, IPhotoRepository photoRepository, AuthClient authClient) {
         _adRepository = adRepository;
         _carModelRepository = carModelRepository;
         _gearshiftTypeRepository = gearshiftTypeRepository;
         _fuelTypeRepository = fuelTypeRepository;
         _carRepository = carRepository;
         _photoRepository = photoRepository;
+        _authClient = authClient;
     }
 
     @Override
@@ -63,16 +66,11 @@ public class AdService implements IAdService {
 
     @Override
     public List<AdResponse> getAgentAds(UUID id) {
-        // TODO get agent by ID
-//        Agent agent = _agentRepository.findOneById(id);
-//        List<AdResponse> retAdResponseList = new ArrayList<>();
-//        if(agent != null) {
-//            for (Ad agentAd : agent.getAd()) {
-//                retAdResponseList.add(mapAdToAdResponse(agentAd));
-//            }
-//        }
-//        return retAdResponseList;
-        return null;
+        List<AdResponse> retAdResponseList = new ArrayList<>();
+        for (Ad ad : _adRepository.findAllByAgent(id)) {
+            retAdResponseList.add(mapAdToAdResponse(ad));
+        }
+        return retAdResponseList;
     }
 
     private PhotoResponse mapToPhotoResponse(Photo img) {
@@ -198,24 +196,23 @@ public class AdService implements IAdService {
     }
 
     private AdResponse mapAdToAdResponse(Ad ad) {
-        // TODO get agent by AD
         AdResponse adResponse = new AdResponse();
         adResponse.setId(ad.getId());
-//        adResponse.setAgentID(ad.getAgent().getId());
+        adResponse.setAgentID(ad.getAgent());
         adResponse.setAvailableKilometersPerRent(ad.getAvailableKilometersPerRent());
         adResponse.setCdw(ad.isCdw());
         adResponse.setLimitedDistance(ad.isLimitedDistance());
         adResponse.setSeats(ad.getSeats());
         adResponse.setName(ad.getCar().getCarModel().getCarBrand().getName() + " " + ad.getCar().getCarModel().getName());
         List<AddressDTO> fullLocations = new ArrayList<>();
-//        for (Address address : ad.getAgent().getAddress()) {
-//            AddressDTO addressDTO = new AddressDTO();
-//            addressDTO.setId(address.getId());
-//            addressDTO.setCity(address.getCity());
-//            addressDTO.setStreet(address.getStreet());
-//            addressDTO.setNumber(address.getNumber());
-//            fullLocations.add(addressDTO);
-//        }
+
+        String address = _authClient.getAgentAddress(ad.getAgent());
+        String[] addressSplited = address.split(",");
+        AddressDTO addressDTO = new AddressDTO();
+        addressDTO.setCity(addressSplited[1].trim());
+        addressDTO.setStreet(addressSplited[2].trim());
+        addressDTO.setNumber(Integer.parseInt(addressSplited[3].trim()));
+        fullLocations.add(addressDTO);
         adResponse.setFullLocations(fullLocations);
         return adResponse;
     }

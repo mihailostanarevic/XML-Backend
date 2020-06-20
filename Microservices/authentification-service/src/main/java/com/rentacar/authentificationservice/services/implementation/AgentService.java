@@ -56,4 +56,9 @@ public class AgentService implements IAgentService {
         _userRepository.save(agent.getUser());
         _agentRepository.save(agent);
     }
+
+    @Override
+    public String getAgentAddress(UUID id) {
+        return _agentRepository.findOneById(id).getAddress();
+    }
 }

@@ -47,11 +47,4 @@ public class AdController {
         return new ResponseEntity<>(_adService.getPhoto(adId), HttpStatus.OK);
     }
 
-    // TODO (A) prebaciti u rent
-//    @PostMapping("/availability")
-//    public ResponseEntity<?> changeCarAvailability(@RequestBody RequestDTO request) throws Exception{
-//        _requestService.changeAdAvailability(request);
-//        return new ResponseEntity<>(new RequestResponse("succesfully changed"), HttpStatus.OK);
-//    }
-
 }

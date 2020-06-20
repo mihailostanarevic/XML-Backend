@@ -46,4 +46,9 @@ public class AgentController {
         _agentService.deleteAgentByAdmin(id);
     }
 
+    @GetMapping("/{id}/address")
+    public String getAgentAddress(@PathVariable UUID id) throws Exception{
+        return _agentService.getAgentAddress(id);
+    }
+
 }
