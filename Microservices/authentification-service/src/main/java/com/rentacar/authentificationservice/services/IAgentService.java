@@ -18,4 +18,5 @@ public interface IAgentService {
 
     void deleteAgentByAdmin(UUID id) throws Exception;
 
+    String getAgentAddress(UUID id);
 }
