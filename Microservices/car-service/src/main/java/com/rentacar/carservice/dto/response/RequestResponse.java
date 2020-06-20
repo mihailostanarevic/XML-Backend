@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PhotoResponse {
+public class RequestResponse {
 
-    private String name;
-
-    private String type;
-
-    private byte[] picByte;
+    private String message;
 
 }

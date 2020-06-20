@@ -1,11 +1,14 @@
 package com.rentacar.authentificationservice.controller;
 
+import com.rentacar.authentificationservice.dto.response.AgentRequests;
 import com.rentacar.authentificationservice.services.IAgentService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.rentacar.authentificationservice.util.enums.RequestStatus;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @RestController
@@ -42,4 +45,5 @@ public class AgentController {
     public void deleteAgent(@PathVariable UUID id) throws Exception{
         _agentService.deleteAgentByAdmin(id);
     }
+
 }

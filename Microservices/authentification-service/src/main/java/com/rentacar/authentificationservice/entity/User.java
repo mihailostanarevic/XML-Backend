@@ -28,7 +28,6 @@ public class User extends BaseEntity implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
@@ -58,10 +57,6 @@ public class User extends BaseEntity implements Serializable {
         this.authorities.forEach(authority -> auth_list.addAll(authority.getPermissions()));
         return auth_list;
     }
-
-//    private List<UUID> messagesSent = new ArrayList<>();
-//
-//    private List<UUID> messagesReceived = new ArrayList<>();
 
     public Set<Authority> getRoles() {
         return this.authorities;

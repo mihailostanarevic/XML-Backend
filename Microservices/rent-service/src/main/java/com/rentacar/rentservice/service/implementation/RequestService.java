@@ -87,6 +87,8 @@ public class RequestService implements IRequestService {
         } else {
             // TODO Feign Client (Auth) za getUserIDByUsername()
             simpleUser = _authClient.getIDByUsername(requestDTO.getCustomerUsername());
+            System.out.println("LAGAN SI COOOOAA");
+            System.out.println("uuid: " + simpleUser);
         }
         request.setCustomerID(simpleUser);
         request.setStatus(RequestStatus.PENDING);
@@ -158,7 +160,8 @@ public class RequestService implements IRequestService {
             requestAd.setPickUpTime(LocalTime.parse(requestDTO.getPickUpTime()));
             requestAd.setReturnDate(LocalDate.parse(requestDTO.getReturnDate()));
             requestAd.setReturnTime(LocalTime.parse(requestDTO.getReturnTime()));
-            requestAd.setAgentID(requestDTO.getAgentID());
+            // TODO
+//            requestAd.setAgentID(requestDTO.getAgentID());
             requestAd.setAdID(requestDTO.getAdID());
             requestAd.setRequest(request);
             _requestAdRepository.save(requestAd);

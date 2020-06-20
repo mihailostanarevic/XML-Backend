@@ -13,7 +13,7 @@ public class CarResponse {
 
     private UUID id;
 
-    private double kilometersTraveled;
+    private String kilometersTraveled;
 
     private String carClassName;
 

@@ -1,13 +1,17 @@
 package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.request.AddAdRequest;
+import com.rentacar.carservice.dto.request.RequestDTO;
 import com.rentacar.carservice.dto.request.UpdateAdRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAvailability;
 import com.rentacar.carservice.dto.response.AdResponse;
+import com.rentacar.carservice.dto.response.PhotoResponse;
+import com.rentacar.carservice.dto.response.RequestResponse;
 import com.rentacar.carservice.service.IAdService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -28,65 +32,26 @@ public class AdController {
         return new ResponseEntity<>("Hello from ads service", HttpStatus.OK);
     }
 
-    @PostMapping
-    public ResponseEntity<?> addAd(@RequestBody AddAdRequest request) throws Exception {
-        _adService.createAd(request);
-        return new ResponseEntity<>("successfully created", HttpStatus.CREATED);
+    @PostMapping("/image")
+    public ResponseEntity<?> image(@RequestParam("imageFile") List<MultipartFile> file) throws Exception{
+        return new ResponseEntity<>("ok", HttpStatus.CREATED);
     }
 
-    @PutMapping("/")
-    public ResponseEntity<?> updateAdAvailability(@RequestBody UpdateCarAvailability request) {
-        _adService.updateAdAvailability(request);
-        return new ResponseEntity<>("successfully created", HttpStatus.OK);
+    @PostMapping(consumes = { "multipart/form-data" })
+    public ResponseEntity<?> addAd(@RequestPart("imageFile") List<MultipartFile> fileList, @RequestPart("request") AddAdRequest request) throws Exception{
+        return new ResponseEntity<>(_adService.createAd(fileList, request), HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/ad")
-    public AdResponse updateAd(@RequestBody UpdateAdRequest request, @PathVariable UUID id) throws Exception{
-        return _adService.updateAd(request, id);
+    @GetMapping("/{id}/image" )
+    public ResponseEntity<PhotoResponse> getImage(@PathVariable("id") UUID adId) {
+        return new ResponseEntity<>(_adService.getPhoto(adId), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}/ad")
-    public void deleteAd(@PathVariable UUID id) throws Exception{
-        _adService.deleteAd(id);
-    }
+    // TODO (A) prebaciti u rent
+//    @PostMapping("/availability")
+//    public ResponseEntity<?> changeCarAvailability(@RequestBody RequestDTO request) throws Exception{
+//        _requestService.changeAdAvailability(request);
+//        return new ResponseEntity<>(new RequestResponse("succesfully changed"), HttpStatus.OK);
+//    }
 
-    @GetMapping("/{id}/ad")
-    public AdResponse getAd(@PathVariable UUID id) throws Exception{
-        return _adService.getAd(id);
-    }
-
-    @GetMapping
-    public List<AdResponse> getAllAds() throws Exception{
-        return _adService.getAllAds();
-    }
-
-    @GetMapping("/{id}/car-brand")
-    public List<AdResponse> getAdByCarBrand(@PathVariable UUID id) throws Exception{
-        return _adService.getAllAdsByCarBrand(id);
-    }
-
-    @GetMapping("/{id}/car-model")
-    public List<AdResponse> getAdByCarModel(@PathVariable UUID id) throws Exception{
-        return _adService.getAllAdsByCarModel(id);
-    }
-
-    @GetMapping("/{id}/car-class")
-    public List<AdResponse> getAdByCarClass(@PathVariable UUID id) throws Exception{
-        return _adService.getAllAdsByCarClass(id);
-    }
-
-    @GetMapping("/{id}/gearshift-type")
-    public List<AdResponse> getAdByGearshiftType(@PathVariable UUID id) throws Exception{
-        return _adService.getAllAdsByGearshiftType(id);
-    }
-
-    @GetMapping("/{id}/fuel-type")
-    public List<AdResponse> getAdByFuelType(@PathVariable UUID id) throws Exception{
-        return _adService.getAllAdsByFuelType(id);
-    }
-
-    @GetMapping("/with-gas")
-    public List<AdResponse> getAllByGas() throws Exception{
-        return _adService.getAllAdsByGas();
-    }
 }

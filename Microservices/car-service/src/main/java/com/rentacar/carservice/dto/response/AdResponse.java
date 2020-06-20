@@ -1,18 +1,27 @@
 package com.rentacar.carservice.dto.response;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.UUID;
 
 @Data
-//@AllArgsConstructor
-@NoArgsConstructor
-@Getter
 public class AdResponse {
 
     private UUID id;
+
+    private UUID agentID;
+
+    private String name;            // ad name
+
+    private boolean limitedDistance;
+
+    private String availableKilometersPerRent;
+
+    private int seats;
+
+    private boolean cdw;
+
+    private List<AddressDTO> fullLocations;
 
 }

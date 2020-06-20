@@ -27,16 +27,6 @@ public class Agent extends BaseEntity {
 
     private String bankAccountNumber;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Address> address;
+    private String address;
 
-    @ElementCollection
-    @Column(name = "ad_id")
-    @CollectionTable(name = "agent_ads", joinColumns = @JoinColumn(name = "agent_id"))
-    private Set<UUID> adIDs = new HashSet<>();
-
-    @ElementCollection
-    @Column(name = "comment_id")
-    @CollectionTable(name = "agent_comments", joinColumns = @JoinColumn(name = "agent_id"))
-    private Set<UUID> commentsIDs = new HashSet<>();
 }

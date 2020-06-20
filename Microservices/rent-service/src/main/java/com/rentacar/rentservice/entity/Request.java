@@ -28,8 +28,6 @@ public class Request extends BaseEntity {
 
     private LocalDate receptionDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "address_id", referencedColumnName = "id")
     private String pickUpAddress;
 
     private boolean deleted;

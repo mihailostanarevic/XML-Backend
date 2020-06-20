@@ -1,11 +1,11 @@
-package com.rentacar.rentservice.dto.request;
+package com.rentacar.carservice.dto.request;
 
 import lombok.Data;
 
 import java.util.UUID;
 
 @Data
-public class RequestRequest {
+public class RequestDTO {
 
     private UUID adID;
 
@@ -23,7 +23,7 @@ public class RequestRequest {
 
     private String returnTime;
 
-    private String pickUpAddress;       // "Country, City, Street, Number"
+    private UUID pickUpAddress;
 
     private boolean bundle;
 

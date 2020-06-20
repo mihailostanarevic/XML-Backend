@@ -33,27 +33,9 @@ public class SimpleUser extends BaseEntity {
 
     private String address;
 
-    private String city;
-
-    private String country;
-
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     private LocalDateTime confirmationTime;
 
-    @ElementCollection
-    @Column(name = "request_id")
-    @CollectionTable(name = "user_requests", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<UUID> requestIDs = new HashSet<>();
-
-    @ElementCollection
-    @Column(name = "rating_id")
-    @CollectionTable(name = "user_ratings", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<UUID> ratingsIDs = new HashSet<>();
-
-    @ElementCollection
-    @Column(name = "comment_id")
-    @CollectionTable(name = "user_comments", joinColumns = @JoinColumn(name = "user_id"))
-    private Set<UUID> commentsIDs = new HashSet<>();
 }
