@@ -14,4 +14,5 @@ public interface ISimpleUserService {
 
     void deleteSimpleUserByAdmin(UUID id) throws Exception;
 
+    UUID getIDByUsername(String username);
 }

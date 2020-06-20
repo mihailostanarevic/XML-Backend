@@ -50,18 +50,18 @@ services:
       - postgresDB
       - eureka-serviceregistry
 
-  #rent-service:
-    #build: ./rent-service
-    #ports:
-    #- "8083:8083"
-    #container_name: rent-service
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-      #- POSTGRES_HOST=postgresDB
-    #tty: true
-    #depends_on:
-      #- eureka-serviceregistry
-      #- postgresDB
+  rent-service:
+    build: ./rent-service
+    ports:
+    - "8083:8083"
+    container_name: rent-service
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+      - POSTGRES_HOST=postgresDB
+    tty: true
+    depends_on:
+      - eureka-serviceregistry
+      - postgresDB
 
   #search-service:
     #build: ./search-service

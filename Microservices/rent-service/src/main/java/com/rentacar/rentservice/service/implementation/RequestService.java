@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.service.implementation;
 
+import com.rentacar.rentservice.client.AuthClient;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.entity.RequestAd;
@@ -19,17 +20,18 @@ public class RequestService implements IRequestService {
 
     private final IRequestRepository _requestRepository;
     private final IRequestAdRepository _requestAdRepository;
+    private final AuthClient _authClient;
 
-    public RequestService(IRequestRepository requestRepository, IRequestAdRepository requestAdRepository) {
+    public RequestService(IRequestRepository requestRepository, IRequestAdRepository requestAdRepository, AuthClient authClient) {
         _requestRepository = requestRepository;
         _requestAdRepository = requestAdRepository;
+        _authClient = authClient;
     }
 
     @Override
     public void processRequests(List<RequestRequest> requestList) {
         List<RequestRequest> processedList = new ArrayList<>();
         for (RequestRequest requestDTO : requestList) {
-            boolean canCreateBundle = true;
             if (requestDTO.isBundle() && !processedList.contains(requestDTO)) {
                 List<RequestRequest> bundleList = new ArrayList<>();
                 for (RequestRequest agentRequest : requestList) {
@@ -39,13 +41,8 @@ public class RequestService implements IRequestService {
                         bundleList.add(agentRequest);
                         processedList.add(agentRequest);
                     }
-                    else {
-                        canCreateBundle = false;
-                    }
                 }
-                if(canCreateBundle) {
-                    createBundleRequest(bundleList);
-                }
+                createBundleRequest(bundleList);
             } else if (!requestDTO.isBundle()) {
                 createRequest(requestDTO);
             }
@@ -84,15 +81,12 @@ public class RequestService implements IRequestService {
     @Override
     public Request createRequest(RequestRequest requestDTO) {
         Request request = new Request();
-//        Set<Ad> adSet = new HashSet<>();
-//        adSet.add(_adRepository.findOneById(requestDTO.getAdID()));
         UUID simpleUser = null;
         if(requestDTO.getCustomerID() != null) {
             simpleUser = requestDTO.getCustomerID();
         } else {
             // TODO Feign Client (Auth) za getUserIDByUsername()
-//            User user = _userRepository.findOneByUsername(requestDTO.getCustomerUsername());
-//            simpleUser = _simpleUserRepository.findOneByUser(user);
+            simpleUser = _authClient.getIDByUsername(requestDTO.getCustomerUsername());
         }
         request.setCustomerID(simpleUser);
         request.setStatus(RequestStatus.PENDING);
@@ -164,6 +158,7 @@ public class RequestService implements IRequestService {
             requestAd.setPickUpTime(LocalTime.parse(requestDTO.getPickUpTime()));
             requestAd.setReturnDate(LocalDate.parse(requestDTO.getReturnDate()));
             requestAd.setReturnTime(LocalTime.parse(requestDTO.getReturnTime()));
+            requestAd.setAgentID(requestDTO.getAgentID());
             requestAd.setAdID(requestDTO.getAdID());
             requestAd.setRequest(request);
             _requestAdRepository.save(requestAd);

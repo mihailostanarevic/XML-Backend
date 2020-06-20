@@ -39,4 +39,10 @@ public class SimpleUserController {
     public void deleteAgent(@PathVariable UUID id) throws Exception{
         _simpleUserService.deleteSimpleUserByAdmin(id);
     }
+
+    @GetMapping("/{username}")
+    public UUID findIDByUsername(@PathVariable String username) throws Exception{
+        return _simpleUserService.getIDByUsername(username);
+    }
+
 }
