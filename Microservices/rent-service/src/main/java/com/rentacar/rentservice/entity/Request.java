@@ -20,16 +20,15 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Request extends BaseEntity {
 
-    private UUID customer_id;
+    @Column(name = "customer_id")
+    private UUID customerID;
 
-    @Enumerated(EnumType.STRING) //
+    @Enumerated(EnumType.STRING)
     private RequestStatus status;
 
-    private LocalDate receptionDate;       // datum prijema zahteva
+    private LocalDate receptionDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id", referencedColumnName = "id")
-    private Address pickUpAddress;
+    private String pickUpAddress;
 
     private boolean deleted;
 

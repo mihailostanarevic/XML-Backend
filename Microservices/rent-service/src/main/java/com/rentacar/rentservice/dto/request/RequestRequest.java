@@ -1,24 +1,19 @@
-package com.rentacar.rentservice.dto;
+package com.rentacar.rentservice.dto.request;
 
-import com.rentacar.rentservice.entity.Address;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.UUID;
 
 @Data
-@Getter
-@Setter
-public class RequestDTO {
+public class RequestRequest {
 
-    private UUID carID;
+    private UUID adID;
 
     private UUID agentID;
 
     private UUID customerID;
 
-    private String receptionDate;
+    private String customerUsername;
 
     private String pickUpDate;      // format -> "2016-06-12"
 
@@ -28,7 +23,7 @@ public class RequestDTO {
 
     private String returnTime;
 
-    private Address pickUpAddress;
+    private String pickUpAddress;       // "Country, City, Street, Number"
 
     private boolean bundle;
 

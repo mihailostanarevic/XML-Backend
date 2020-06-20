@@ -40,7 +40,7 @@ public class CarService implements ICarService {
     public CarResponse createCar(CreateCarRequest request) throws Exception {
         Car car = new Car();
         car.setDeleted(false);
-        car.setKilometersTraveled(Double.parseDouble(request.getKilometersTraveled()));
+        car.setKilometersTraveled(request.getKilometersTraveled());
         car.setCarModel(_carModelRepository.findOneById(request.getCarModelId()));
         car.setGearshiftType(_gearshiftTypeRepository.findOneById(request.getGearshiftTypeId()));
         car.setFuelType(_fuelTypeRepository.findOneById(request.getFuelTypeId()));
@@ -51,7 +51,7 @@ public class CarService implements ICarService {
     @Override
     public CarResponse updateCar(UpdateCarRequest request, UUID id) throws Exception {
         Car car = _carRepository.findOneById(id);
-        car.setKilometersTraveled(Double.parseDouble(request.getKilometersTraveled()));
+        car.setKilometersTraveled(request.getKilometersTraveled());
         car.getFuelType().setGas(request.isGas());
         _fuelTypeRepository.save(car.getFuelType());
         Car savedCar = _carRepository.save(car);
@@ -82,7 +82,7 @@ public class CarService implements ICarService {
     @Override
     public void addKilometers(AddKilometersRequest request, UUID id) throws Exception {
         Car car = _carRepository.findOneById(id);
-        double kilometers = car.getKilometersTraveled();
+        String kilometers = car.getKilometersTraveled();
         kilometers += Float.parseFloat(request.getKilometersTraveled());
         car.setKilometersTraveled(kilometers);
         _carRepository.save(car);

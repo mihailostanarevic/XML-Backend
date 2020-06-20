@@ -19,19 +19,15 @@ public class AddAdRequest {
 
     private String fuelType;
 
-    private double priceFrom;
+//    private List<String> photoUrls;
 
-    private double priceTo;
+    private UUID agentId;
 
-    private UUID agentID;
-
-    private double kilometersTraveled;         // predjena kilometraza
-
-    private List<String> photosUrls;
-
-    private String limitedDistance;
+    private boolean limitedDistance;
 
     private String availableKilometersPerRent;
+
+    private String kilometersTraveled;
 
     private int seats;
 

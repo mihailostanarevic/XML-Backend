@@ -1,10 +1,7 @@
 package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.services.ISimpleUserService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
@@ -42,4 +39,10 @@ public class SimpleUserController {
     public void deleteAgent(@PathVariable UUID id) throws Exception{
         _simpleUserService.deleteSimpleUserByAdmin(id);
     }
+
+    @GetMapping("/{username}")
+    public UUID findIDByUsername(@PathVariable String username) throws Exception{
+        return _simpleUserService.getIDByUsername(username);
+    }
+
 }

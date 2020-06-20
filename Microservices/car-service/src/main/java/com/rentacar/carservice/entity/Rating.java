@@ -18,7 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class Rating extends BaseEntity {
 
-    private String grade; //rating
+    private String grade;               //rating
 
     private UUID simpleUser;
 

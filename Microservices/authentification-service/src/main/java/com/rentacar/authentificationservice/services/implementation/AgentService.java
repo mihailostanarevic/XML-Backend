@@ -24,28 +24,28 @@ public class AgentService implements IAgentService {
     @Override
     public void blockAgentByAdmin(UUID id) throws Exception {
         Agent agent = _agentRepository.findOneById(id);
-        agent.setBlocked(true);
+//        agent.setBlocked(true);
         _agentRepository.save(agent);
     }
 
     @Override
     public void unblockAgentByAdmin(UUID id) throws Exception {
         Agent agent = _agentRepository.findOneById(id);
-        agent.setBlocked(false);
+//        agent.setBlocked(false);
         _agentRepository.save(agent);
     }
 
     @Override
     public void activateAgentByAdmin(UUID id) throws Exception {
         Agent agent = _agentRepository.findOneById(id);
-        agent.setRequestStatus(RequestStatus.APPROVED);
+//        agent.setRequestStatus(RequestStatus.APPROVED);
         _agentRepository.save(agent);
     }
 
     @Override
     public void deactivateAgentByAdmin(UUID id) throws Exception {
         Agent agent = _agentRepository.findOneById(id);
-        agent.setRequestStatus(RequestStatus.DENIED);
+//        agent.setRequestStatus(RequestStatus.DENIED);
         _agentRepository.save(agent);
     }
 

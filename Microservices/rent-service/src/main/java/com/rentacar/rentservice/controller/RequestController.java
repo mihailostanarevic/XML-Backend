@@ -1,6 +1,6 @@
 package com.rentacar.rentservice.controller;
 
-import com.rentacar.rentservice.dto.RequestDTO;
+import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.service.IRequestService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,10 +20,16 @@ public class RequestController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createRequest(@RequestBody List<RequestDTO> requestList){
+    public ResponseEntity<?> createRequest(@RequestBody List<RequestRequest> requestList){
         _requestService.processRequests(requestList);
         return new ResponseEntity<>("Hello from Rent service", HttpStatus.OK);
     }
 
+    @PostMapping("/availability")
+//    @PreAuthorize("hasAuthority('UPDATE_AD')")
+    public ResponseEntity<?> changeCarAvailability(@RequestBody RequestRequest request) throws Exception{
+        _requestService.changeAdAvailability(request);
+        return new ResponseEntity<>("successfully changed", HttpStatus.OK);
+    }
 
 }

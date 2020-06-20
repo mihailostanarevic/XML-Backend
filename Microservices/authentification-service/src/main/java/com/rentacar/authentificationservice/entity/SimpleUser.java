@@ -8,9 +8,12 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
+@SuppressWarnings("SpellCheckingInspection")
 @Entity
 @Getter
 @Setter
@@ -26,16 +29,13 @@ public class SimpleUser extends BaseEntity {
 
     private String lastName;
 
-    private String ssn; //jmbg
+    private String ssn;                 //jmbg
 
     private String address;
-
-    private String city;
-
-    private String country;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus requestStatus;
 
     private LocalDateTime confirmationTime;
+
 }
