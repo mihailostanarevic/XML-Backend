@@ -13,4 +13,5 @@ public interface ISimpleUserService {
     void deactivateSimpleUserByAdmin(UUID id) throws Exception;
 
     void deleteSimpleUserByAdmin(UUID id) throws Exception;
+
 }

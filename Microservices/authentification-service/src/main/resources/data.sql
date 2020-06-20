@@ -56,12 +56,29 @@ insert into address (id, name) values
     ('b65ac4e5-a5a8-46d4-897e-a7d080ff147e', 'Serbia, Cara Lazara, Nis, 12'),
     ('72e5d652-a984-41c5-8e91-473d71f2c9b5', 'Serbia, Milosa Obilica, Subotica, 17');
 
-insert into authorities_permissions (authority_id, permission_id) values
-    (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14), (1, 15), (1, 16), (1, 17), (1, 18), (1, 19), (1, 21),
-    (2, 1), (2, 2), (2, 3), (2, 4), (2, 19),
-    (3, 13), (3, 15), (3, 17), (3, 2), (3, 6), (3, 10),
-    (4, 9), (4, 10), (4, 11), (4, 20),
-    (5, 14), (5, 18),
-    (6, 16), (6, 12),
-    (7, 5), (7, 6), (7, 7), (7, 8);
+insert into agent_ads (ad_id, agent_id) values
+    ('991938f8-4834-421c-b48e-c2e28e06aae9', 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0'),
+    ('991938f8-4834-421c-b48e-c2e28e06aae9', 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0'),
+    ('6a22b2eb-705e-4311-ab90-bc438bc226fe', 'c72721c4-437f-4a06-b3cc-00b9a86056bc'),
+    ('1124e496-a070-4b6e-b9c2-1b5e9aa00b60', 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0'),
+    ('92cc7fc1-5823-40cb-8b36-6162f1cdb5a0', 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0'),
+    ('87ea3abc-1bef-4c17-9ce6-4938e947a917', 'c72721c4-437f-4a06-b3cc-00b9a86056bc');
 
+insert into user_requests (request_id, user_id) values
+    ('100abd9a-aa4c-437d-ac4d-dc0d117616ba', '1cfe4238-9b0c-4611-abea-ddd20b4cc415'),
+    ('3d8fc1fa-1c0e-467d-ba75-1d2df016b538', '1cfe4238-9b0c-4611-abea-ddd20b4cc415'),
+    ('84481f50-7deb-4b8c-bbf5-fcd52e6b20fe', '1cfe4238-9b0c-4611-abea-ddd20b4cc415'),
+    ('d0a328f2-de8e-434f-9b47-8a2231ef3b7e', '1cfe4238-9b0c-4611-abea-ddd20b4cc415'),
+    ('2bd2a882-28ca-40be-afd7-4be12edc2e19', '1cfe4238-9b0c-4611-abea-ddd20b4cc415'),
+    ('9655d361-fa72-4b95-a3fa-121009a00458', '1cfe4238-9b0c-4611-abea-ddd20b4cc415'),
+    ('1dde1375-a88a-4ddf-9ef6-c7b14bb1db96', '9220c03b-b0b5-46af-a821-249e2a97dcaa'),
+    ('25c3206d-2b5e-4bd9-aa52-8d20cc80c924', '9220c03b-b0b5-46af-a821-249e2a97dcaa'),
+    ('dc88abd5-fa65-4b5b-90e2-ce459f5d5200', '9220c03b-b0b5-46af-a821-249e2a97dcaa'),
+    ('b425bbe1-2955-4f81-8a30-7c172a980d0f', '9220c03b-b0b5-46af-a821-249e2a97dcaa'),
+    ('8e37d0ee-e1cd-4ec2-830b-8d573290a611', '9220c03b-b0b5-46af-a821-249e2a97dcaa'),
+    ('675eeddd-3ba6-4068-bec9-83703081bd70', '9220c03b-b0b5-46af-a821-249e2a97dcaa');
+
+insert into agent_address (address_id, agent_id) values
+    ('04fe195c-5409-4657-a009-3732eedf1f6c', 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0'),
+    ('7df3aad6-03bd-4724-9047-bb96403bdc16', 'c72721c4-437f-4a06-b3cc-00b9a86056bc'),
+    ('b65ac4e5-a5a8-46d4-897e-a7d080ff147e', 'c72721c4-437f-4a06-b3cc-00b9a86056bc');

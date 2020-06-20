@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -41,12 +42,18 @@ public class SimpleUser extends BaseEntity {
 
     private LocalDateTime confirmationTime;
 
-//    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private Set<UUID> requestIDs;
+    @ElementCollection
+    @Column(name = "request_id")
+    @CollectionTable(name = "user_requests", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<UUID> requestIDs = new HashSet<>();
 
-//    @OneToMany(mappedBy = "simpleUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<UUID> ratingsIDs;
+    @ElementCollection
+    @Column(name = "rating_id")
+    @CollectionTable(name = "user_ratings", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<UUID> ratingsIDs = new HashSet<>();
 
-//    @OneToMany(mappedBy = "simpleUser", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//    private List<UUID> commentsIDs;
+    @ElementCollection
+    @Column(name = "comment_id")
+    @CollectionTable(name = "user_comments", joinColumns = @JoinColumn(name = "user_id"))
+    private Set<UUID> commentsIDs = new HashSet<>();
 }

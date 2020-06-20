@@ -65,6 +65,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/auth/hello").permitAll()
+                .antMatchers("/**").permitAll()             // brisati ovo
                 .antMatchers("/auth/create-simple-user").permitAll()
                 .anyRequest().authenticated().and()
 

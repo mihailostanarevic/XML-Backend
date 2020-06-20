@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -31,14 +28,15 @@ public class Agent extends BaseEntity {
     private String bankAccountNumber;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private Set<Address> address;            // format: "Country, City, Street, Number"
+    private Set<Address> address;
 
-//    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @ElementCollection
-    @CollectionTable(name = "agent_ads", joinColumns = @JoinColumn(name = "agent_id"))
     @Column(name = "ad_id")
-    private Set<UUID> adIDs;
+    @CollectionTable(name = "agent_ads", joinColumns = @JoinColumn(name = "agent_id"))
+    private Set<UUID> adIDs = new HashSet<>();
 
-//    @OneToMany(mappedBy = "agent", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //
-//    private List<UUID> commentsIDs;
+    @ElementCollection
+    @Column(name = "comment_id")
+    @CollectionTable(name = "agent_comments", joinColumns = @JoinColumn(name = "agent_id"))
+    private Set<UUID> commentsIDs = new HashSet<>();
 }
