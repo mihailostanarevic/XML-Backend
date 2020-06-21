@@ -4,6 +4,9 @@ import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
 import com.rentacar.authentificationservice.entity.SimpleUser;
 import com.rentacar.authentificationservice.entity.User;
+import com.rentacar.authentificationservice.dto.client.UUIDResponse;
+import com.rentacar.authentificationservice.entity.Authority;
+import com.rentacar.authentificationservice.repository.IAuthorityRepository;
 import com.rentacar.authentificationservice.repository.ISimpleUserRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.ISimpleUserService;
@@ -17,10 +20,12 @@ public class SimpleUserService implements ISimpleUserService {
 
     private final ISimpleUserRepository _simpleUserRepository;
     private final IUserRepository _userRepository;
+    private final IAuthorityRepository _authorityRepository;
 
-    public SimpleUserService(ISimpleUserRepository simpleUserRepository, IUserRepository userRepository) {
+    public SimpleUserService(ISimpleUserRepository simpleUserRepository, IUserRepository userRepository, IAuthorityRepository authorityRepository) {
         _simpleUserRepository = simpleUserRepository;
         _userRepository = userRepository;
+        _authorityRepository = authorityRepository;
     }
 
     @Override
@@ -60,10 +65,16 @@ public class SimpleUserService implements ISimpleUserService {
     }
 
     @Override
-    public UUID getIDByUsername(String username) {
+    public UUIDResponse getIDByUsername(String username) {
         User user = _userRepository.findOneByUsername(username);
         if(user != null) {
-            return _simpleUserRepository.findOneByUser(user).getId();
+            SimpleUser simpleUser = _simpleUserRepository.findOneByUser(user);
+            if(simpleUser != null) {
+                UUID id = simpleUser.getId();
+                UUIDResponse retUuidResponse = new UUIDResponse();
+                retUuidResponse.setId(id);
+                return retUuidResponse;
+            }
         }
         return null;
     }
@@ -81,5 +92,12 @@ public class SimpleUserService implements ISimpleUserService {
         retVal.setAddress(simpleUser.getAddress());
 
         return retVal;
+
+    public void addUserRole(UUID simpleUserID, String userRole) {
+        SimpleUser simpleUser = _simpleUserRepository.findOneById(simpleUserID);
+        User user = simpleUser.getUser();
+        Authority authority = _authorityRepository.findByName(userRole);
+        user.getRoles().add(authority);
+        _userRepository.save(user);
     }
 }

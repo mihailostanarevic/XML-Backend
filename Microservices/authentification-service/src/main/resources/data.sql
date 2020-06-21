@@ -49,3 +49,4 @@ insert into agent (id, bank_account_number, date_founded, name, tin, user_id, ad
 insert into simple_user (id, address, first_name, last_name, request_status, ssn, user_id) values
     ('1cfe4238-9b0c-4611-abea-ddd20b4cc415', 'Serbia, Novi Sad, Pionirska,26', 'Somi', 'Misoni', 'APPROVED', '1547854896523', '4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54'),
     ('9220c03b-b0b5-46af-a821-249e2a97dcaa', 'Serbia, Nis, Njegoseva, 55', 'Didi', 'Mimica-Kostovic', 'APPROVED', '1547858576523', 'b9362264-17db-411e-8ed0-db8310cba9f1');
+

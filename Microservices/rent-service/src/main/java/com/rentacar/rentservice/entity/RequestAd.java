@@ -25,9 +25,6 @@ public class RequestAd extends BaseEntity {
     @Column(name = "ad_id")
     private UUID adID;
 
-//    @Column(name = "agent_id")
-//    private UUID agentID;
-
     private LocalDate pickUpDate;          // datum preuzimanja
 
     private LocalTime pickUpTime;           // vreme preuzimanja
