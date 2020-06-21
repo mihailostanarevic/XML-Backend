@@ -1,6 +1,9 @@
 package com.rentacar.authentificationservice.controller;
 
+import com.rentacar.authentificationservice.dto.client.UUIDResponse;
 import com.rentacar.authentificationservice.services.ISimpleUserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -41,8 +44,14 @@ public class SimpleUserController {
     }
 
     @GetMapping("/{username}")
-    public UUID findIDByUsername(@PathVariable String username) throws Exception{
-        return _simpleUserService.getIDByUsername(username);
+    public ResponseEntity<UUIDResponse> findIDByUsername(@PathVariable String username) throws Exception{
+        return new ResponseEntity<>(_simpleUserService.getIDByUsername(username), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/{userRole}")
+    public ResponseEntity<?> addUserRole(@PathVariable("id") UUID simpleUserID, @PathVariable("userRole") String userRole) throws Exception{
+        _simpleUserService.addUserRole(simpleUserID, userRole);
+        return new ResponseEntity<>("Successfully changed", HttpStatus.OK);
     }
 
 }
