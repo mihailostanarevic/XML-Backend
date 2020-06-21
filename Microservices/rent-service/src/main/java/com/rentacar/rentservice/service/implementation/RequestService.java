@@ -1,6 +1,7 @@
 package com.rentacar.rentservice.service.implementation;
 
 import com.rentacar.rentservice.client.AuthClient;
+import com.rentacar.rentservice.dto.client.UUIDResponse;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.entity.RequestAd;
@@ -86,9 +87,8 @@ public class RequestService implements IRequestService {
             simpleUser = requestDTO.getCustomerID();
         } else {
             // TODO Feign Client (Auth) za getUserIDByUsername()
-            simpleUser = _authClient.getIDByUsername(requestDTO.getCustomerUsername());
-            System.out.println("LAGAN SI COOOOAA");
-            System.out.println("uuid: " + simpleUser);
+            UUIDResponse uuidResponse = _authClient.getIDByUsername(requestDTO.getCustomerUsername());
+            simpleUser = uuidResponse.getId();
         }
         request.setCustomerID(simpleUser);
         request.setStatus(RequestStatus.PENDING);
@@ -99,10 +99,7 @@ public class RequestService implements IRequestService {
         _requestRepository.save(request);
         createRequestAd(request, requestDTOList);
         // TODO Feign Client (Auth) da dodelim useru novu rolu
-//        User user = _userRepository.findOneById(simpleUser.getUser().getId());
-//        Authority authority = _authorityRepository.findByName("ROLE_REQUEST");
-//        user.getRoles().add(authority);
-//        _userRepository.save(user);
+        _authClient.addUserRole(simpleUser, "ROLE_REQUEST");
 
         TimerTask taskPending = new TimerTask() {
             public void run() {
@@ -125,11 +122,6 @@ public class RequestService implements IRequestService {
     @Override
     public Request createBundleRequest(List<RequestRequest> requestList) {
         Request request = new Request();
-//        Set<Ad> adSet = new HashSet<>();
-//        for (RequestRequest requestDTO : requestList) {
-//            Ad ad = _adRepository.findOneById(requestDTO.getAdID());
-//            adSet.add(ad);
-//        }
         request.setCustomerID(requestList.get(0).getCustomerID());
         request.setStatus(RequestStatus.PENDING);
         request.setPickUpAddress(requestList.get(0).getPickUpAddress());
@@ -160,8 +152,6 @@ public class RequestService implements IRequestService {
             requestAd.setPickUpTime(LocalTime.parse(requestDTO.getPickUpTime()));
             requestAd.setReturnDate(LocalDate.parse(requestDTO.getReturnDate()));
             requestAd.setReturnTime(LocalTime.parse(requestDTO.getReturnTime()));
-            // TODO
-//            requestAd.setAgentID(requestDTO.getAgentID());
             requestAd.setAdID(requestDTO.getAdID());
             requestAd.setRequest(request);
             _requestAdRepository.save(requestAd);
