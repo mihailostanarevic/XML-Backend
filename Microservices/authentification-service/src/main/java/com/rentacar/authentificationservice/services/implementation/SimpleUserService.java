@@ -1,5 +1,8 @@
 package com.rentacar.authentificationservice.services.implementation;
 
+import com.rentacar.authentificationservice.dto.client.CustomerResponse;
+import com.rentacar.authentificationservice.dto.client.UUIDResponse;
+import com.rentacar.authentificationservice.entity.Authority;
 import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
 import com.rentacar.authentificationservice.entity.SimpleUser;
@@ -104,4 +107,25 @@ public class SimpleUserService implements ISimpleUserService {
         user.getRoles().add(authority);
         _userRepository.save(user);
     }
+
+    @Override
+    public CustomerResponse getCustomerByID(UUID id) {
+        SimpleUser simpleUser = _simpleUserRepository.findOneById(id);
+        if(simpleUser != null) {
+            CustomerResponse customerResponse = new CustomerResponse();
+            customerResponse.setId(simpleUser.getId());
+            customerResponse.setAddress(simpleUser.getAddress());
+            customerResponse.setFirstName(simpleUser.getFirstName());
+            customerResponse.setLastName(simpleUser.getLastName());
+            customerResponse.setSsn(simpleUser.getSsn());
+            customerResponse.setUsername(simpleUser.getUser().getUsername());
+            customerResponse.setUserRole(simpleUser.getUser().getUserRole().toString());
+            return customerResponse;
+        } else {
+            return null;
+        }
+    }
+
+
+
 }

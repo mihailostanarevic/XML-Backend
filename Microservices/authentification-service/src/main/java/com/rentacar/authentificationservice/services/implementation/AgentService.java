@@ -1,5 +1,7 @@
 package com.rentacar.authentificationservice.services.implementation;
 
+import com.rentacar.authentificationservice.dto.response.AgentRequests;
+import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
 import com.rentacar.authentificationservice.entity.Agent;
@@ -10,6 +12,10 @@ import com.rentacar.authentificationservice.services.IAgentService;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalTime;
+import java.util.Collection;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 @Service
@@ -66,6 +72,26 @@ public class AgentService implements IAgentService {
     }
 
     @Override
+    // TODO preimenuj metodu
+    public AgentResponse getAgent(UUID id) {
+        return mapAgentToAgentResponse(_agentRepository.findOneById(id));
+    }
+
+    private AgentResponse mapAgentToAgentResponse(Agent agent) {
+        AgentResponse agentResponse = new AgentResponse();
+        if(agent != null) {
+            agentResponse.setId(agent.getId());
+            agentResponse.setAddress(agent.getAddress());
+            agentResponse.setBankAccountNumber(agent.getBankAccountNumber());
+            agentResponse.setDeleted(agent.getUser().isDeleted());
+            agentResponse.setName(agent.getName());
+            agentResponse.setTin(agent.getTin());
+            agentResponse.setUsername(agent.getUser().getUsername());
+            return agentResponse;
+        }
+        return null;
+    }
+
     public AgentDTO getAgent(UUID id){
         Agent agent =  _agentRepository.findOneById(id);
         if(agent == null){

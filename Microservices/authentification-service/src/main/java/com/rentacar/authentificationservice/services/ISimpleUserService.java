@@ -1,5 +1,6 @@
 package com.rentacar.authentificationservice.services;
 
+import com.rentacar.authentificationservice.dto.client.CustomerResponse;
 import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.authentificationservice.dto.client.UUIDResponse;
 
@@ -22,4 +23,6 @@ public interface ISimpleUserService {
     UUIDResponse getIDByUsername(String username);
 
     void addUserRole(UUID simpleUserID, String userRole);
+
+    CustomerResponse getCustomerByID(UUID id);
 }

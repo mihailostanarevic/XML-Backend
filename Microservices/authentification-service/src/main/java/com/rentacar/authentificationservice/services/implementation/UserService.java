@@ -1,24 +1,47 @@
 package com.rentacar.authentificationservice.services.implementation;
 
+import com.rentacar.authentificationservice.dto.response.UserResponse;
+import com.rentacar.authentificationservice.entity.User;
+import com.rentacar.authentificationservice.repository.IUserRepository;
+import com.rentacar.authentificationservice.services.IUserService;
+import com.rentacar.authentificationservice.util.enums.UserRole;
 import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
 import com.rentacar.authentificationservice.entity.Agent;
 import com.rentacar.authentificationservice.entity.User;
 import com.rentacar.authentificationservice.repository.IAgentRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
-import com.rentacar.authentificationservice.services.IUserService;
-import com.rentacar.authentificationservice.util.enums.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
-@Service
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
 public class UserService implements IUserService {
 
-    @Autowired
-    private IUserRepository _userRepository;
+    private final IUserRepository _userRepository;
 
+    public UserService(IUserRepository userRepository) {
+        _userRepository = userRepository;
+    }
+
+    @Override
+    public List<UserResponse> getAllUsers() {
+        List<User> users = _userRepository.findAllByDeleted(false);
+        return users.stream()
+                .map(user -> mapUserToUserResponse(user))
+                .collect(Collectors.toList());
+    }
+
+    // TODO preimenuj metodu
+    @Override
+    public User getUser(UUID id) {
+        return _userRepository.findOneById(id);
+    }
+  
     @Override
     public UserMessageDTO getUser(UUID id) {
         User user = _userRepository.findOneById(id);
@@ -36,5 +59,20 @@ public class UserService implements IUserService {
         return retVal;
     }
 
+    private UserResponse mapUserToUserResponse(User user) {
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(user.getId());
+        userResponse.setUsername(user.getUsername());
+        return userResponse;
+    }
+
+    @Override
+    public List<UserResponse> getCustomers() {
+        List<User> users = _userRepository.findAllByDeleted(false);
+        return users.stream()
+                .filter(user -> user.getUserRole().equals(UserRole.SIMPLE_USER))
+                .map(user -> mapUserToUserResponse(user))
+                .collect(Collectors.toList());
+    }
 
 }

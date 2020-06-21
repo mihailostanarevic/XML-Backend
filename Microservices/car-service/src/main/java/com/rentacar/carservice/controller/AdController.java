@@ -1,10 +1,12 @@
 package com.rentacar.carservice.controller;
 
+import com.rentacar.carservice.dto.client.AdClientResponse;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.request.RequestDTO;
 import com.rentacar.carservice.dto.request.UpdateAdRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAvailability;
 import com.rentacar.carservice.dto.response.AdResponse;
+import com.rentacar.carservice.dto.response.AgentResponse;
 import com.rentacar.carservice.dto.response.PhotoResponse;
 import com.rentacar.carservice.dto.response.RequestResponse;
 import com.rentacar.carservice.service.IAdService;
@@ -32,6 +34,11 @@ public class AdController {
         return new ResponseEntity<>("Hello from ads service", HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<AdClientResponse> getAdByID(@PathVariable("id") UUID adId){
+        return new ResponseEntity<>(_adService.getAd(adId), HttpStatus.OK);
+    }
+
     @PostMapping("/image")
     public ResponseEntity<?> image(@RequestParam("imageFile") List<MultipartFile> file) throws Exception{
         return new ResponseEntity<>("ok", HttpStatus.CREATED);
@@ -45,6 +52,18 @@ public class AdController {
     @GetMapping("/{id}/image" )
     public ResponseEntity<PhotoResponse> getImage(@PathVariable("id") UUID adId) {
         return new ResponseEntity<>(_adService.getPhoto(adId), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/ads")
+//    @PreAuthorize("hasAuthority('VIEW_AD')")
+    public List<AdResponse> getAd(@PathVariable("id") UUID id) throws Exception{
+        return _adService.getAgentAds(id);
+    }
+
+    @GetMapping("/{id}/agent")
+//    @PreAuthorize("hasAuthority('VIEW_AD')")
+    public ResponseEntity<AgentResponse> getAgentIDByAdID(@PathVariable("id") UUID id) throws Exception{
+        return new ResponseEntity<>(_adService.getAgentByAdID(id), HttpStatus.OK);
     }
 
 }

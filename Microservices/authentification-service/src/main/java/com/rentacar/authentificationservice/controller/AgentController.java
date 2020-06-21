@@ -1,5 +1,7 @@
 package com.rentacar.authentificationservice.controller;
 
+import com.rentacar.authentificationservice.dto.response.AgentRequests;
+import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
 import com.rentacar.authentificationservice.services.IAgentService;
@@ -47,6 +49,11 @@ public class AgentController {
         return _agentService.getAgentAddress(id);
     }
 
+    @GetMapping("/{id}/get")
+    public AgentResponse getAgent(@PathVariable UUID id) throws Exception{
+        return _agentService.getAgent(id);
+    }
+
     @GetMapping("/{id}")
     public AgentDTO getAgent(@PathVariable UUID id) throws Exception{
         return _agentService.getAgent(id);
@@ -56,6 +63,5 @@ public class AgentController {
     public UserMessageDTO getUserFromAgent(@PathVariable("id") UUID id){
         return _agentService.getUserFromAgent(id);
     }
-
 
 }
