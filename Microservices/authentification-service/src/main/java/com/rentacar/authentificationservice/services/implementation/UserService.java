@@ -5,6 +5,16 @@ import com.rentacar.authentificationservice.entity.User;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.IUserService;
 import com.rentacar.authentificationservice.util.enums.UserRole;
+import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
+import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
+import com.rentacar.authentificationservice.entity.Agent;
+import com.rentacar.authentificationservice.entity.User;
+import com.rentacar.authentificationservice.repository.IAgentRepository;
+import com.rentacar.authentificationservice.repository.IUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,9 +36,27 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
     }
 
+    // TODO preimenuj metodu
     @Override
     public User getUser(UUID id) {
         return _userRepository.findOneById(id);
+    }
+  
+    @Override
+    public UserMessageDTO getUser(UUID id) {
+        User user = _userRepository.findOneById(id);
+        UserMessageDTO retVal = new UserMessageDTO();
+        retVal.setUserRole(user.getUserRole());
+        retVal.setId(user.getId());
+        if(user.getUserRole().equals(UserRole.AGENT)){
+            retVal.setName(user.getAgent().getName());
+            retVal.setSubjectID(user.getAgent().getId());
+        }else {
+            retVal.setName(user.getSimpleUser().getFirstName());
+            retVal.setLastName(user.getSimpleUser().getLastName());
+            retVal.setSubjectID(user.getSimpleUser().getId());
+        }
+        return retVal;
     }
 
     private UserResponse mapUserToUserResponse(User user) {
@@ -46,4 +74,5 @@ public class UserService implements IUserService {
                 .map(user -> mapUserToUserResponse(user))
                 .collect(Collectors.toList());
     }
+
 }

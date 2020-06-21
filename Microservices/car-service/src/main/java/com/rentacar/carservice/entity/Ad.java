@@ -21,8 +21,6 @@ public class Ad extends BaseEntity {
 
     private UUID agent;
 
-    private boolean available; //is rented or available
-
     private boolean limitedDistance; //is distance which user can travel limited
 
     private String availableKilometersPerRent; //if distance is limited
@@ -45,7 +43,6 @@ public class Ad extends BaseEntity {
     private List<Comment> comments;
 
     public Ad() {
-        this.available = true;
         this.deleted = false;
         this.creationDate = LocalDate.now();
     }

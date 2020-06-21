@@ -19,6 +19,4 @@ public class AgentSearchResponse {
     private String dateFounded;
 
     private String locations;
-
-    private List<AddressDTO> fullLocations;
 }

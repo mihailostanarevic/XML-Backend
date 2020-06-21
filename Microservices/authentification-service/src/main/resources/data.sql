@@ -43,9 +43,10 @@ insert into admin (id, first_name, last_name, user_id) values
     ('51d5e58d-ac22-4233-a1dc-e4251a18e815', 'Ms', 'Misoni', '9bbbd6c1-34b4-4ea6-8889-be247cfebc34');
 
 insert into agent (id, bank_account_number, date_founded, name, tin, user_id, address) values
-    ('b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', 'DE72 3702 0500 0009 7097 00', '2020/02/25', 'Marko Kraljevic',  '123-45-6789', '105496cd-30f2-4b62-8082-cc14d282e845', 'Serbia, Novi Sad, Pionirska, 21'),
-    ('c72721c4-437f-4a06-b3cc-00b9a86056bc', '0500 0009 3702 FE22 7097 00', '2020/02/25', 'Dragan Topalovic', '321-54-9876', 'd0535564-08ec-464c-a2db-d930d2c4fcde', 'Serbia, Beograd, Dusana Savica, 21');
+    ('b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', 'DE72 3702 0500 0009 7097 00', '2020/02/25', 'Marko Kraljevic',  '123-45-6789', '105496cd-30f2-4b62-8082-cc14d282e845', 'Serbia,Novi Sad,Svetislava Kasapinovica, 69'),
+    ('c72721c4-437f-4a06-b3cc-00b9a86056bc', '0500 0009 3702 FE22 7097 00', '2020/02/25', 'Dragan Topalovic', '321-54-9876', 'd0535564-08ec-464c-a2db-d930d2c4fcde', 'Serbia,Beograd,Knez Mihailova, 15');
 
 insert into simple_user (id, address, first_name, last_name, request_status, ssn, user_id) values
-    ('1cfe4238-9b0c-4611-abea-ddd20b4cc415', 'Serbia, Novi Sad, Pionirska, 26', 'Somi', 'Misoni', 'APPROVED', '1547854896523', '4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54'),
-    ('9220c03b-b0b5-46af-a821-249e2a97dcaa', 'Serbia, Novi Sad, Njegoseva, 55', 'Didi', 'Mimica-Kostovic', 'APPROVED', '1547858576523', 'b9362264-17db-411e-8ed0-db8310cba9f1');
+    ('1cfe4238-9b0c-4611-abea-ddd20b4cc415', 'Serbia, Novi Sad, Pionirska,26', 'Somi', 'Misoni', 'APPROVED', '1547854896523', '4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54'),
+    ('9220c03b-b0b5-46af-a821-249e2a97dcaa', 'Serbia, Nis, Njegoseva, 55', 'Didi', 'Mimica-Kostovic', 'APPROVED', '1547858576523', 'b9362264-17db-411e-8ed0-db8310cba9f1');
+

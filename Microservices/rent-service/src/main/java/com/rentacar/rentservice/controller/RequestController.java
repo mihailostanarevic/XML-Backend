@@ -1,6 +1,7 @@
 package com.rentacar.rentservice.controller;
 
 import com.rentacar.rentservice.dto.request.RequestBodyID;
+import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.dto.response.AdResponse;
 import com.rentacar.rentservice.dto.response.AgentRequests;
@@ -17,7 +18,7 @@ import java.util.UUID;
 
 @SuppressWarnings("SpellCheckingInspection")
 @RestController
-@RequestMapping("/rent/request")
+@RequestMapping("/request")
 public class RequestController {
     
     private final IRequestService _requestService;
@@ -74,6 +75,28 @@ public class RequestController {
 //    @PreAuthorize("hasAuthority('APPROVE_REQUEST')")
     public ResponseEntity<?> approveRequest(@PathVariable("id") UUID agentId, @PathVariable("resID") UUID reqID){
         return new ResponseEntity<>(_requestService.approveRequest(agentId, reqID), HttpStatus.OK);
+    }
+  
+    @GetMapping
+    List<RequestDTO> getRequestByStatus(@RequestParam("status") String status){
+        String stringStatus = status.toUpperCase();
+        RequestStatus statusReq;
+        switch (stringStatus){
+            case "PAID" : statusReq = RequestStatus.PAID;
+                break;
+            case "CANCELED" : statusReq = RequestStatus.CANCELED;
+                break;
+            case "CONFIRMED" : statusReq = RequestStatus.CONFIRMED;
+                break;
+            case "DENIED" : statusReq = RequestStatus.DENIED;
+                break;
+            case "APPROVED" : statusReq = RequestStatus.APPROVED;
+                break;
+            case "RESERVED" : statusReq = RequestStatus.RESERVED;
+                break;
+            default: statusReq = RequestStatus.PENDING;
+        }
+        return _requestService.getRequestsByStatus(statusReq);
     }
 
 }

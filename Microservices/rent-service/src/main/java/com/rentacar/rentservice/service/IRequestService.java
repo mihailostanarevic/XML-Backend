@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.service;
 
+import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.dto.response.AdResponse;
 import com.rentacar.rentservice.dto.response.AgentRequests;
@@ -30,4 +31,8 @@ public interface IRequestService {
     Collection<AgentRequests> getAllAgentRequests(UUID userId, RequestStatus carRequestStatus);
 
     Collection<AgentRequests> approveRequest(UUID agentId, UUID reqID);
+
+    RequestStatus changeRequestStatus(RequestStatus requestStatus);
+
+    List<RequestDTO> getRequestsByStatus(RequestStatus status);
 }

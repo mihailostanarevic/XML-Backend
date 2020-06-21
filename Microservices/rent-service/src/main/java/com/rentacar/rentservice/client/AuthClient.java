@@ -2,6 +2,7 @@ package com.rentacar.rentservice.client;
 
 import com.rentacar.rentservice.dto.client.AgentResponse;
 import com.rentacar.rentservice.dto.client.CustomerResponse;
+import com.rentacar.rentservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.rentservice.dto.client.UUIDResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -27,5 +28,7 @@ public interface AuthClient {
     @GetMapping(value = "/agents/{id}", consumes= MediaType.APPLICATION_JSON_VALUE)
     AgentResponse getAgentByAdID(@PathVariable("id") UUID id);
 
+    @GetMapping("/simple-users/get/{id}")
+    SimpleUserDTO getSimpleUser(@PathVariable("id") UUID id);
 }
 

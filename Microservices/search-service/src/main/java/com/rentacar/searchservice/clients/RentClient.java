@@ -1,5 +1,6 @@
 package com.rentacar.searchservice.clients;
 
+import com.rentacar.searchservice.dto.feignClient.RequestDTO;
 import com.rentacar.searchservice.dto.response.RequestResponse;
 import com.rentacar.searchservice.util.enums.RequestStatus;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,5 +13,5 @@ import java.util.List;
 public interface RentClient {
 
     @GetMapping("/request")
-    List<RequestResponse> getRequestByStatus(@RequestParam("status") RequestStatus status);
+    List<RequestDTO> getRequestByStatus(@RequestParam("status") String status);
 }

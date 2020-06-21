@@ -23,18 +23,18 @@ services:
     container_name: eureka-serviceregistry
     tty: true
 
-  #ad-service:
-    #build: ./car-service
-    #ports:
-    #- "8082:8082"
-    #container_name: ad-service
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-      #- POSTGRES_HOST=postgresDB
-    #tty: true
-    #depends_on:
-      #- postgresDB
-      #- eureka-serviceregistry
+  ad-service:
+    build: ./car-service
+    ports:
+    - "8082:8082"
+    container_name: ad-service
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+      - POSTGRES_HOST=postgresDB
+    tty: true
+    depends_on:
+      - postgresDB
+      - eureka-serviceregistry
 
   auth-service:
     build: ./authentification-service
@@ -63,42 +63,18 @@ services:
       - eureka-serviceregistry
       - postgresDB
 
-  #search-service:
-    #build: ./search-service
-   # ports:
-    #- "8084:8084"
-    #container_name: search-service
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-      #- POSTGRES_HOST=postgresDB
-    #tty: true
-    #depends_on:
-      #- postgresDB
-      #- eureka-serviceregistry
-
-  #resource-service:
-    #build: ./resource-service
-    #ports:
-      #- "8086:8086"
-    #container_name: resource-service
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-      #- POSTGRES_HOST=postgresDB
-    #tty: true
-    #depends_on:
-      #- postgresDB
-      #- eureka-serviceregistry
-
-  #report-service:
-   # build: ./report-service
-    #ports:
-    #- "8087:8087"
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-      #- POSTGRES_HOST=postgresDB
-    #tty: true
-    #depends_on:
-     # - eureka-serviceregistry
+  search-service:
+    build: ./search-service
+    ports:
+    - "8084:8084"
+    container_name: search-service
+    environment:
+      - REGISTRY_HOST=eureka-serviceregistry
+      - POSTGRES_HOST=postgresDB
+    tty: true
+    depends_on:
+      - postgresDB
+      - eureka-serviceregistry
 
   #message-service:
    # build: ./message-service

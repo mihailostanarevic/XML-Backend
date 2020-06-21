@@ -3,22 +3,16 @@ package com.rentacar.searchservice.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
-
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressDTO {
+public class PhotoResponse {
 
-    private UUID id;
+    private String name;
 
-    private String city;
+    private String type;
 
-    private String street;
-
-    private int number;
-
+    private byte[] picByte;
 
 }

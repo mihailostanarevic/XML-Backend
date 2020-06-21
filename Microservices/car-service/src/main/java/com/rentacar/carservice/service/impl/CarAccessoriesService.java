@@ -3,11 +3,13 @@ package com.rentacar.carservice.service.impl;
 import com.rentacar.carservice.dto.request.CreateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.response.CarAccessoriesResponse;
+import com.rentacar.carservice.dto.response.CarAccessoryResponse;
 import com.rentacar.carservice.entity.CarAccessories;
 import com.rentacar.carservice.repository.ICarAccessoriesRepository;
 import com.rentacar.carservice.service.ICarAccessoriesService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -64,5 +66,23 @@ public class CarAccessoriesService implements ICarAccessoriesService {
         response.setId(carAccessories.getId());
         response.setDescription(carAccessories.getDescription());
         return response;
+    }
+
+    @Override
+    public List<CarAccessoryResponse> getAll() {
+        return mapCarAccessoriesToResponse(_carAccessoriesRepository.findAll()) ;
+    }
+
+    public List<CarAccessoryResponse> mapCarAccessoriesToResponse(List<CarAccessories> carAccessories) {
+        List<CarAccessoryResponse> retVal = new ArrayList<>();
+
+        for(CarAccessories carAccessory : carAccessories){
+            if(!carAccessory.isDeleted()){
+                CarAccessoryResponse dto = new CarAccessoryResponse(carAccessory.getId(), null, carAccessory.getDescription());
+                retVal.add(dto);
+            }
+        }
+
+        return retVal;
     }
 }

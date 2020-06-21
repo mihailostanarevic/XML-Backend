@@ -3,6 +3,7 @@ package com.rentacar.carservice.service;
 import com.rentacar.carservice.dto.request.CreateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.response.CarAccessoriesResponse;
+import com.rentacar.carservice.dto.response.CarAccessoryResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,4 +19,6 @@ public interface ICarAccessoriesService {
     CarAccessoriesResponse getCarAccessories(UUID id) throws Exception;
 
     List<CarAccessoriesResponse> getAllCarAccessories() throws Exception;
+
+    List<CarAccessoryResponse> getAll();
 }

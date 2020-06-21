@@ -1,5 +1,7 @@
 package com.rentacar.authentificationservice.services;
 
+import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
+import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
 import com.rentacar.authentificationservice.dto.response.AgentRequests;
 import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
@@ -21,5 +23,10 @@ public interface IAgentService {
 
     String getAgentAddress(UUID id);
 
+  // TODO pogledati 
     AgentResponse getAgent(UUID id);
+  
+    AgentDTO getAgent(UUID id);
+
+    UserMessageDTO getUserFromAgent(UUID id);
 }
