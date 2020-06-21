@@ -70,7 +70,6 @@ public class SearchService implements ISearchService {
         for(Ad ad : allAds){
             found = false;
             for(RequestAdDTO rqAd : requestAds){
-                System.out.println(rqAd);
                 if(rqAd.getAd_id().equals(ad.getId())){
                     found = true;
                     if(ids.contains(rqAd.getAd_id())) {
@@ -139,12 +138,7 @@ public class SearchService implements ISearchService {
         for (RequestDTO request : allRequests) {
             if(parseCity(request.getPickUpAddress()).toUpperCase().equals(city.toUpperCase())) {
                 for (RequestAdDTO rqAd : request.getRequestAds()) {
-                    System.out.println("provera------------------");
-                    System.out.println(rqAd.getPickUpDate()+ " - " + rqAd.getReturnDate());
-                    System.out.println("parametri-----------------");
-                    System.out.println(dateFrom + " - " + dateTo);
                     if (!isCompletelyBefore(rqAd, dateFrom, timeFrom) && !isCompletelyAfter(rqAd, dateTo, timeTo)) {
-                        System.out.println(rqAd);
                         if (!ids.contains(rqAd.getAd_id())) {
                             ids.add(rqAd.getAd_id());
                         }

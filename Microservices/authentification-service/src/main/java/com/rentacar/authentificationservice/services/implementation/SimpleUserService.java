@@ -80,9 +80,12 @@ public class SimpleUserService implements ISimpleUserService {
     }
 
     @Override
-    public SimpleUserDTO getSimpleUser(UUID id){
+    public SimpleUserDTO getSimpleUser(UUID id) {
         SimpleUserDTO retVal = new SimpleUserDTO();
-        SimpleUser simpleUser = _simpleUserRepository.getOne(id);
+        SimpleUser simpleUser = _simpleUserRepository.findOneById(id);
+        if (simpleUser == null) {
+            return retVal;
+        }
         UserDTO userDTO = new UserDTO(simpleUser.getUser().getId(), simpleUser.getUser().getUserRole());
         retVal.setUser(userDTO);
         retVal.setId(simpleUser.getId());
@@ -92,6 +95,7 @@ public class SimpleUserService implements ISimpleUserService {
         retVal.setAddress(simpleUser.getAddress());
 
         return retVal;
+    }
 
     public void addUserRole(UUID simpleUserID, String userRole) {
         SimpleUser simpleUser = _simpleUserRepository.findOneById(simpleUserID);
