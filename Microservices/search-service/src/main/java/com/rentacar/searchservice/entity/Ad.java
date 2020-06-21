@@ -45,10 +45,6 @@ public class Ad extends BaseEntity {
     @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY) //
     private List<Comment> comments;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "address_id")
-    private Address address;
-
     public Ad() {
         this.deleted = false;
         this.creationDate = LocalDate.now();

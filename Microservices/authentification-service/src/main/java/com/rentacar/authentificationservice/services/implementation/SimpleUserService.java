@@ -1,9 +1,9 @@
 package com.rentacar.authentificationservice.services.implementation;
 
-import com.rentacar.authentificationservice.entity.Agent;
+import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
+import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
 import com.rentacar.authentificationservice.entity.SimpleUser;
 import com.rentacar.authentificationservice.entity.User;
-import com.rentacar.authentificationservice.repository.IAgentRepository;
 import com.rentacar.authentificationservice.repository.ISimpleUserRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.ISimpleUserService;
@@ -66,5 +66,20 @@ public class SimpleUserService implements ISimpleUserService {
             return _simpleUserRepository.findOneByUser(user).getId();
         }
         return null;
+    }
+
+    @Override
+    public SimpleUserDTO getSimpleUser(UUID id){
+        SimpleUserDTO retVal = new SimpleUserDTO();
+        SimpleUser simpleUser = _simpleUserRepository.getOne(id);
+        UserDTO userDTO = new UserDTO(simpleUser.getUser().getId(), simpleUser.getUser().getUserRole());
+        retVal.setUser(userDTO);
+        retVal.setId(simpleUser.getId());
+        retVal.setFirstName(simpleUser.getFirstName());
+        retVal.setLastName(simpleUser.getLastName());
+        retVal.setSsn(simpleUser.getSsn());
+        retVal.setAddress(simpleUser.getAddress());
+
+        return retVal;
     }
 }

@@ -1,5 +1,7 @@
 package com.rentacar.authentificationservice.services;
 
+import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
+
 import java.util.UUID;
 
 public interface ISimpleUserService {
@@ -15,4 +17,6 @@ public interface ISimpleUserService {
     void deleteSimpleUserByAdmin(UUID id) throws Exception;
 
     UUID getIDByUsername(String username);
+
+    SimpleUserDTO getSimpleUser(UUID id);
 }

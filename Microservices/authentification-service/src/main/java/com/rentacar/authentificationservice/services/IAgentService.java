@@ -1,5 +1,6 @@
 package com.rentacar.authentificationservice.services;
 
+import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
 import com.rentacar.authentificationservice.dto.response.AgentRequests;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
 
@@ -19,4 +20,6 @@ public interface IAgentService {
     void deleteAgentByAdmin(UUID id) throws Exception;
 
     String getAgentAddress(UUID id);
+
+    AgentDTO getAgent(UUID id);
 }

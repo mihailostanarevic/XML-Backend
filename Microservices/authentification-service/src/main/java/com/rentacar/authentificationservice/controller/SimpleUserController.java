@@ -1,5 +1,6 @@
 package com.rentacar.authentificationservice.controller;
 
+import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.authentificationservice.services.ISimpleUserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,6 +44,11 @@ public class SimpleUserController {
     @GetMapping("/{username}")
     public UUID findIDByUsername(@PathVariable String username) throws Exception{
         return _simpleUserService.getIDByUsername(username);
+    }
+
+    @GetMapping("/get/{id}")
+    public SimpleUserDTO getSimpleUser(@PathVariable("id") UUID id){
+        return _simpleUserService.getSimpleUser(id);
     }
 
 }

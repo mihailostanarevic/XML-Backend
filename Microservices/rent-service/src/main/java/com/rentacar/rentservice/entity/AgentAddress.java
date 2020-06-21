@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@Entity
+//@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 public class AgentAddress extends  BaseEntity{

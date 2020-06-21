@@ -1,6 +1,9 @@
 package com.rentacar.rentservice.service.implementation;
 
 import com.rentacar.rentservice.client.AuthClient;
+import com.rentacar.rentservice.dto.feignClient.RequestAdDTO;
+import com.rentacar.rentservice.dto.feignClient.RequestDTO;
+import com.rentacar.rentservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.entity.RequestAd;
@@ -191,5 +194,39 @@ public class RequestService implements IRequestService {
     @Override
     public RequestStatus changeRequestStatus(RequestStatus requestStatus) {
         return null;
+    }
+
+    public List<RequestDTO> getRequestsByStatus(RequestStatus status){
+        List<RequestDTO> retVal = new ArrayList<>();
+
+        List<Request> requests = _requestRepository.findAllByStatus(status);
+        for(Request request : requests){
+            RequestDTO dto = new RequestDTO();
+            dto.setId(request.getId());
+            dto.setStatus(request.getStatus());
+            dto.setDeleted(request.isDeleted());
+            dto.setReceptionDate(request.getReceptionDate());
+            SimpleUserDTO simpleUserDTO = _authClient.getSimpleUser(request.getCustomerID());
+            dto.setCustomer(simpleUserDTO);
+            dto.setPickUpAddress(request.getPickUpAddress());
+            List<RequestAdDTO> list = new ArrayList<>();
+            for(RequestAd rqAd : request.getRequestAds()){
+                System.out.println(rqAd.getRequest().getId());
+                System.out.println(rqAd.getAdID());
+                RequestAdDTO rqAdDTO = new RequestAdDTO();
+                rqAdDTO.setId(rqAd.getId());
+                rqAdDTO.setRequest(request.getId());
+                rqAdDTO.setAd_id(rqAd.getAdID());
+                rqAdDTO.setPickUpTime(rqAd.getPickUpTime());
+                rqAdDTO.setPickUpDate(rqAd.getPickUpDate());
+                rqAdDTO.setReturnTime(rqAd.getReturnTime());
+                rqAdDTO.setReturnDate(rqAd.getReturnDate());
+                list.add(rqAdDTO);
+            }
+            dto.setRequestAds(list);
+            retVal.add(dto);
+        }
+
+        return retVal;
     }
 }
