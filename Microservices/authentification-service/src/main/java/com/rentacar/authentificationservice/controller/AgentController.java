@@ -1,6 +1,7 @@
 package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
+import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
 import com.rentacar.authentificationservice.services.IAgentService;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,5 +51,11 @@ public class AgentController {
     public AgentDTO getAgent(@PathVariable UUID id) throws Exception{
         return _agentService.getAgent(id);
     }
+
+    @GetMapping("/{id}/user")
+    public UserMessageDTO getUserFromAgent(@PathVariable("id") UUID id){
+        return _agentService.getUserFromAgent(id);
+    }
+
 
 }

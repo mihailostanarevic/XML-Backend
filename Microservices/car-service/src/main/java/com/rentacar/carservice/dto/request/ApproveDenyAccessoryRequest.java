@@ -4,21 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SendMessageRequest {
+public class ApproveDenyAccessoryRequest {
 
-    private String text;
+    private UUID id;
 
-    private UUID sender;
-
-    private UUID receiver;
-
-    private UUID ad;
-
-    private List<UUID> accessories;
+    private boolean approved;
 }

@@ -1,7 +1,9 @@
 package com.rentacar.authentificationservice.services.implementation;
 
 import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
+import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
 import com.rentacar.authentificationservice.entity.Agent;
+import com.rentacar.authentificationservice.entity.User;
 import com.rentacar.authentificationservice.repository.IAgentRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.IAgentService;
@@ -66,7 +68,25 @@ public class AgentService implements IAgentService {
     @Override
     public AgentDTO getAgent(UUID id){
         Agent agent =  _agentRepository.findOneById(id);
+        if(agent == null){
+            return new AgentDTO();
+        }
         AgentDTO retVal = new AgentDTO(agent.getId(), agent.getName(), agent.getDateFounded().toString(), agent.getAddress());
+        return retVal;
+    }
+
+    @Override
+    public UserMessageDTO getUserFromAgent(UUID id) {
+        UserMessageDTO retVal = new UserMessageDTO();
+        System.out.println(id);
+        Agent agent = _agentRepository.findOneById(id);
+        System.out.println(agent);
+        User user = agent.getUser();
+        retVal.setId(user.getId());
+        retVal.setUserRole(user.getUserRole());
+        retVal.setName(agent.getName());
+        retVal.setSubjectID(agent.getId());
+
         return retVal;
     }
 }
