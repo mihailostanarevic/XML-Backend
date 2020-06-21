@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.client;
 
+import com.rentacar.rentservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.rentservice.dto.client.UUIDResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
@@ -19,5 +20,7 @@ public interface AuthClient {
     String  addUserRole(@PathVariable("id") UUID simpleUserID,
                         @PathVariable("userRole") String userRole);
 
+    @GetMapping("/simple-users/get/{id}")
+    SimpleUserDTO getSimpleUser(@PathVariable("id") UUID id);
 }
 

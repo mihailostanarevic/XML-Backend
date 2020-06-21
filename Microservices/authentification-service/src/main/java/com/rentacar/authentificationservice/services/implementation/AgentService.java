@@ -1,5 +1,6 @@
 package com.rentacar.authentificationservice.services.implementation;
 
+import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
 import com.rentacar.authentificationservice.entity.Agent;
 import com.rentacar.authentificationservice.repository.IAgentRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
@@ -60,5 +61,12 @@ public class AgentService implements IAgentService {
     @Override
     public String getAgentAddress(UUID id) {
         return _agentRepository.findOneById(id).getAddress();
+    }
+
+    @Override
+    public AgentDTO getAgent(UUID id){
+        Agent agent =  _agentRepository.findOneById(id);
+        AgentDTO retVal = new AgentDTO(agent.getId(), agent.getName(), agent.getDateFounded().toString(), agent.getAddress());
+        return retVal;
     }
 }

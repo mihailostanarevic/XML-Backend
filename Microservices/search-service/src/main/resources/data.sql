@@ -83,12 +83,12 @@ insert into car (id, deleted, kilometers_traveled, car_model_id, fuel_type_id, g
     ('93a1c7b0-2dda-441c-96e9-128698422851', false, '7000', '807812c2-88d3-4fc5-83bf-f1f706951f2a', 'c2cce5ed-723c-4cdc-8da3-2b56917d935e', 'd547d724-68ca-4a00-89a1-a9b6241c5fa7'),
     ('c26d34ae-0cb7-4869-8a97-9063c355c94a', false, '250000', '2e592145-a698-4c3e-9091-2fc298cfaf08', '5343655c-07cf-45cf-b911-68fdc33dbf7d', '26499388-9c1d-4836-972c-ba114a8753d5');
 
-insert into ad (id, available, available_kilometers_per_rent, cdw, creation_date, deleted, limited_distance, seats, agent_id, car_id) values
-    ('991938f8-4834-421c-b48e-c2e28e06aae9', true, 'UNLIMITED', true, '2020-02-08', false, false, 2, 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', '47463d55-7dd0-4612-b59c-a9e5686c2762'),
-    ('6a22b2eb-705e-4311-ab90-bc438bc226fe', true, '10', true, '2020-01-25', false, true, 3, 'c72721c4-437f-4a06-b3cc-00b9a86056bc', '93a1c7b0-2dda-441c-96e9-128698422851'),
-    ('1124e496-a070-4b6e-b9c2-1b5e9aa00b60', true, 'UNLIMITED', true, '2020-03-04', false, false, 1, 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', 'c26d34ae-0cb7-4869-8a97-9063c355c94a'),
-    ('92cc7fc1-5823-40cb-8b36-6162f1cdb5a0', true, '20', true, '2019-12-24', false, false, 1, 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', '8d58e543-cfb4-4eda-920c-9ace4d9e0413'),
-    ('87ea3abc-1bef-4c17-9ce6-4938e947a917', true, 'UNLIMITED', true, '2019-12-21', false, false, 2, 'c72721c4-437f-4a06-b3cc-00b9a86056bc', 'ef5cc250-a3d2-40fd-a85c-ade447e93125');
+insert into ad (id, available_kilometers_per_rent, cdw, creation_date, deleted, limited_distance, seats, agent, car_id) values
+    ('991938f8-4834-421c-b48e-c2e28e06aae9', 'UNLIMITED', true, '2020-02-08', false, false, 2, 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', '47463d55-7dd0-4612-b59c-a9e5686c2762'),
+    ('6a22b2eb-705e-4311-ab90-bc438bc226fe', '10', true, '2020-01-25', false, true, 3, 'c72721c4-437f-4a06-b3cc-00b9a86056bc', '93a1c7b0-2dda-441c-96e9-128698422851'),
+    ('1124e496-a070-4b6e-b9c2-1b5e9aa00b60', 'UNLIMITED', true, '2020-03-04', false, false, 1, 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', 'c26d34ae-0cb7-4869-8a97-9063c355c94a'),
+    ('92cc7fc1-5823-40cb-8b36-6162f1cdb5a0', '20', true, '2019-12-24', false, false, 1, 'b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', '8d58e543-cfb4-4eda-920c-9ace4d9e0413'),
+    ('87ea3abc-1bef-4c17-9ce6-4938e947a917', 'UNLIMITED', true, '2019-12-21', false, false, 2, 'c72721c4-437f-4a06-b3cc-00b9a86056bc', 'ef5cc250-a3d2-40fd-a85c-ade447e93125');
 
 insert into car_accessories (id, description, deleted) values
     ('4d3a07c8-c2c5-418c-b96c-8bf86417a6c1', 'Spear tyre', false),
@@ -96,3 +96,4 @@ insert into car_accessories (id, description, deleted) values
     ('5349191d-962d-4eeb-a2b5-06bdfe2e711f', 'Fire extinguisher', false),
     ('b26855c2-6b55-410e-952b-5a15faeb443e', 'Triangle for accidents', false),
     ('a8ac2d3a-a4eb-40a2-ad90-771267903c2b', 'Something else', false);
+

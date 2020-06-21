@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.service;
 
+import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.util.enums.RequestStatus;
@@ -22,4 +23,6 @@ public interface IRequestService {
     boolean changeCarStatus(UUID carID);
 
     RequestStatus changeRequestStatus(RequestStatus requestStatus);
+
+    List<RequestDTO> getRequestsByStatus(RequestStatus status);
 }

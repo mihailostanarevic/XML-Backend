@@ -1,14 +1,9 @@
 package com.rentacar.authentificationservice.controller;
 
-import com.rentacar.authentificationservice.dto.response.AgentRequests;
+import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
 import com.rentacar.authentificationservice.services.IAgentService;
-import com.rentacar.authentificationservice.util.enums.RequestStatus;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collection;
 import java.util.UUID;
 
 @RestController
@@ -36,7 +31,7 @@ public class AgentController {
         _agentService.activateAgentByAdmin(id);
     }
 
-    @PutMapping("/deactivate/{id}/agent") // deny/{id}/agent ?
+    @PutMapping("/deactivate/{id}/agent") // deny/{id}/agent ?  //Mislim da ovde treba putanja da bude /{id}/deactivate
     public void deactivateAgent(@PathVariable UUID id) throws Exception{
         _agentService.deactivateAgentByAdmin(id);
     }
@@ -49,6 +44,11 @@ public class AgentController {
     @GetMapping("/{id}/address")
     public String getAgentAddress(@PathVariable UUID id) throws Exception{
         return _agentService.getAgentAddress(id);
+    }
+
+    @GetMapping("/{id}")
+    public AgentDTO getAgent(@PathVariable UUID id) throws Exception{
+        return _agentService.getAgent(id);
     }
 
 }

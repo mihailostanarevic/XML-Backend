@@ -1,16 +1,15 @@
-package com.rentacar.searchservice.dto.response;
+package com.rentacar.searchservice.dto.feignClient;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
 import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class AgentSearchResponse {
+public class AgentDTO {
 
     private UUID agentID;
 
@@ -18,5 +17,5 @@ public class AgentSearchResponse {
 
     private String dateFounded;
 
-    private String locations;
+    private String address;
 }
