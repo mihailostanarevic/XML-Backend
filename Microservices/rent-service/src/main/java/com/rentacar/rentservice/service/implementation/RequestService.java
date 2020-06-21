@@ -287,6 +287,11 @@ public class RequestService implements IRequestService {
         return getAllAgentRequests(agentId, RequestStatus.PENDING);
     }
 
+    @Override
+    public RequestStatus changeRequestStatus(RequestStatus requestStatus) {
+        return null;
+    }
+
     private List<SimpleUserRequests> mapToSimpleUserRequest(List<Request> requestList) {
         List<SimpleUserRequests> simpleUserRequestList = new ArrayList<>();
         for (Request request : requestList) {

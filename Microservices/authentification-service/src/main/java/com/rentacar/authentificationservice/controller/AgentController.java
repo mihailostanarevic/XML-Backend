@@ -50,8 +50,8 @@ public class AgentController {
     }
 
     @GetMapping("/{id}/get")
-    public AgentResponse getAgent(@PathVariable UUID id) throws Exception{
-        return _agentService.getAgent(id);
+    public AgentResponse getOneAgent(@PathVariable UUID id) throws Exception{
+        return _agentService.getOneAgent(id);
     }
 
     @GetMapping("/{id}")

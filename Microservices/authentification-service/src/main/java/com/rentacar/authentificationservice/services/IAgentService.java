@@ -23,8 +23,7 @@ public interface IAgentService {
 
     String getAgentAddress(UUID id);
 
-  // TODO pogledati 
-    AgentResponse getAgent(UUID id);
+    AgentResponse getOneAgent(UUID id);
   
     AgentDTO getAgent(UUID id);
 

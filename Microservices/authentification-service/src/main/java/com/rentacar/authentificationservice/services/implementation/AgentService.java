@@ -72,8 +72,7 @@ public class AgentService implements IAgentService {
     }
 
     @Override
-    // TODO preimenuj metodu
-    public AgentResponse getAgent(UUID id) {
+    public AgentResponse getOneAgent(UUID id) {
         return mapAgentToAgentResponse(_agentRepository.findOneById(id));
     }
 

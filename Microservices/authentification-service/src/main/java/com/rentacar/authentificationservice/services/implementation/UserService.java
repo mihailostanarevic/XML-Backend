@@ -1,20 +1,11 @@
 package com.rentacar.authentificationservice.services.implementation;
 
+import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.entity.User;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.IUserService;
 import com.rentacar.authentificationservice.util.enums.UserRole;
-import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
-import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
-import com.rentacar.authentificationservice.entity.Agent;
-import com.rentacar.authentificationservice.entity.User;
-import com.rentacar.authentificationservice.repository.IAgentRepository;
-import com.rentacar.authentificationservice.repository.IUserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 import java.util.List;
 import java.util.UUID;
@@ -36,9 +27,8 @@ public class UserService implements IUserService {
                 .collect(Collectors.toList());
     }
 
-    // TODO preimenuj metodu
     @Override
-    public User getUser(UUID id) {
+    public User getOneUser(UUID id) {
         return _userRepository.findOneById(id);
     }
   

@@ -12,8 +12,8 @@ import java.util.UUID;
 public interface IUserService {
 
     List<UserResponse> getAllUsers();
-    // TODO promeniti ime metode
-    User getUser(UUID id);
+
+    User getOneUser(UUID id);
 
     List<UserResponse> getCustomers();
 

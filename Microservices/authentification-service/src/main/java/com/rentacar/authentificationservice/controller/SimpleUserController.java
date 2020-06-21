@@ -61,17 +61,6 @@ public class SimpleUserController {
         _simpleUserService.deleteSimpleUserByAdmin(id);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<UUIDResponse> findIDByUsername(@PathVariable String username) throws Exception{
-        return new ResponseEntity<>(_simpleUserService.getIDByUsername(username), HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}/{userRole}")
-    public ResponseEntity<?> addUserRole(@PathVariable("id") UUID simpleUserID, @PathVariable("userRole") String userRole) throws Exception{
-        _simpleUserService.addUserRole(simpleUserID, userRole);
-        return new ResponseEntity<>("Successfully changed", HttpStatus.OK);
-    }
-
     @GetMapping("/get/{id}")
     public SimpleUserDTO getSimpleUser(@PathVariable("id") UUID id){
         return _simpleUserService.getSimpleUser(id);
