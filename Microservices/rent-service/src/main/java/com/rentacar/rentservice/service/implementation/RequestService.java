@@ -247,7 +247,7 @@ public class RequestService implements IRequestService {
     public Collection<AgentRequests> getAllAgentRequests(UUID userId, RequestStatus carRequestStatus) {
         List<Request> requestList = new ArrayList<>();
         for (RequestAd requestAd : _requestAdRepository.findAll()) {
-            AgentResponse agentID = _authClient.getAgentByAdID(requestAd.getAdID());
+            AgentResponse agentID = _adClient.getAgentIDByAdID(requestAd.getAdID());
             if(agentID.getId().equals(userId) && requestAd.getRequest().getStatus().equals(carRequestStatus)) {
                 if(!requestList.contains(requestAd.getRequest())) {
                     requestList.add(requestAd.getRequest());

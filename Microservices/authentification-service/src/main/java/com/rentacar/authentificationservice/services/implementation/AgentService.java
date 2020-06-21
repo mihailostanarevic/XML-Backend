@@ -75,14 +75,17 @@ public class AgentService implements IAgentService {
 
     private AgentResponse mapAgentToAgentResponse(Agent agent) {
         AgentResponse agentResponse = new AgentResponse();
-        agentResponse.setId(agent.getId());
-        agentResponse.setAddress(agent.getAddress());
-        agentResponse.setBankAccountNumber(agent.getBankAccountNumber());
-        agentResponse.setDeleted(agent.getUser().isDeleted());
-        agentResponse.setName(agent.getName());
-        agentResponse.setTin(agent.getTin());
-        agentResponse.setUsername(agent.getUser().getUsername());
-        return agentResponse;
+        if(agent != null) {
+            agentResponse.setId(agent.getId());
+            agentResponse.setAddress(agent.getAddress());
+            agentResponse.setBankAccountNumber(agent.getBankAccountNumber());
+            agentResponse.setDeleted(agent.getUser().isDeleted());
+            agentResponse.setName(agent.getName());
+            agentResponse.setTin(agent.getTin());
+            agentResponse.setUsername(agent.getUser().getUsername());
+            return agentResponse;
+        }
+        return null;
     }
 
 }

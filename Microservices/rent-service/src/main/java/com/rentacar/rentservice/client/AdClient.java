@@ -16,7 +16,7 @@ public interface AdClient {
     @GetMapping(value = "/ads/{id}", consumes= MediaType.APPLICATION_JSON_VALUE)
     AdClientResponse getAdByID(@PathVariable("id") UUID id);
 
-    @GetMapping(value = "/{id}/agent", consumes= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/ads/{id}/agent", consumes= MediaType.APPLICATION_JSON_VALUE)
     AgentResponse getAgentIDByAdID(@PathVariable("id") UUID id);
 
 }

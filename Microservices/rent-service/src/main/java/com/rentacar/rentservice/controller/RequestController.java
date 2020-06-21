@@ -53,7 +53,7 @@ public class RequestController {
 
     @GetMapping("/{id}/requests/{status}")
 //    @PreAuthorize("hasAuthority('READ_REQUEST')")
-    public ResponseEntity<Collection<AgentRequests>> getAllRequests(@PathVariable("id") UUID userId, @PathVariable("status") String status){
+    public ResponseEntity<Collection<AgentRequests>> getAllAgentRequests(@PathVariable("id") UUID userId, @PathVariable("status") String status){
         RequestStatus carRequestStatus;
         if(status.equalsIgnoreCase("PENDING")) {
             carRequestStatus = RequestStatus.PENDING;

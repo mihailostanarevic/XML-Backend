@@ -19,7 +19,7 @@ public class SimpleUserController {
         _simpleUserService = simpleUserService;
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/{username}/user")
     public ResponseEntity<UUIDResponse> findIDByUsername(@PathVariable String username) throws Exception{
         return new ResponseEntity<>(_simpleUserService.getIDByUsername(username), HttpStatus.OK);
     }

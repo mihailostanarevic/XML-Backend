@@ -14,7 +14,7 @@ import java.util.UUID;
 @FeignClient(name = "auth")
 public interface AuthClient {
 
-    @GetMapping(value = "/simple-users/{username}", consumes= MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/simple-users/{username}/user", consumes= MediaType.APPLICATION_JSON_VALUE)
     UUIDResponse getIDByUsername(@PathVariable("username") String username);
 
     @GetMapping(value = "/simple-users/{id}", consumes= MediaType.APPLICATION_JSON_VALUE)
