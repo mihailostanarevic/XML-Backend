@@ -1,8 +1,13 @@
 package com.rentacar.rentservice.util.enums;
 
 public enum RequestStatus {
+    APPROVED,
     PENDING,
-    RESERVED,
+    DENIED,
+    CONFIRMED,
+    PAID,
     CANCELED,
-    PAID
+    RESERVED,
+    CHECKED,
+    DROPPED
 }

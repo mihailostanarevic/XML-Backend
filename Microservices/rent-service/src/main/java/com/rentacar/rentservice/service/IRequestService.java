@@ -1,9 +1,13 @@
 package com.rentacar.rentservice.service;
 
 import com.rentacar.rentservice.dto.request.RequestRequest;
+import com.rentacar.rentservice.dto.response.AdResponse;
+import com.rentacar.rentservice.dto.response.AgentRequests;
+import com.rentacar.rentservice.dto.response.SimpleUserRequests;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.util.enums.RequestStatus;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,9 +21,13 @@ public interface IRequestService {
 
     void changeAdAvailability(RequestRequest request);
 
-    boolean rentACar(UUID carID);
+    Collection<SimpleUserRequests> payRequest(UUID id, UUID requestID);
 
-    boolean changeCarStatus(UUID carID);
+    Collection<SimpleUserRequests> dropRequest(UUID id, UUID requestID);
 
-    RequestStatus changeRequestStatus(RequestStatus requestStatus);
+    List<SimpleUserRequests> getAllUserRequests(UUID id, RequestStatus reserved);
+
+    Collection<AgentRequests> getAllAgentRequests(UUID userId, RequestStatus carRequestStatus);
+
+    Collection<AgentRequests> approveRequest(UUID agentId, UUID reqID);
 }

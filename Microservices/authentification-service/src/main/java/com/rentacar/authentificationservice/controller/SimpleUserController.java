@@ -1,5 +1,6 @@
 package com.rentacar.authentificationservice.controller;
 
+import com.rentacar.authentificationservice.dto.client.CustomerResponse;
 import com.rentacar.authentificationservice.dto.client.UUIDResponse;
 import com.rentacar.authentificationservice.services.ISimpleUserService;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,22 @@ public class SimpleUserController {
 
     public SimpleUserController(ISimpleUserService simpleUserService) {
         _simpleUserService = simpleUserService;
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<UUIDResponse> findIDByUsername(@PathVariable String username) throws Exception{
+        return new ResponseEntity<>(_simpleUserService.getIDByUsername(username), HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CustomerResponse> findCustomerByID(@PathVariable("id") UUID id) throws Exception{
+        return new ResponseEntity<>(_simpleUserService.getCustomerByID(id), HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/{userRole}")
+    public ResponseEntity<?> addUserRole(@PathVariable("id") UUID simpleUserID, @PathVariable("userRole") String userRole) throws Exception{
+        _simpleUserService.addUserRole(simpleUserID, userRole);
+        return new ResponseEntity<>("Successfully changed", HttpStatus.OK);
     }
 
     @PutMapping("/block/{id}/simple-user")
@@ -41,17 +58,6 @@ public class SimpleUserController {
     @PutMapping("/delete/{id}/simple-user")
     public void deleteAgent(@PathVariable UUID id) throws Exception{
         _simpleUserService.deleteSimpleUserByAdmin(id);
-    }
-
-    @GetMapping("/{username}")
-    public ResponseEntity<UUIDResponse> findIDByUsername(@PathVariable String username) throws Exception{
-        return new ResponseEntity<>(_simpleUserService.getIDByUsername(username), HttpStatus.OK);
-    }
-
-    @PutMapping("/{id}/{userRole}")
-    public ResponseEntity<?> addUserRole(@PathVariable("id") UUID simpleUserID, @PathVariable("userRole") String userRole) throws Exception{
-        _simpleUserService.addUserRole(simpleUserID, userRole);
-        return new ResponseEntity<>("Successfully changed", HttpStatus.OK);
     }
 
 }

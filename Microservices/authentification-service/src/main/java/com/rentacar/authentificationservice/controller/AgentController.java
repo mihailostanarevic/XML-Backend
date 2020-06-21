@@ -1,6 +1,7 @@
 package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.response.AgentRequests;
+import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.services.IAgentService;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import org.springframework.http.HttpStatus;
@@ -49,6 +50,11 @@ public class AgentController {
     @GetMapping("/{id}/address")
     public String getAgentAddress(@PathVariable UUID id) throws Exception{
         return _agentService.getAgentAddress(id);
+    }
+
+    @GetMapping("/{id}")
+    public AgentResponse getAgent(@PathVariable UUID id) throws Exception{
+        return _agentService.getAgent(id);
     }
 
 }

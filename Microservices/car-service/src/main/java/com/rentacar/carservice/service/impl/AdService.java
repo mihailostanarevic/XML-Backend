@@ -1,10 +1,9 @@
 package com.rentacar.carservice.service.impl;
 
 import com.rentacar.carservice.client.AuthClient;
+import com.rentacar.carservice.dto.client.AdClientResponse;
 import com.rentacar.carservice.dto.request.AddAdRequest;
-import com.rentacar.carservice.dto.response.AdResponse;
-import com.rentacar.carservice.dto.response.AddressDTO;
-import com.rentacar.carservice.dto.response.PhotoResponse;
+import com.rentacar.carservice.dto.response.*;
 import com.rentacar.carservice.entity.*;
 import com.rentacar.carservice.repository.*;
 import com.rentacar.carservice.service.IAdService;
@@ -62,6 +61,36 @@ public class AdService implements IAdService {
             retVal.add(mapToPhotoResponse(img));
         }
         return retVal;
+    }
+
+    @Override
+    public AdClientResponse getAd(UUID adId) {
+        Ad ad = _adRepository.findOneById(adId);
+        if(ad != null) {
+            AdClientResponse adClientResponse = new AdClientResponse();
+            AdResponse adResponse = new AdResponse();
+            CarResponse carResponse = new CarResponse();
+            adResponse.setId(ad.getId());
+            adResponse.setAgentID(ad.getAgent());
+            adResponse.setAvailableKilometersPerRent(ad.getAvailableKilometersPerRent());
+            adResponse.setCdw(ad.isCdw());
+            adResponse.setLimitedDistance(ad.isLimitedDistance());
+            adResponse.setName(ad.getCar().getCarModel().getCarBrand().getName() + " " + ad.getCar().getCarModel().getName());
+            adResponse.setSeats(ad.getSeats());
+            List<AddressDTO> addressDTOS = new ArrayList<>();
+            adResponse.setFullLocations(addressDTOS);
+            adClientResponse.setAdResponse(adResponse);
+            return adClientResponse;
+        }
+        return null;
+    }
+
+    @Override
+    public AgentResponse getAgentByAdID(UUID id) {
+        Ad ad = _adRepository.findOneById(id);
+        AgentResponse agentResponse = new AgentResponse();
+        agentResponse.setId(ad.getAgent());
+        return agentResponse;
     }
 
     @Override

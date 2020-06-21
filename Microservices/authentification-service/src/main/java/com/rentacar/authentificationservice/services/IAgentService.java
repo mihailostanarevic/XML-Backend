@@ -1,6 +1,7 @@
 package com.rentacar.authentificationservice.services;
 
 import com.rentacar.authentificationservice.dto.response.AgentRequests;
+import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
 
 import java.util.Collection;
@@ -19,4 +20,6 @@ public interface IAgentService {
     void deleteAgentByAdmin(UUID id) throws Exception;
 
     String getAgentAddress(UUID id);
+
+    AgentResponse getAgent(UUID id);
 }

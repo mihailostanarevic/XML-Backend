@@ -1,8 +1,14 @@
 package com.rentacar.rentservice.service.implementation;
 
+import com.rentacar.rentservice.client.AdClient;
 import com.rentacar.rentservice.client.AuthClient;
+import com.rentacar.rentservice.dto.client.AdClientResponse;
+import com.rentacar.rentservice.dto.client.AgentResponse;
+import com.rentacar.rentservice.dto.client.CustomerResponse;
 import com.rentacar.rentservice.dto.client.UUIDResponse;
 import com.rentacar.rentservice.dto.request.RequestRequest;
+import com.rentacar.rentservice.dto.response.AgentRequests;
+import com.rentacar.rentservice.dto.response.SimpleUserRequests;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.entity.RequestAd;
 import com.rentacar.rentservice.repository.IRequestAdRepository;
@@ -22,11 +28,13 @@ public class RequestService implements IRequestService {
     private final IRequestRepository _requestRepository;
     private final IRequestAdRepository _requestAdRepository;
     private final AuthClient _authClient;
+    private final AdClient _adClient;
 
-    public RequestService(IRequestRepository requestRepository, IRequestAdRepository requestAdRepository, AuthClient authClient) {
+    public RequestService(IRequestRepository requestRepository, IRequestAdRepository requestAdRepository, AuthClient authClient, AdClient adClient) {
         _requestRepository = requestRepository;
         _requestAdRepository = requestAdRepository;
         _authClient = authClient;
+        _adClient = adClient;
     }
 
     @Override
@@ -86,7 +94,6 @@ public class RequestService implements IRequestService {
         if(requestDTO.getCustomerID() != null) {
             simpleUser = requestDTO.getCustomerID();
         } else {
-            // TODO Feign Client (Auth) za getUserIDByUsername()
             UUIDResponse uuidResponse = _authClient.getIDByUsername(requestDTO.getCustomerUsername());
             simpleUser = uuidResponse.getId();
         }
@@ -98,7 +105,6 @@ public class RequestService implements IRequestService {
         requestDTOList.add(requestDTO);
         _requestRepository.save(request);
         createRequestAd(request, requestDTOList);
-        // TODO Feign Client (Auth) da dodelim useru novu rolu
         _authClient.addUserRole(simpleUser, "ROLE_REQUEST");
 
         TimerTask taskPending = new TimerTask() {
@@ -169,17 +175,170 @@ public class RequestService implements IRequestService {
     }
 
     @Override
-    public boolean rentACar(UUID carID) {
+    public Collection<SimpleUserRequests> payRequest(UUID userId, UUID resID) {
+        Request request = _requestRepository.findOneById(resID);
+        if(request.getStatus().equals(RequestStatus.RESERVED)) {
+            request.setStatus(RequestStatus.PAID);
+            _requestRepository.save(request);
+        }
+
+        changeStatusOfRequests(request, RequestStatus.CHECKED, RequestStatus.CANCELED);
+        return getAllUserRequests(userId, RequestStatus.RESERVED);
+    }
+
+    @Override
+    public Collection<SimpleUserRequests> dropRequest(UUID userId, UUID resID) {
+        Request request = _requestRepository.findOneById(resID);
+        RequestStatus retStatus = request.getStatus();
+        if(!request.getStatus().equals(RequestStatus.PAID)) {
+            request.setStatus(RequestStatus.DROPPED);
+            _requestRepository.save(request);
+        }
+        return getAllUserRequests(userId, retStatus);
+    }
+
+    public void changeStatusOfRequests(Request baseRequest, RequestStatus wakeUpStatus, RequestStatus finalStatus) {
+        for (RequestAd requestAd : _requestAdRepository.findAllByRequest(baseRequest)) {
+            for (RequestAd requestAdAll : _requestAdRepository.findAll()) {
+                if (requestAdAll.getRequest().getStatus().equals(wakeUpStatus)
+                        && checkRequestMatching(requestAd, requestAdAll)) {
+                    requestAdAll.getRequest().setStatus(finalStatus);
+                    _requestRepository.save(requestAdAll.getRequest());
+                }
+            }
+        }
+    }
+
+    public boolean checkRequestMatching(RequestAd requestFirst, RequestAd requestSecond) {
+        if(requestFirst.getAdID().equals(requestSecond.getAdID())) {
+            if (requestFirst.getReturnDate().isBefore(requestSecond.getPickUpDate())) {
+                return false;
+            } else {
+                if (requestFirst.getPickUpDate().isAfter(requestSecond.getReturnDate())) {
+                    return false;
+                } else {
+                    if (requestFirst.getReturnDate().isEqual(requestSecond.getPickUpDate())) {
+                        return requestFirst.getReturnTime().isAfter(requestSecond.getPickUpTime());
+                    } else if (requestSecond.getReturnDate().isEqual(requestFirst.getPickUpDate())) {
+                        return requestFirst.getPickUpTime().isBefore(requestSecond.getReturnTime());
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        }
         return false;
     }
 
     @Override
-    public boolean changeCarStatus(UUID carID) {
-        return false;
+    public List<SimpleUserRequests> getAllUserRequests(UUID id, RequestStatus requestStatus) {
+        List<Request> requestList = new ArrayList<>();
+        for (Request request : _requestRepository.findAll()) {
+            if (request.getCustomerID().equals(id) && request.getStatus().equals(requestStatus)) {
+                if (!requestList.contains(request)) {
+                    requestList.add(request);
+                }
+            }
+        }
+        return mapToSimpleUserRequest(requestList);
     }
 
     @Override
-    public RequestStatus changeRequestStatus(RequestStatus requestStatus) {
-        return null;
+    public Collection<AgentRequests> getAllAgentRequests(UUID userId, RequestStatus carRequestStatus) {
+        List<Request> requestList = new ArrayList<>();
+        for (RequestAd requestAd : _requestAdRepository.findAll()) {
+            AgentResponse agentID = _authClient.getAgentByAdID(requestAd.getAdID());
+            if(agentID.getId().equals(userId) && requestAd.getRequest().getStatus().equals(carRequestStatus)) {
+                if(!requestList.contains(requestAd.getRequest())) {
+                    requestList.add(requestAd.getRequest());
+                }
+            }
+        }
+        return mapToAgentRequest(requestList);
     }
+
+    @Override
+    public Collection<AgentRequests> approveRequest(UUID agentId, UUID requestID) {
+        Request request = _requestRepository.findOneById(requestID);
+        request.setStatus(RequestStatus.RESERVED);
+        _requestRepository.save(request);
+
+        changeStatusOfRequests(request, RequestStatus.PENDING, RequestStatus.CHECKED);
+
+        TimerTask taskPaid = new TimerTask() {
+            public void run() {
+                System.out.println("Approved request performed on: " + LocalTime.now() + ", " +
+                        "Request id: " + Thread.currentThread().getName());
+                if(!request.getStatus().equals(RequestStatus.PAID)) {
+                    request.setStatus(RequestStatus.CANCELED);
+                    _requestRepository.save(request);
+
+                    changeStatusOfRequests(request, RequestStatus.CHECKED, RequestStatus.PENDING);
+                }
+            }
+        };
+        Timer timer = new Timer(request.getId().toString());
+        long delay = (12 * 60 * 60 * 1000);
+        System.out.println("Approved request received at: " + LocalTime.now());
+        timer.schedule(taskPaid, delay);
+        return getAllAgentRequests(agentId, RequestStatus.PENDING);
+    }
+
+    private List<SimpleUserRequests> mapToSimpleUserRequest(List<Request> requestList) {
+        List<SimpleUserRequests> simpleUserRequestList = new ArrayList<>();
+        for (Request request : requestList) {
+            SimpleUserRequests simpleUserRequests = new SimpleUserRequests();
+            // Feign Client getAgentName by adID (izbaciti ovo sa fronta, jer mnogo vremena oduzima, [ugnjezdeni pozivi])
+            String[] pickUpAddress = request.getPickUpAddress().split(",");
+            simpleUserRequests.setPickUpAddress(pickUpAddress[1].trim() + ", " + pickUpAddress[2].trim() + " " + pickUpAddress[3].trim());
+            simpleUserRequests.setReceptionDate(request.getReceptionDate().toString());
+            simpleUserRequests.setId(request.getId());
+            simpleUserRequests.setRequestStatus(request.getStatus().toString());
+            String ads = "";
+            String description = "";
+            for (RequestAd requestAd : _requestAdRepository.findAllByRequest(request)) {
+                AdClientResponse adClientResponse = _adClient.getAdByID(requestAd.getAdID());
+                ads += adClientResponse.getAdResponse().getName();
+                description += "Ad: " + ads + " in period: " + requestAd.getPickUpDate() + " at " +
+                        requestAd.getPickUpTime() + " to " + requestAd.getReturnDate() + " at " + requestAd.getReturnTime() + ", ";
+            }
+//            ads = ads.substring(0, ads.length() -2);
+//            description = description.substring(0, description.length() - 2);
+            simpleUserRequests.setDescription(description);
+            simpleUserRequests.setAd(ads);
+            simpleUserRequestList.add(simpleUserRequests);
+        }
+
+        return simpleUserRequestList;
+    }
+
+    private Collection<AgentRequests> mapToAgentRequest(List<Request> requestList) {
+        List<AgentRequests> agentRequestList = new ArrayList<>();
+        for (Request request : requestList) {
+            AgentRequests agentRequest = new AgentRequests();
+            CustomerResponse customerResponse = _authClient.getSimpleUserByID(request.getCustomerID());
+            agentRequest.setCustomer(customerResponse.getFirstName() + " " + customerResponse.getLastName());
+            String[] pickUpAddress = request.getPickUpAddress().split(",");
+            agentRequest.setPickUpAddress(pickUpAddress[1].trim() + ", " + pickUpAddress[2].trim() + " " + pickUpAddress[3].trim());
+            agentRequest.setReceptionDate(request.getReceptionDate().toString());
+            agentRequest.setId(request.getId());
+            agentRequest.setRequestStatus(request.getStatus().toString());
+            String ads = "";
+            String description = "";
+            for (RequestAd requestAd : _requestAdRepository.findAllByRequest(request)) {
+                AdClientResponse adClientResponse = _adClient.getAdByID(requestAd.getAdID());
+                ads += adClientResponse.getAdResponse().getName();
+                description += "Ad: " + ads.substring(0, ads.length()-1) + " in period: " + requestAd.getPickUpDate() + " at " +
+                        requestAd.getPickUpTime() + " to " + requestAd.getReturnDate() + " at " + requestAd.getReturnTime() + ", ";
+            }
+            description = description.substring(0, description.length() - 2);
+            ads = ads.substring(0, ads.length() -1);
+            agentRequest.setDescription(description);
+            agentRequest.setAd(ads);
+            agentRequestList.add(agentRequest);
+        }
+
+        return agentRequestList;
+    }
+
 }

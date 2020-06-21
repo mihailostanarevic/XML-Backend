@@ -1,9 +1,11 @@
 package com.rentacar.carservice.service;
 
+import com.rentacar.carservice.dto.client.AdClientResponse;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.request.UpdateAdRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAvailability;
 import com.rentacar.carservice.dto.response.AdResponse;
+import com.rentacar.carservice.dto.response.AgentResponse;
 import com.rentacar.carservice.dto.response.PhotoResponse;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,4 +21,8 @@ public interface IAdService {
     List<AdResponse> getAgentAds(UUID id);
 
     List<PhotoResponse> getAllPhotos(UUID adID);
+
+    AdClientResponse getAd(UUID adId);
+
+    AgentResponse getAgentByAdID(UUID id);
 }
