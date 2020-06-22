@@ -16,4 +16,5 @@ public interface IRequestAdRepository extends JpaRepository<RequestAd, UUID> {
 
     List<RequestAd> findAllByRequest(Request request);
 
+    List<RequestAd> findAllByRequest_Id(UUID id);
 }

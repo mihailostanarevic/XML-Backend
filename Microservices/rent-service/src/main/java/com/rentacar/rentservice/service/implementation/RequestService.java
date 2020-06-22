@@ -392,4 +392,39 @@ public class RequestService implements IRequestService {
         return retVal;
     }
 
+    @Override
+    public List<RequestDTO> getAllPaidRequestsByCustomer(UUID id) {
+        List<Request> requests = _requestRepository.findAllByCustomerIDAndStatus(id, RequestStatus.PAID);
+        List<RequestDTO> requestDTOS = new ArrayList<>();
+        for(Request request: requests){
+            RequestDTO requestDTO = new RequestDTO();
+            requestDTO.setStatus(RequestStatus.PAID);
+            requestDTO.setDeleted(false);
+            requestDTO.setId(request.getId());
+            requestDTO.setPickUpAddress(request.getPickUpAddress());
+            requestDTO.setReceptionDate(request.getReceptionDate());
+            SimpleUserDTO simpleUser = _authClient.getSimpleUser(request.getCustomerID());
+            requestDTO.setCustomer(simpleUser);
+            requestDTOS.add(requestDTO);
+        }
+        return requestDTOS;
+    }
+
+    @Override
+    public List<RequestAdDTO> getAllRequestAdsByRequest(UUID id) {
+        List<RequestAd> requestAds = _requestAdRepository.findAllByRequest_Id(id);
+        List<RequestAdDTO> requestAdDTOS = new ArrayList<>();
+        for (RequestAd requestAd: requestAds){
+            RequestAdDTO requestAdDTO = new RequestAdDTO();
+            requestAdDTO.setId(requestAd.getId());
+            requestAdDTO.setAd_id(requestAd.getAdID());
+            requestAdDTO.setPickUpDate(requestAd.getPickUpDate());
+            requestAdDTO.setPickUpTime(requestAd.getPickUpTime());
+            requestAdDTO.setReturnDate(requestAd.getReturnDate());
+            requestAdDTO.setReturnTime(requestAd.getReturnTime());
+            requestAdDTO.setRequest(requestAd.getRequest().getId());
+            requestAdDTOS.add(requestAdDTO);
+        }
+        return requestAdDTOS;
+    }
 }

@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.service;
 
+import com.rentacar.rentservice.dto.feignClient.RequestAdDTO;
 import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.dto.response.AdResponse;
@@ -36,4 +37,7 @@ public interface IRequestService {
 
     List<RequestDTO> getRequestsByStatus(RequestStatus status);
 
+    List<RequestDTO> getAllPaidRequestsByCustomer(UUID id);
+
+    List<RequestAdDTO> getAllRequestAdsByRequest(UUID id);
 }

@@ -5,11 +5,11 @@ import lombok.Data;
 import java.util.UUID;
 
 @Data
-public class AddCommentRequest {
+public class RateAdRequest {
 
-    private UUID userId;
+    private UUID simpleUserId;
 
-    private String comment;
+    private String grade; //rating
 
     private UUID adId;
 }

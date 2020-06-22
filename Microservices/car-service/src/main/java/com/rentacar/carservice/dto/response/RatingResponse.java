@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class CommentResponse {
+@AllArgsConstructor
+public class RatingResponse {
 
-    private String comment;
+    private String grade; //rating
 
     private String customerFirstName;
 
@@ -27,5 +27,5 @@ public class CommentResponse {
 
     private String carModelName;
 
-    private UUID commentId;
+    private UUID ratingId;
 }
