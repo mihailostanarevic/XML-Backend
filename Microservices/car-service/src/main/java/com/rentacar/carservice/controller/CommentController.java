@@ -1,6 +1,7 @@
 package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.request.AddCommentRequest;
+import com.rentacar.carservice.dto.request.ApproveOrDenyCommentRequest;
 import com.rentacar.carservice.dto.response.CommentResponse;
 import com.rentacar.carservice.service.ICommentService;
 import org.springframework.web.bind.annotation.*;
@@ -23,23 +24,23 @@ public class CommentController {
         return _commentService.addComment(request);
     }
 
-    @DeleteMapping("/{id}/comment")
-    public void deleteComment(@PathVariable UUID id) throws Exception{
-        _commentService.deleteComment(id);
+    @PutMapping("/approve-comment")
+    void approveComment(@RequestBody ApproveOrDenyCommentRequest request) throws Exception {
+        _commentService.approveComment(request);
     }
 
-    @GetMapping("/{id}/comment")
-    public CommentResponse getComment(@PathVariable UUID id) throws Exception{
-        return _commentService.getComment(id);
+    @PutMapping("/deny-comment")
+    void denyComment(@RequestBody ApproveOrDenyCommentRequest request) throws Exception {
+        _commentService.denyComment(request);
     }
 
-    @GetMapping
-    public List<CommentResponse> getAllComments() throws Exception{
-        return _commentService.getAllComments();
+    @GetMapping("/{id}/ad")
+    List<CommentResponse> getAllCommentsByAd(@PathVariable UUID id) throws Exception {
+        return _commentService.getAllCommentsByAd(id);
     }
 
-    @GetMapping("/{id}/car")
-    public List<CommentResponse> getAllCommentsByCar(@PathVariable UUID id) throws Exception{
-        return _commentService.getAllCommentsByCar(id);
+    @GetMapping("/pending")
+    List<CommentResponse> getAllPendingComments() throws Exception {
+        return _commentService.getAllPendingComments();
     }
 }
