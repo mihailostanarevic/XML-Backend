@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/ads")
 public class AdController {
@@ -45,7 +46,7 @@ public class AdController {
     }
 
     @PostMapping(consumes = { "multipart/form-data" })
-    public ResponseEntity<?> addAd(@RequestPart("imageFile") List<MultipartFile> fileList, @RequestPart("request") AddAdRequest request) throws Exception{
+    public ResponseEntity<?> createAd(@RequestPart("imageFile") List<MultipartFile> fileList, @RequestPart("request") AddAdRequest request) throws Exception{
         return new ResponseEntity<>(_adService.createAd(fileList, request), HttpStatus.CREATED);
     }
 
@@ -56,8 +57,8 @@ public class AdController {
 
     @GetMapping("/{id}/ads")
 //    @PreAuthorize("hasAuthority('VIEW_AD')")
-    public List<AdResponse> getAd(@PathVariable("id") UUID id) throws Exception{
-        return _adService.getAgentAds(id);
+    public List<AdResponse> getAgentAds(@PathVariable("id") UUID agentId) throws Exception{
+        return _adService.getAgentAds(agentId);
     }
 
     @GetMapping("/{id}/agent")

@@ -2,6 +2,7 @@ package com.rentacar.carservice.service.impl;
 
 import com.rentacar.carservice.client.AuthClient;
 import com.rentacar.carservice.dto.client.AdClientResponse;
+import com.rentacar.carservice.dto.feignClient.AgentDTO;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.response.*;
 import com.rentacar.carservice.entity.*;
@@ -66,6 +67,7 @@ public class AdService implements IAdService {
     @Override
     public AdClientResponse getAd(UUID adId) {
         Ad ad = _adRepository.findOneById(adId);
+        AgentDTO agentDTO = _authClient.getAgent(ad.getAgent());
         if(ad != null) {
             AdClientResponse adClientResponse = new AdClientResponse();
             AdResponse adResponse = new AdResponse();
@@ -77,6 +79,7 @@ public class AdService implements IAdService {
             adResponse.setLimitedDistance(ad.isLimitedDistance());
             adResponse.setName(ad.getCar().getCarModel().getCarBrand().getName() + " " + ad.getCar().getCarModel().getName());
             adResponse.setSeats(ad.getSeats());
+            adResponse.setAgentName(agentDTO.getAgentName());
             List<AddressDTO> addressDTOS = new ArrayList<>();
             adResponse.setFullLocations(addressDTOS);
             adClientResponse.setAdResponse(adResponse);
@@ -245,4 +248,5 @@ public class AdService implements IAdService {
         adResponse.setFullLocations(fullLocations);
         return adResponse;
     }
+
 }

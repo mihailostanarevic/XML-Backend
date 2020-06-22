@@ -25,4 +25,5 @@ public interface IAdService {
     AdClientResponse getAd(UUID adId);
 
     AgentResponse getAgentByAdID(UUID id);
+
 }

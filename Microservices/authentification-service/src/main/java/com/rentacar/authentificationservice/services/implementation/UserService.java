@@ -6,11 +6,13 @@ import com.rentacar.authentificationservice.entity.User;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.IUserService;
 import com.rentacar.authentificationservice.util.enums.UserRole;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Service
 public class UserService implements IUserService {
 
     private final IUserRepository _userRepository;

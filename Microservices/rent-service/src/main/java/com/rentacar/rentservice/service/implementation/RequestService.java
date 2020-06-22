@@ -10,6 +10,7 @@ import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.rentservice.dto.client.UUIDResponse;
 import com.rentacar.rentservice.dto.request.RequestRequest;
+import com.rentacar.rentservice.dto.response.AdResponse;
 import com.rentacar.rentservice.dto.response.AgentRequests;
 import com.rentacar.rentservice.dto.response.SimpleUserRequests;
 import com.rentacar.rentservice.entity.Request;
@@ -304,14 +305,18 @@ public class RequestService implements IRequestService {
             simpleUserRequests.setRequestStatus(request.getStatus().toString());
             String ads = "";
             String description = "";
-            for (RequestAd requestAd : _requestAdRepository.findAllByRequest(request)) {
+            List<RequestAd> requestAdList = _requestAdRepository.findAllByRequest(request);
+            for (RequestAd requestAd : requestAdList) {
                 AdClientResponse adClientResponse = _adClient.getAdByID(requestAd.getAdID());
-                ads += adClientResponse.getAdResponse().getName();
+                simpleUserRequests.setAgent(adClientResponse.getAdResponse().getAgentName());
+                ads += adClientResponse.getAdResponse().getName() + ", ";
                 description += "Ad: " + ads + " in period: " + requestAd.getPickUpDate() + " at " +
                         requestAd.getPickUpTime() + " to " + requestAd.getReturnDate() + " at " + requestAd.getReturnTime() + ", ";
             }
-//            ads = ads.substring(0, ads.length() -2);
-//            description = description.substring(0, description.length() - 2);
+            if(requestAdList.size() > 1) {
+                ads = ads.substring(0, ads.length() -2);
+            }
+            description = description.substring(0, description.length() - 2);
             simpleUserRequests.setDescription(description);
             simpleUserRequests.setAd(ads);
             simpleUserRequestList.add(simpleUserRequests);
@@ -333,11 +338,15 @@ public class RequestService implements IRequestService {
             agentRequest.setRequestStatus(request.getStatus().toString());
             String ads = "";
             String description = "";
-            for (RequestAd requestAd : _requestAdRepository.findAllByRequest(request)) {
+            List<RequestAd> requestAdList = _requestAdRepository.findAllByRequest(request);
+            for (RequestAd requestAd : requestAdList) {
                 AdClientResponse adClientResponse = _adClient.getAdByID(requestAd.getAdID());
-                ads += adClientResponse.getAdResponse().getName();
+                ads += adClientResponse.getAdResponse().getName() + ", ";
                 description += "Ad: " + ads.substring(0, ads.length()-1) + " in period: " + requestAd.getPickUpDate() + " at " +
                         requestAd.getPickUpTime() + " to " + requestAd.getReturnDate() + " at " + requestAd.getReturnTime() + ", ";
+            }
+            if(requestAdList.size() > 1) {
+                ads = ads.substring(0, ads.length() -2);
             }
             description = description.substring(0, description.length() - 2);
             ads = ads.substring(0, ads.length() -1);

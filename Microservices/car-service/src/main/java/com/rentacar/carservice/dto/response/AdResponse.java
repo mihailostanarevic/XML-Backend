@@ -12,6 +12,8 @@ public class AdResponse {
 
     private UUID agentID;
 
+    private String agentName;
+
     private String name;            // ad name
 
     private boolean limitedDistance;
