@@ -20,4 +20,6 @@ public interface IRequestRepository extends JpaRepository<Request, UUID> {
 
     List<Request> findAllByDeleted(boolean deleted);
 
+    List<Request> findAllByCustomerIDAndStatus(UUID id, RequestStatus status);
+
 }

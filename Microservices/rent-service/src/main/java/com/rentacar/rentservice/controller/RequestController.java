@@ -99,4 +99,8 @@ public class RequestController {
         return _requestService.getRequestsByStatus(statusReq);
     }
 
+    @GetMapping("/{id}/simple-user")
+    public List<RequestDTO> getAllPaidRequestsByCustomer(@PathVariable UUID id){
+        return _requestService.getAllPaidRequestsByCustomer(id);
+    }
 }
