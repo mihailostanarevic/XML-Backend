@@ -1,6 +1,7 @@
 package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.request.CreateFuelTypeRequest;
+import com.rentacar.carservice.dto.request.GetFuelTypesWithFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateFuelTypeRequest;
 import com.rentacar.carservice.dto.response.FuelTypeResponse;
 import com.rentacar.carservice.service.IFuelTypeService;
@@ -42,5 +43,10 @@ public class FuelTypeController {
     @GetMapping
     public List<FuelTypeResponse> getAllFuelTypes() throws Exception{
         return _fuelTypeService.getAllFuelTypes();
+    }
+
+    @GetMapping("/with-filter")
+    public List<FuelTypeResponse> getAllFuelTypesWithFilter(GetFuelTypesWithFilterRequest request) throws Exception{
+        return _fuelTypeService.getAllFuelTypesWithFilter(request);
     }
 }

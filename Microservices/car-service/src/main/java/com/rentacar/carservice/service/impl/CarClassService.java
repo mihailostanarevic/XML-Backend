@@ -1,6 +1,7 @@
 package com.rentacar.carservice.service.impl;
 
 import com.rentacar.carservice.dto.request.CreateCarClassRequest;
+import com.rentacar.carservice.dto.request.GetCarClassesWithFilter;
 import com.rentacar.carservice.dto.request.UpdateCarClassRequest;
 import com.rentacar.carservice.dto.response.CarClassResponse;
 import com.rentacar.carservice.entity.CarClass;
@@ -58,6 +59,22 @@ public class CarClassService implements ICarClassService {
         List<CarClass> carClasses = _carClassRepository.findAllByDeleted(false);
         return carClasses.stream()
                 .map(carClass -> mapCarClassToCarClassResponse(carClass))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CarClassResponse> getAllCarClassesWithFilter(GetCarClassesWithFilter request) {
+        List<CarClass> allCarClasses = _carClassRepository.findAllByDeleted(false);
+        return allCarClasses
+                .stream()
+                .filter(carClass -> {
+                    if(request.getClassName() != null) {
+                        return carClass.getName().toLowerCase().contains(request.getClassName().toLowerCase());
+                    } else {
+                        return true;
+                    }
+                })
+                .map(cc -> mapCarClassToCarClassResponse(cc))
                 .collect(Collectors.toList());
     }
 

@@ -1,6 +1,7 @@
 package com.rentacar.carservice.service.impl;
 
 import com.rentacar.carservice.dto.request.CreateFuelTypeRequest;
+import com.rentacar.carservice.dto.request.GetFuelTypesWithFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateFuelTypeRequest;
 import com.rentacar.carservice.dto.response.FuelTypeResponse;
 import com.rentacar.carservice.entity.FuelType;
@@ -60,6 +61,29 @@ public class FuelTypeService implements IFuelTypeService {
         List<FuelType> fuelTypes = _fuelTypeRepository.findAllByDeleted(false);
         return fuelTypes.stream()
                 .map(fuelType -> mapFuelTypeToFuelTypeResponse(fuelType))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<FuelTypeResponse> getAllFuelTypesWithFilter(GetFuelTypesWithFilterRequest request)  {
+        List<FuelType> allFuelTypes = _fuelTypeRepository.findAllByDeleted(false);
+        return allFuelTypes
+                .stream()
+                .filter(fuelType -> {
+                    if(request.getType() != null) {
+                        return fuelType.getType().toLowerCase().contains(request.getType().toLowerCase());
+                    } else {
+                        return true;
+                    }
+                })
+                .filter(fuelType -> {
+                    if(request.getTankCapacity() != null) {
+                        return fuelType.getTankCapacity().toLowerCase().contains(request.getTankCapacity().toLowerCase());
+                    } else {
+                        return true;
+                    }
+                })
+                .map(ft -> mapFuelTypeToFuelTypeResponse(ft))
                 .collect(Collectors.toList());
     }
 

@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.request.AddCarAccessoriesRequest;
 import com.rentacar.carservice.dto.request.AddKilometersRequest;
 import com.rentacar.carservice.dto.request.CreateCarRequest;
 import com.rentacar.carservice.dto.request.UpdateCarRequest;
+import com.rentacar.carservice.dto.response.CarAccessoryResponse;
 import com.rentacar.carservice.dto.response.CarResponse;
 import com.rentacar.carservice.service.ICarService;
 import org.springframework.web.bind.annotation.*;
@@ -54,5 +55,10 @@ public class CarController {
     @PutMapping
     public void addCarAccessories(@RequestBody AddCarAccessoriesRequest request) throws Exception{
         _carService.addCarAccessories(request);
+    }
+
+    @GetMapping("/{id}/car-accessories")
+    public List<CarAccessoryResponse> getCarAccessories1(@PathVariable("id") UUID id){
+        return _carService.getCarAccessories(id);
     }
 }
