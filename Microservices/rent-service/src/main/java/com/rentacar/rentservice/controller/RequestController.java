@@ -5,6 +5,7 @@ import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.dto.response.AdResponse;
 import com.rentacar.rentservice.dto.response.AgentRequests;
+import com.rentacar.rentservice.dto.response.RequestResponseDTO;
 import com.rentacar.rentservice.dto.response.SimpleUserRequests;
 import com.rentacar.rentservice.service.IRequestService;
 import com.rentacar.rentservice.util.enums.RequestStatus;
@@ -28,9 +29,11 @@ public class RequestController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> createRequest(@RequestBody List<RequestRequest> requestList){
+    public ResponseEntity<RequestResponseDTO> createRequest(@RequestBody List<RequestRequest> requestList){
         _requestService.processRequests(requestList);
-        return new ResponseEntity<>("Hello from Rent service", HttpStatus.OK);
+        RequestResponseDTO requestResponseDTO = new RequestResponseDTO();
+        requestResponseDTO.setMessage("Request is successfully created!");
+        return new ResponseEntity<>(requestResponseDTO, HttpStatus.OK);
     }
 
     @PostMapping("/availability")

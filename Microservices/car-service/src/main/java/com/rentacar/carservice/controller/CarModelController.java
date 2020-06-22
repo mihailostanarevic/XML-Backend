@@ -1,6 +1,7 @@
 package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.request.CreateCarModelRequest;
+import com.rentacar.carservice.dto.request.GetCarModelsFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateCarModelRequest;
 import com.rentacar.carservice.dto.response.CarModelResponse;
 import com.rentacar.carservice.service.ICarModelService;
@@ -42,5 +43,10 @@ public class CarModelController {
     @GetMapping
     public List<CarModelResponse> getAllCarModels() throws Exception{
         return _carModelService.getAllCarModels();
+    }
+
+    @GetMapping("/with-filter")
+    public List<CarModelResponse> getAllCarModelsWithFilter(GetCarModelsFilterRequest request) throws Exception{
+        return _carModelService.getAllCarModelsWithFilter(request);
     }
 }

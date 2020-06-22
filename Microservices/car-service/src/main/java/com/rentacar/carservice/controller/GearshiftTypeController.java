@@ -1,6 +1,7 @@
 package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.request.CreateGearshiftTypeRequest;
+import com.rentacar.carservice.dto.request.GetGearshiftTypesWithFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateGearshiftTypeRequest;
 import com.rentacar.carservice.dto.response.GearshiftTypeResponse;
 import com.rentacar.carservice.service.IGearshiftTypeService;
@@ -42,5 +43,10 @@ public class GearshiftTypeController {
     @GetMapping
     public List<GearshiftTypeResponse> getAllGearshiftTypes() throws Exception{
         return _gearshiftTypeService.getAllGearshiftTypes();
+    }
+
+    @GetMapping("/with-filter")
+    public List<GearshiftTypeResponse> getAllGearshiftTypesWithFilter(GetGearshiftTypesWithFilterRequest request) throws Exception{
+        return _gearshiftTypeService.getAllGearshiftTypesWithFilter(request);
     }
 }

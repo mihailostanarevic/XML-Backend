@@ -1,6 +1,7 @@
 package com.rentacar.carservice.service;
 
 import com.rentacar.carservice.dto.request.CreateCarBrandRequest;
+import com.rentacar.carservice.dto.request.GetCarBrandsFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateCarBrandRequest;
 import com.rentacar.carservice.dto.response.CarBrandResponse;
 
@@ -18,4 +19,6 @@ public interface ICarBrandService {
     CarBrandResponse getCarBrand(UUID id) throws Exception;
 
     List<CarBrandResponse> getAllCarBrands() throws Exception;
+
+    List<CarBrandResponse> getAllCarBrandsWithFilter(GetCarBrandsFilterRequest request);
 }
