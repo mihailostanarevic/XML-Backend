@@ -50,7 +50,7 @@ public class CommentService implements ICommentService {
         if(simpleUser != null){
             List<ReqDTO> simpleUsersRequests = _rentClient.getAllPaidRequestsByCustomer(simpleUser.getId());
             if(simpleUsersRequests.isEmpty()){
-                throw new Exception("You cannot comment this ad because you did not have any paid rents.");
+                throw new Exception("You cannot comment any ad because you did not have any paid rents.");
             }
             ReqDTO ratingRequest = null; //flag
             for(ReqDTO r: simpleUsersRequests){
