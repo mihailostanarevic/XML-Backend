@@ -16,7 +16,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-@SuppressWarnings("SpellCheckingInspection")
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/request")
 public class RequestController {
@@ -40,7 +40,7 @@ public class RequestController {
         return new ResponseEntity<>("successfully changed", HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/requests/{resID}/pay")
+    @PutMapping("/{userId}/requests/{reqID}/pay")
 //    @PreAuthorize("hasAuthority('CREATE_REQUEST')")
     public ResponseEntity<Collection<SimpleUserRequests>> userPay(@RequestBody RequestBodyID requestBodyID){
         return new ResponseEntity<>(_requestService.payRequest(requestBodyID.getId(), requestBodyID.getRequestID()), HttpStatus.OK);
@@ -52,9 +52,15 @@ public class RequestController {
         return new ResponseEntity<>(_requestService.dropRequest(requestBodyID.getId(), requestBodyID.getRequestID()), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/requests/{status}")
+    @GetMapping("/{agentId}/requests/{requestID}/approve")
+//    @PreAuthorize("hasAuthority('APPROVE_REQUEST')")
+    public ResponseEntity<Collection<AgentRequests>> approveRequest(@PathVariable("agentId") UUID agentId, @PathVariable("requestID") UUID reqID){
+        return new ResponseEntity<>(_requestService.approveRequest(agentId, reqID), HttpStatus.OK);
+    }
+
+    @GetMapping("/agent/{id}/requests/{status}")
 //    @PreAuthorize("hasAuthority('READ_REQUEST')")
-    public ResponseEntity<Collection<AgentRequests>> getAllAgentRequests(@PathVariable("id") UUID userId, @PathVariable("status") String status){
+    public ResponseEntity<Collection<AgentRequests>> getAllAgentRequests(@PathVariable("id") UUID agentId, @PathVariable("status") String status){
         RequestStatus carRequestStatus;
         if(status.equalsIgnoreCase("PENDING")) {
             carRequestStatus = RequestStatus.PENDING;
@@ -67,16 +73,28 @@ public class RequestController {
         } else {
             carRequestStatus = RequestStatus.CANCELED;
         }
-        Collection<AgentRequests> agentRequests = _requestService.getAllAgentRequests(userId, carRequestStatus);
+        Collection<AgentRequests> agentRequests = _requestService.getAllAgentRequests(agentId, carRequestStatus);
         return new ResponseEntity<>(agentRequests, HttpStatus.OK);
     }
 
-    @GetMapping("/{id}/requests/{resID}/approve")
-//    @PreAuthorize("hasAuthority('APPROVE_REQUEST')")
-    public ResponseEntity<?> approveRequest(@PathVariable("id") UUID agentId, @PathVariable("resID") UUID reqID){
-        return new ResponseEntity<>(_requestService.approveRequest(agentId, reqID), HttpStatus.OK);
+    @GetMapping("/user/{id}/requests/{status}")
+//    @PreAuthorize("hasAuthority('READ_REQUEST')")
+    public ResponseEntity<List<SimpleUserRequests>> usersRequestFromStatus(@PathVariable("id") UUID userId, @PathVariable("status") String status){
+        List<SimpleUserRequests> simpleUserRequests;
+        if(status.equalsIgnoreCase("PENDING")) {
+            simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.PENDING);
+        } else if(status.equalsIgnoreCase("RESERVED")) {
+            simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.RESERVED);
+        } else if(status.equalsIgnoreCase("PAID")) {
+            simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.PAID);
+        } else if(status.equalsIgnoreCase("CHECKED")) {
+            simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.CHECKED);
+        } else {
+            simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.CANCELED);
+        }
+        return new ResponseEntity<>(simpleUserRequests, HttpStatus.OK);
     }
-  
+
     @GetMapping
     List<RequestDTO> getRequestByStatus(@RequestParam("status") String status){
         String stringStatus = status.toUpperCase();

@@ -35,4 +35,5 @@ public interface IRequestService {
     RequestStatus changeRequestStatus(RequestStatus requestStatus);
 
     List<RequestDTO> getRequestsByStatus(RequestStatus status);
+
 }

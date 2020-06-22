@@ -1,9 +1,8 @@
 package com.rentacar.authentificationservice.controller;
 
-import com.rentacar.authentificationservice.dto.response.AgentRequests;
-import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
+import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.services.IAgentService;
 import org.springframework.web.bind.annotation.*;
 

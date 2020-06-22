@@ -1,20 +1,27 @@
 package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.request.*;
+import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
+import com.rentacar.authentificationservice.services.IUserService;
 import com.rentacar.authentificationservice.util.enums.GeneralException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@SuppressWarnings("unused")
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
 
     private IAuthenticationService authService;
+    private final IUserService _userService;
 
-    public AuthenticationController(IAuthenticationService authService) {
+    public AuthenticationController(IAuthenticationService authService, IUserService userService) {
         this.authService = authService;
+        _userService = userService;
     }
 
     @GetMapping("/verify/{token}")
