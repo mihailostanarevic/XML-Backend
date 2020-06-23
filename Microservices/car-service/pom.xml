@@ -65,6 +65,10 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 			<version>2.2.2.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>wsdl4j</groupId>
+			<artifactId>wsdl4j</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -72,6 +76,33 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>2.4</version>
+				<executions>
+					<execution>
+						<id>schemagen</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schemagen</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<sources>
+						<source>${basedir}/src/main/java/com/rentacar/carservice/model</source>
+					</sources>
+					<outputDirectory>${project.build.directory}/classes</outputDirectory>
+					<transformSchemas>
+						<transformSchema>
+							<uri>http://www.car.com/car</uri>
+							<toPrefix>ca</toPrefix>
+							<toFile>car.xsd</toFile>
+						</transformSchema>
+					</transformSchemas>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
