@@ -47,7 +47,7 @@ public class CommentService implements ICommentService {
         SimpleUserDTO simpleUser = _authClient.getSimpleUser(request.getUserId());
         Ad ad = _adRepository.findOneById(request.getAdId());
 
-        if(simpleUser != null){
+        if(simpleUser.getId() != null){
             List<ReqDTO> simpleUsersRequests = _rentClient.getAllPaidRequestsByCustomer(simpleUser.getId());
             if(simpleUsersRequests.isEmpty()){
                 throw new Exception("You cannot comment any ad because you did not have any paid rents.");
@@ -142,9 +142,11 @@ public class CommentService implements ICommentService {
         response.setAgentName(agentDTO.getAgentName());
         response.setComment(comment.getComment());
         response.setCommentId(comment.getSimpleUser());
-        SimpleUserDTO simpleUserDTO = _authClient.getSimpleUser(comment.getSimpleUser());
-        response.setCustomerFirstName(simpleUserDTO.getFirstName());
-        response.setCustomerLastName(simpleUserDTO.getLastName());
+        if(comment.getSimpleUser() != null){
+            SimpleUserDTO simpleUserDTO = _authClient.getSimpleUser(comment.getSimpleUser());
+            response.setCustomerFirstName(simpleUserDTO.getFirstName());
+            response.setCustomerLastName(simpleUserDTO.getLastName());
+        }
         response.setCarBrandName(comment.getAd().getCar().getCarModel().getCarBrand().getName());
         response.setCarModelName(comment.getAd().getCar().getCarModel().getName());
         response.setCommentId(comment.getId());
