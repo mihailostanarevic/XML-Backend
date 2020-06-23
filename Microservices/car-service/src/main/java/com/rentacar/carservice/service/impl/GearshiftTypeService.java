@@ -5,6 +5,7 @@ import com.rentacar.carservice.dto.request.GetGearshiftTypesWithFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateGearshiftTypeRequest;
 import com.rentacar.carservice.dto.response.GearshiftTypeResponse;
 import com.rentacar.carservice.entity.GearshiftType;
+import com.rentacar.carservice.model.CreateGearshiftTypeRequestDTO;
 import com.rentacar.carservice.repository.IGearshiftTypeRepository;
 import com.rentacar.carservice.service.IGearshiftTypeService;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,19 @@ public class GearshiftTypeService implements IGearshiftTypeService {
         gearshiftType.setType(request.getType());
         GearshiftType savedGearshiftType = _gearshiftTypeRepository.save(gearshiftType);
         return mapGearshiftTypeToGearshiftTypeResponse(savedGearshiftType);
+    }
+
+    @Override
+    public Long createGearshiftTypeViaSOAP(CreateGearshiftTypeRequestDTO request) {
+        GearshiftType gearshiftType = new GearshiftType();
+        gearshiftType.setDeleted(false);
+        gearshiftType.setNumberOfGears(request.getNumberOfGears());
+        gearshiftType.setType(request.getType());
+        GearshiftType savedGearshiftType = _gearshiftTypeRepository.save(gearshiftType);
+        if(savedGearshiftType == null){
+            return -1L;
+        }
+        return 1L;
     }
 
     @Override
