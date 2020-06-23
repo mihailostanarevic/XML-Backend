@@ -21,14 +21,14 @@ public class WebServiceSoapConfig extends WsConfigurerAdapter {
         MessageDispatcherServlet servlet = new MessageDispatcherServlet();
         servlet.setApplicationContext(applicationContext);
         servlet.setTransformWsdlLocations(true);
-        return new ServletRegistrationBean<>(servlet, "/ad/ws/*");
+        return new ServletRegistrationBean<>(servlet, "/ws/*");
     }
 
     @Bean(name = "car")
     public DefaultWsdl11Definition defaultWsdl11Definition(XsdSchema carSchema) {
         DefaultWsdl11Definition wsdl11Definition = new ReflectionWsdl11Definition();
-        wsdl11Definition.setPortTypeName("Car");
-        wsdl11Definition.setLocationUri("/ad/ws");
+        wsdl11Definition.setPortTypeName("Cars");
+        wsdl11Definition.setLocationUri("/ws");
         wsdl11Definition.setTargetNamespace("http://www.car.com/car");
         wsdl11Definition.setSchema(carSchema);
         wsdl11Definition.setRequestSuffix("Request");
@@ -38,6 +38,6 @@ public class WebServiceSoapConfig extends WsConfigurerAdapter {
 
     @Bean
     public XsdSchema carSchema() {
-        return new SimpleXsdSchema(new ClassPathResource("schema1.xsd"));
+        return new SimpleXsdSchema(new ClassPathResource("car.xsd"));
     }
 }

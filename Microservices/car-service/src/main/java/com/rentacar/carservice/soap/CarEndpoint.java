@@ -25,9 +25,10 @@ public class CarEndpoint implements WSEndpoint {
 
     @PayloadRoot(namespace = NAMESPACE_URI, localPart = "createGearshiftTypeRequest")
     @ResponsePayload
-    public JAXBElement<Long> createGearshiftType(@RequestPayload JAXBElement<CreateGearshiftTypeRequestDTO> request) {
+    public void createGearshiftType(@RequestPayload JAXBElement<CreateGearshiftTypeRequestDTO> request) {
+        System.out.println("usao sam hej");
         Long retVal = _gearshiftService.createGearshiftTypeViaSOAP(request.getValue());
-        return objectFactory.createCreateGearshiftTypeResponse(retVal);
+        objectFactory.createCreateGearshiftTypeResponse(retVal);
     }
 
 }

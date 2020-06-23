@@ -98,7 +98,7 @@
 					<transformSchemas>
 						<transformSchema>
 							<uri>http://www.car.com/car</uri>
-							<toPrefix>ca</toPrefix>
+							<toPrefix>car</toPrefix>
 							<toFile>car.xsd</toFile>
 						</transformSchema>
 					</transformSchemas>
