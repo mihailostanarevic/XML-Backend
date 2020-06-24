@@ -2,31 +2,42 @@ package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.request.*;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
+import com.rentacar.authentificationservice.security.TokenUtils;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
 import com.rentacar.authentificationservice.services.IUserService;
 import com.rentacar.authentificationservice.util.enums.GeneralException;
+import feign.FeignException.NotFound;
+import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("unused")
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
 
-    private IAuthenticationService authService;
-    private final IUserService _userService;
+    private final IAuthenticationService _authService;
+    private final TokenUtils _tokenUtils;
 
-    public AuthenticationController(IAuthenticationService authService, IUserService userService) {
-        this.authService = authService;
-        _userService = userService;
+    public AuthenticationController(IAuthenticationService authService, IUserService userService, TokenUtils tokenUtils) {
+        this._authService = authService;
+        _tokenUtils = tokenUtils;
     }
 
-    @GetMapping("/verify/{token}")
-    public boolean verify(@PathVariable("token") String token) {
-        return true;
+    @GetMapping("/verify")
+    public String verify(@RequestHeader("Auth-Token") String token) throws NotFoundException {
+        return _tokenUtils.getUsernameFromToken(token);
+    }
+
+    @GetMapping("/permission")
+    public String getPermissions(@RequestHeader("Auth-Token") String token) throws NotFoundException {
+        return _authService.getPermission(token);
     }
 
     @GetMapping("/hello")
@@ -36,52 +47,69 @@ public class AuthenticationController {
 
     @PutMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginCredentialsDTO request) throws GeneralException {
-        return new ResponseEntity<>(authService.login(request), HttpStatus.OK);
+        return new ResponseEntity<>(_authService.login(request), HttpStatus.OK);
     }
 
-    @PostMapping("/admin")
-    public void registerAdmin(AdminDetailsDTO request) {
-        authService.registerAdmin(request);
+    @PostMapping("/create-agent")
+    @PreAuthorize("hasAuthority('CREATE_AGENT')")
+    public UserResponse createAgent(@RequestBody CreateAgentRequest request) {
+//        validateAgentJSON(request);
+        return _authService.createAgent(request);
     }
 
-    @PostMapping("/agent")
-    public void registerAgent(AgentDetailsDTO request) {
-        authService.registerAgent(request);
+    @PostMapping("/create-simple-user")
+    public UserResponse createSimpleUser(@RequestBody CreateSimpleUserRequest request) {
+        return _authService.createSimpleUser(request);
     }
 
-    @PostMapping("/user")
-    public void registerSimpleUser(SimpleUserDetailsDTO request) {
-        authService.registerSimpleUser(request);
+    @PutMapping("/{id}/new-password")
+    public UserResponse newPassword(@PathVariable UUID id , @RequestBody NewPassordRequest request) {
+        return _authService.setNewPassword(id,request);
+    }
+
+    @PutMapping("/confirm-registration-request")
+    public void confirmRegistrationRequest(@RequestBody GetIdRequest request) {
+        _authService.confirmRegistrationRequest(request);
+    }
+
+    @PutMapping("/approve-registration-request")
+    public void approveRegistrationRequest(@RequestBody GetIdRequest request) {
+        _authService.approveRegistrationRequest(request);
+    }
+
+    @PutMapping("/deny-registration-request")
+    public void denyRegistrationRequest(@RequestBody GetIdRequest request) {
+        _authService.denyRegistrationRequest(request);
     }
 
     @PostMapping("/ban")
     public void banUser(ChangePasswordDTO request){
-        authService.banUser(request);
+        _authService.banUser(request);
     }
 
     @PostMapping("/password-change")
     public void passwordChange(ChangePasswordDTO request){
-        authService.changePassword(request);
+        _authService.changePassword(request);
     }
 
     @PutMapping("/admin")
     public void updateAdmin(UpdateAdminRequestDTO request) {
-        authService.updateAdmin(request);
+        _authService.updateAdmin(request);
     }
 
     @PutMapping("/agent")
     public void registerAgent(UpdateAgentRequestDTO request) {
-        authService.updateAgent(request);
+        _authService.updateAgent(request);
     }
 
     @PutMapping("/user")
     public void updateSimpleUser(UpdateUserRequestDTO request) {
-        authService.updateSimpleUser(request);
+        _authService.updateSimpleUser(request);
     }
 
     @DeleteMapping("/user")
     public void deleteUser(ChangePasswordDTO request){
-        authService.deleteUser(request);
+        _authService.deleteUser(request);
     }
 
 }

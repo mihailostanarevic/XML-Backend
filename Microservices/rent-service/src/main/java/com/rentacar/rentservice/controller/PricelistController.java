@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SuppressWarnings({"unused", "SpellCheckingInspection"})
 @RestController
-@RequestMapping("/rent/pricelist")
+@RequestMapping("/pricelist")
 public class PricelistController {
 
     @Autowired

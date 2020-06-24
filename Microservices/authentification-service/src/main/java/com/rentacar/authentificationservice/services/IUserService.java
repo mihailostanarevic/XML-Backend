@@ -1,5 +1,6 @@
 package com.rentacar.authentificationservice.services;
 
+import com.rentacar.authentificationservice.dto.request.CreateAgentRequest;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.entity.User;
 
@@ -18,4 +19,5 @@ public interface IUserService {
     List<UserResponse> getCustomers();
 
     UserMessageDTO getUser(UUID id);
+
 }

@@ -20,7 +20,7 @@ public class TokenUtils {
     private String APP_NAME;
 
     @Value("somesecret")
-    public String SECRET;
+    private String SECRET;
 
     @Value("1200000")
     private int EXPIRES_IN;             // koliko mi dugo vazi token
@@ -46,7 +46,7 @@ public class TokenUtils {
                 .setAudience(generateAudience())
                 .setIssuedAt(timeProvider.now())
                 .setExpiration(generateExpirationDate())
-                // .claim("role", role) //postavljanje proizvoljnih podataka u telo JWT tokena
+                 .claim("username", username) //postavljanje proizvoljnih podataka u telo JWT tokena
                 .signWith(SIGNATURE_ALGORITHM, SECRET).compact();
     }
 
