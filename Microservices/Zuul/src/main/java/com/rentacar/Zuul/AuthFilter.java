@@ -46,15 +46,17 @@ public class AuthFilter extends ZuulFilter {
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
         HttpServletRequest request = ctx.getRequest();
-
         if(request.getHeader("Auth-Token") == null) {
             return null;
         }
 
         String token = request.getHeader("Auth-Token");
         try {
-            if(authClient.verify(token)) {
-                ctx.addZuulRequestHeader("Auth-Token", token);
+            String username = authClient.verify(token);
+            if(username != null) {
+                String permissionList = authClient.getPermission(token);
+                ctx.addZuulRequestHeader("roles", permissionList);
+                ctx.addZuulRequestHeader("username", username);
             }
         } catch (FeignException.NotFound e) {
             setFailedRequest("User does not exist!", 403);

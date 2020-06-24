@@ -11,6 +11,7 @@ import com.rentacar.rentservice.service.IRequestService;
 import com.rentacar.rentservice.util.enums.RequestStatus;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -29,6 +30,7 @@ public class RequestController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('CREATE_REQUEST')")
     public ResponseEntity<RequestResponseDTO> createRequest(@RequestBody List<RequestRequest> requestList){
         _requestService.processRequests(requestList);
         RequestResponseDTO requestResponseDTO = new RequestResponseDTO();
@@ -37,32 +39,32 @@ public class RequestController {
     }
 
     @PostMapping("/availability")
-//    @PreAuthorize("hasAuthority('UPDATE_AD')")
+    @PreAuthorize("hasAuthority('UPDATE_AD')")
     public ResponseEntity<?> changeCarAvailability(@RequestBody RequestRequest request) throws Exception{
         _requestService.changeAdAvailability(request);
         return new ResponseEntity<>("successfully changed", HttpStatus.OK);
     }
 
     @PutMapping("/{userId}/requests/{reqID}/pay")
-//    @PreAuthorize("hasAuthority('CREATE_REQUEST')")
+    @PreAuthorize("hasAuthority('CREATE_REQUEST')")
     public ResponseEntity<Collection<SimpleUserRequests>> userPay(@RequestBody RequestBodyID requestBodyID){
         return new ResponseEntity<>(_requestService.payRequest(requestBodyID.getId(), requestBodyID.getRequestID()), HttpStatus.OK);
     }
 
     @PutMapping("/{id}/requests/{resID}/drop")
-//    @PreAuthorize("hasAuthority('CREATE_REQUEST')")
+    @PreAuthorize("hasAuthority('CREATE_REQUEST')")
     public ResponseEntity<Collection<SimpleUserRequests>> userDrop(@RequestBody RequestBodyID requestBodyID){
         return new ResponseEntity<>(_requestService.dropRequest(requestBodyID.getId(), requestBodyID.getRequestID()), HttpStatus.OK);
     }
 
     @GetMapping("/{agentId}/requests/{requestID}/approve")
-//    @PreAuthorize("hasAuthority('APPROVE_REQUEST')")
+    @PreAuthorize("hasAuthority('APPROVE_REQUEST')")
     public ResponseEntity<Collection<AgentRequests>> approveRequest(@PathVariable("agentId") UUID agentId, @PathVariable("requestID") UUID reqID){
         return new ResponseEntity<>(_requestService.approveRequest(agentId, reqID), HttpStatus.OK);
     }
 
     @GetMapping("/agent/{id}/requests/{status}")
-//    @PreAuthorize("hasAuthority('READ_REQUEST')")
+    @PreAuthorize("hasAuthority('READ_REQUEST')")
     public ResponseEntity<Collection<AgentRequests>> getAllAgentRequests(@PathVariable("id") UUID agentId, @PathVariable("status") String status){
         RequestStatus carRequestStatus;
         if(status.equalsIgnoreCase("PENDING")) {
@@ -81,7 +83,7 @@ public class RequestController {
     }
 
     @GetMapping("/user/{id}/requests/{status}")
-//    @PreAuthorize("hasAuthority('READ_REQUEST')")
+    @PreAuthorize("hasAuthority('READ_REQUEST')")
     public ResponseEntity<List<SimpleUserRequests>> usersRequestFromStatus(@PathVariable("id") UUID userId, @PathVariable("status") String status){
         List<SimpleUserRequests> simpleUserRequests;
         if(status.equalsIgnoreCase("PENDING")) {

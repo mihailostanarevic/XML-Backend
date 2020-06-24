@@ -2,16 +2,13 @@ package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.client.AdClientResponse;
 import com.rentacar.carservice.dto.request.AddAdRequest;
-import com.rentacar.carservice.dto.request.RequestDTO;
-import com.rentacar.carservice.dto.request.UpdateAdRequest;
-import com.rentacar.carservice.dto.request.UpdateCarAvailability;
 import com.rentacar.carservice.dto.response.AdResponse;
 import com.rentacar.carservice.dto.response.AgentResponse;
 import com.rentacar.carservice.dto.response.PhotoResponse;
-import com.rentacar.carservice.dto.response.RequestResponse;
 import com.rentacar.carservice.service.IAdService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -46,6 +43,7 @@ public class AdController {
     }
 
     @PostMapping(consumes = { "multipart/form-data" })
+    @PreAuthorize("hasAuthority('CREATE_AD')")
     public ResponseEntity<?> createAd(@RequestPart("imageFile") List<MultipartFile> fileList, @RequestPart("request") AddAdRequest request) throws Exception{
         return new ResponseEntity<>(_adService.createAd(fileList, request), HttpStatus.CREATED);
     }
@@ -56,13 +54,13 @@ public class AdController {
     }
 
     @GetMapping("/{id}/ads")
-//    @PreAuthorize("hasAuthority('VIEW_AD')")
+    @PreAuthorize("hasAuthority('VIEW_AD')")
     public List<AdResponse> getAgentAds(@PathVariable("id") UUID agentId) throws Exception{
         return _adService.getAgentAds(agentId);
     }
 
     @GetMapping("/{id}/agent")
-//    @PreAuthorize("hasAuthority('VIEW_AD')")
+    @PreAuthorize("hasAuthority('VIEW_AD')")
     public ResponseEntity<AgentResponse> getAgentIDByAdID(@PathVariable("id") UUID id) throws Exception{
         return new ResponseEntity<>(_adService.getAgentByAdID(id), HttpStatus.OK);
     }

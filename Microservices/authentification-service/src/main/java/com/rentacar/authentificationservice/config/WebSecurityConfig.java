@@ -36,21 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        UrlBasedCorsConfigurationSource source = new
-//                UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
-//        return source;
-//    }
-//
-//
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-//                .exposedHeaders("Authorization");
-//    }
-
     @Autowired
     private UserDetailsService jwtUserDetailsService;
 
@@ -84,6 +69,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/auth/hello").permitAll()
+                .antMatchers("/auth/verify").permitAll()    // ne brisati ovo
+                .antMatchers("/auth/permission").permitAll()    // ne brisati ovo
                 .antMatchers("/**").permitAll()             // brisati ovo
                 .antMatchers("/auth/create-simple-user").permitAll()
                 .anyRequest().authenticated().and()
