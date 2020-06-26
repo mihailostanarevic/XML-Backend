@@ -1,6 +1,7 @@
 package com.rentacar.authentificationservice.services;
 
 import com.rentacar.authentificationservice.dto.request.*;
+import com.rentacar.authentificationservice.dto.response.SingleSignOnResponse;
 import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 
@@ -38,4 +39,6 @@ public interface IAuthenticationService {
     String getPermission(String token);
 
     StringResponse limitRedirect(HttpServletRequest request);
+
+    SingleSignOnResponse singleSignOn(LoginCredentialsDTO request);
 }

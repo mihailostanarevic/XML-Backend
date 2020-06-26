@@ -1,6 +1,7 @@
 package com.rentacar.authentificationservice.services.implementation;
 
 import com.rentacar.authentificationservice.dto.request.*;
+import com.rentacar.authentificationservice.dto.response.SingleSignOnResponse;
 import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.entity.*;
@@ -20,7 +21,6 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -376,6 +376,26 @@ public class AuthenticationService implements IAuthenticationService {
                 return response;
             }
         }
+        return response;
+    }
+
+    @Override
+    public SingleSignOnResponse singleSignOn(LoginCredentialsDTO request) throws GeneralException{
+        User user = _userRepository.findOneByUsername(request.getUsername());
+        if(user == null || !_passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
+        }
+        SingleSignOnResponse response = new SingleSignOnResponse();
+        String[] parts = user.getSimpleUser().getAddress().split(",");
+        response.setCountry(parts[0].trim());
+        response.setCity(parts[1].trim());
+        response.setAddress(parts[2].trim());
+        response.setFirstName(user.getSimpleUser().getFirstName());
+        response.setLastName(user.getSimpleUser().getLastName());
+        response.setPassword(request.getPassword());
+        response.setRePassword(request.getPassword());
+        response.setSsn(user.getSimpleUser().getSsn());
+        response.setUsername(user.getUsername());
         return response;
     }
 

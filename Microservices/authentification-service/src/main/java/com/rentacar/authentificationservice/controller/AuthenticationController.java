@@ -1,22 +1,20 @@
 package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.request.*;
+import com.rentacar.authentificationservice.dto.response.SingleSignOnResponse;
 import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.security.TokenUtils;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
 import com.rentacar.authentificationservice.services.IUserService;
 import com.rentacar.authentificationservice.util.enums.GeneralException;
-import feign.FeignException.NotFound;
 import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -116,4 +114,8 @@ public class AuthenticationController {
 
     @GetMapping("/logging-limit")
     public StringResponse loggingLimit(HttpServletRequest request){ return _authService.limitRedirect(request); }
+
+    @PutMapping("/single-sign-on")
+    public SingleSignOnResponse singleSignOn(@RequestBody LoginCredentialsDTO request) throws GeneralException{
+        return _authService.singleSignOn(request);}
 }

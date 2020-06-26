@@ -23,12 +23,14 @@ insert into authorities_permissions (authority_id, permission_id) values
 -- agent1@gmail.com -> Agent123!!!
 -- customer@gmail.com -> Customer123!!!
 -- customer1@gmail.com -> Customer123!!!
+-- sso@gmail.com -> Sifra123!!!
 insert into user_entity (id, username, password, deleted, has_signed_in, last_password_reset_date, user_role) values
     ('9bbbd6c1-34b4-4ea6-8889-be247cfebc34', 'admin@gmail.com', '$2a$10$FiFOG6VNS1W.Eo4CRlSvfOxMpwtc26eoU1CWfafE/bMqQexckGSA6', false, false, '2019-10-01 21:58:58.508-07', 2),
     ('105496cd-30f2-4b62-8082-cc14d282e845', 'agent@gmail.com', '$2a$10$zQU7XEdDSMvxt13Xkjs3X.CCY64edvCS0ZXcgqPtU8FhSYVUhtnau', false, false, '2019-10-01 21:58:58.508-07', 1),
     ('d0535564-08ec-464c-a2db-d930d2c4fcde', 'agent1@gmail.com', '$2a$10$zQU7XEdDSMvxt13Xkjs3X.CCY64edvCS0ZXcgqPtU8FhSYVUhtnau', false, false, '2019-10-01 21:58:58.508-07', 1),
     ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 'customer@gmail.com', '$2a$10$UJEbOrAMWN/bh8tEPHt.Z.fD2RX.T0e0MXNuZEFCEFTNAjHkdAVju', false, false, '2019-10-01 21:58:58.508-07', 0),
-    ('b9362264-17db-411e-8ed0-db8310cba9f1', 'customer2@gmail.com', '$2a$10$UJEbOrAMWN/bh8tEPHt.Z.fD2RX.T0e0MXNuZEFCEFTNAjHkdAVju', false, false, '2020-10-01 21:58:58.508-07', 0);
+    ('b9362264-17db-411e-8ed0-db8310cba9f1', 'customer2@gmail.com', '$2a$10$UJEbOrAMWN/bh8tEPHt.Z.fD2RX.T0e0MXNuZEFCEFTNAjHkdAVju', false, false, '2020-10-01 21:58:58.508-07', 0),
+    ('c6f8a8d0-510c-4e70-9df5-84c3eb677794', 'sso@gmail.com', '$2y$12$BQcM/0M/91ii8JjReot5H.zdC6o8vT9SICpo1.8w2u789gzOcD.AS', false, false, '2020-10-01 21:58:58.508-07', 0);
 
 insert into user_authority (user_id, authority_id) values
     ('9bbbd6c1-34b4-4ea6-8889-be247cfebc34', 1),
@@ -42,7 +44,9 @@ insert into user_authority (user_id, authority_id) values
     ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 6),
     ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 8),
     ('b9362264-17db-411e-8ed0-db8310cba9f1', 3),
-    ('b9362264-17db-411e-8ed0-db8310cba9f1', 6);
+    ('b9362264-17db-411e-8ed0-db8310cba9f1', 6),
+    ('c6f8a8d0-510c-4e70-9df5-84c3eb677794', 3),
+    ('c6f8a8d0-510c-4e70-9df5-84c3eb677794', 6);
 
 insert into admin (id, first_name, last_name, user_id) values
     ('51d5e58d-ac22-4233-a1dc-e4251a18e815', 'Ms', 'Misoni', '9bbbd6c1-34b4-4ea6-8889-be247cfebc34');
@@ -53,5 +57,6 @@ insert into agent (id, bank_account_number, date_founded, name, tin, user_id, ad
 
 insert into simple_user (id, address, first_name, last_name, request_status, ssn, user_id) values
     ('1cfe4238-9b0c-4611-abea-ddd20b4cc415', 'Serbia, Novi Sad, Pionirska,26', 'Somi', 'Misoni', 'APPROVED', '1547854896523', '4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54'),
-    ('9220c03b-b0b5-46af-a821-249e2a97dcaa', 'Serbia, Nis, Njegoseva, 55', 'Didi', 'Mimica-Kostovic', 'APPROVED', '1547858576523', 'b9362264-17db-411e-8ed0-db8310cba9f1');
+    ('9220c03b-b0b5-46af-a821-249e2a97dcaa', 'Serbia, Nis, Njegoseva, 55', 'Didi', 'Mimica-Kostovic', 'APPROVED', '1547858516523', 'b9362264-17db-411e-8ed0-db8310cba9f1'),
+    ('0a2a4abc-7a8d-4bb7-86bc-7efbd2c78800', 'Serbia, Kragujevac, Partizanska', 'Beker', 'Smeker', 'APPROVED', '1547858576723', 'c6f8a8d0-510c-4e70-9df5-84c3eb677794');
 
