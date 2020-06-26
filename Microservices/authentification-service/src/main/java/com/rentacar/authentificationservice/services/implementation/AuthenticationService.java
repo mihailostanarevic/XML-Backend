@@ -1,11 +1,13 @@
 package com.rentacar.authentificationservice.services.implementation;
 
 import com.rentacar.authentificationservice.dto.request.*;
+import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.entity.*;
 import com.rentacar.authentificationservice.repository.*;
 import com.rentacar.authentificationservice.security.TokenUtils;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
+import com.rentacar.authentificationservice.services.IEmailService;
 import com.rentacar.authentificationservice.util.enums.GeneralException;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import com.rentacar.authentificationservice.util.enums.UserRole;
@@ -18,11 +20,12 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -40,9 +43,11 @@ public class AuthenticationService implements IAuthenticationService {
     private final IAdminRepository _adminRepository;
     private final ISimpleUserRepository _simpleUserRepository;
     private final IAuthorityRepository _authorityRepository;
+    private final IEmailService _emailService;
+    private final ILoginAttemptsRepository _loginAttemptsRepository;
     private final Logger logger = LoggerFactory.getLogger("Auth service app: " + AuthenticationService.class);
 
-    public AuthenticationService(AuthenticationManager authenticationManager, TokenUtils tokenUtils, PasswordEncoder passwordEncoder, IUserRepository userRepository, IAgentRepository agentRepository, IAdminRepository adminRepository, ISimpleUserRepository simpleUserRepository, IAuthorityRepository authorityRepository) {
+    public AuthenticationService(AuthenticationManager authenticationManager, TokenUtils tokenUtils, PasswordEncoder passwordEncoder, IUserRepository userRepository, IAgentRepository agentRepository, IAdminRepository adminRepository, ISimpleUserRepository simpleUserRepository, IAuthorityRepository authorityRepository, IEmailService emailService, ILoginAttemptsRepository loginAttemptsRepository) {
         _authenticationManager = authenticationManager;
         _tokenUtils = tokenUtils;
         _passwordEncoder = passwordEncoder;
@@ -51,14 +56,55 @@ public class AuthenticationService implements IAuthenticationService {
         _adminRepository = adminRepository;
         _simpleUserRepository = simpleUserRepository;
         _authorityRepository = authorityRepository;
+        _emailService = emailService;
+        _loginAttemptsRepository = loginAttemptsRepository;
     }
 
+    @Transactional(dontRollbackOn = GeneralException.class)
     @Override
-    public UserResponse login(LoginCredentialsDTO request) throws GeneralException {
+    public UserResponse login(LoginCredentialsDTO request, HttpServletRequest httpServletRequest) throws GeneralException {
+        LoginAttempts la = _loginAttemptsRepository.findOneByIpAddress(httpServletRequest.getRemoteAddr());
+        if(la != null && Integer.parseInt(la.getAttempts()) >= 3 && la.getFirstMistakeDateTime().plusHours(12L).isAfter(LocalDateTime.now())){
+            throw new GeneralException("You have reached your logging limit, please try again later.", HttpStatus.CONFLICT);
+        }
         logger.trace("Username: " + request.getUsername() + " Password: " + _passwordEncoder.encode(request.getPassword()));
         long startTime = System.nanoTime();
         User user = _userRepository.findOneByUsername(request.getUsername());
 
+        if(user == null || !user.getPassword().equals(request.getPassword())) {
+            if(la == null){
+                LoginAttempts loginAttempts = new LoginAttempts();
+                loginAttempts.setIpAddress(httpServletRequest.getRemoteAddr());
+                loginAttempts.setAttempts("1");
+                loginAttempts.setFirstMistakeDateTime(LocalDateTime.now());
+                LoginAttempts saved = _loginAttemptsRepository.save(loginAttempts);
+                System.out.println(saved.getId());
+                throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
+            }
+            if(la.getFirstMistakeDateTime().plusHours(12L).isBefore(LocalDateTime.now())){
+                la.setFirstMistakeDateTime(LocalDateTime.now());
+                la.setAttempts("0");
+            }
+            int attempts = Integer.parseInt(la.getAttempts());
+            attempts++;
+            la.setAttempts(String.valueOf(attempts));
+            _loginAttemptsRepository.save(la);
+//            UserResponse userResponse = new UserResponse();
+//            return userResponse;
+            throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
+//            throw new GeneralException("Unknown user", HttpStatus.BAD_REQUEST);
+        }
+        if(user.getSimpleUser() != null && user.getSimpleUser().getRequestStatus().equals(RequestStatus.PENDING)){
+            throw new GeneralException("Your registration hasn't been approved yet.", HttpStatus.BAD_REQUEST);
+        }
+
+        if(user.getSimpleUser() != null && user.getSimpleUser().getRequestStatus().equals(RequestStatus.DENIED)){
+            throw new GeneralException("Your registration has been denied.", HttpStatus.BAD_REQUEST);
+        }
+
+        if(user.getSimpleUser() != null && user.getSimpleUser().getRequestStatus().equals(RequestStatus.CONFIRMED)){
+            throw new GeneralException("Your registration has been approved by admin. Please activate your account.", HttpStatus.BAD_REQUEST);
+        }
         String mail = request.getUsername();
         String password = request.getPassword();
         Authentication authentication = null;
@@ -76,11 +122,9 @@ public class AuthenticationService implements IAuthenticationService {
             e.printStackTrace();
         }
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = "";
         int expiresIn = 0;
         if(!user.isHasSignedIn()){
-            assert authentication != null;
             UserDetailsImpl userLog = (UserDetailsImpl) authentication.getPrincipal();
             jwt = _tokenUtils.generateToken(userLog.getUsername());
             expiresIn = _tokenUtils.getExpiredIn();
@@ -96,6 +140,37 @@ public class AuthenticationService implements IAuthenticationService {
         logger.warn("Test warning");
         logger.error("Test error to show that this mail is actually sent");
         return userResponse;
+
+
+//        String mail = request.getUsername();
+//        String password = request.getPassword();
+//        Authentication authentication = null;
+//        try {
+//            authentication = _authenticationManager
+//                    .authenticate(new UsernamePasswordAuthenticationToken(mail, password));
+//        }catch (BadCredentialsException e){
+//            throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
+//        }catch (DisabledException e){
+//            throw new GeneralException("Your registration request hasn't been approved yet.", HttpStatus.BAD_REQUEST);
+//        }catch (Exception e) {
+//            System.out.println("Neki drugi exception [Exception]");
+//            e.printStackTrace();
+//        }
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = "";
+//        int expiresIn = 0;
+//        if(!user.isHasSignedIn()){
+//            assert authentication != null;
+//            UserDetailsImpl userLog = (UserDetailsImpl) authentication.getPrincipal();
+//            jwt = _tokenUtils.generateToken(userLog.getUsername());
+//            expiresIn = _tokenUtils.getExpiredIn();
+//        }
+//        UserResponse userResponse = mapUserToUserResponse(user);
+//        userResponse.setToken(jwt);
+//        userResponse.setTokenExpiresIn(expiresIn);
+//
+//        return userResponse;
     }
 
     @Override
@@ -152,11 +227,12 @@ public class AuthenticationService implements IAuthenticationService {
         agent.setBankAccountNumber(request.getBankAccountNumber());
         agent.setDateFounded(request.getDateFounded());
         agent.setTin(request.getTin());
-//        agent.setRequestStatus(RequestStatus.PENDING);
         Agent savedAgent = _agentRepository.save(agent);
         savedAgent.setUser(user);
         user.setAgent(savedAgent);
         User savedUser = _userRepository.save(user);
+
+        _emailService.agentRegistrationMail(savedAgent);
 
         logger.info(user.getUsername() + " account has been successfully created as an agent");
         return mapUserToUserResponse(savedUser);
@@ -255,7 +331,7 @@ public class AuthenticationService implements IAuthenticationService {
         LocalDateTime currentTime = LocalDateTime.now();
         simpleUser.setConfirmationTime(currentTime);
         _simpleUserRepository.save(simpleUser);
-//        _emailService.approveRegistrationMail(simpleUser);
+        _emailService.approveRegistrationMail(simpleUser);
     }
 
     @Override
@@ -287,6 +363,20 @@ public class AuthenticationService implements IAuthenticationService {
             retVal += authority.getAuthority()+",";
         }
         return retVal.substring(0,retVal.length()-1);
+    }
+
+    @Override
+    public StringResponse limitRedirect(HttpServletRequest request) {
+        LocalDateTime now = LocalDateTime.now();
+        StringResponse response = new StringResponse();
+        LoginAttempts loginAttempts = _loginAttemptsRepository.findOneByIpAddress(request.getRemoteAddr());
+        if(loginAttempts != null){
+            if(loginAttempts.getAttempts().equals("3") && loginAttempts.getFirstMistakeDateTime().plusHours(12L).isAfter(now)){
+                response.setMessage("LIMIT");
+                return response;
+            }
+        }
+        return response;
     }
 
 }

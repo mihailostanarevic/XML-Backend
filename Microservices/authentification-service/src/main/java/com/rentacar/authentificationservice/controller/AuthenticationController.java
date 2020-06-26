@@ -1,6 +1,7 @@
 package com.rentacar.authentificationservice.controller;
 
 import com.rentacar.authentificationservice.dto.request.*;
+import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.security.TokenUtils;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.UUID;
 
@@ -46,8 +48,8 @@ public class AuthenticationController {
     }
 
     @PutMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginCredentialsDTO request) throws GeneralException {
-        return new ResponseEntity<>(_authService.login(request), HttpStatus.OK);
+    public ResponseEntity<?> login(@RequestBody LoginCredentialsDTO request, HttpServletRequest httpServletRequest) throws GeneralException {
+        return new ResponseEntity<>(_authService.login(request, httpServletRequest), HttpStatus.OK);
     }
 
     @PostMapping("/create-agent")
@@ -112,4 +114,6 @@ public class AuthenticationController {
         _authService.deleteUser(request);
     }
 
+    @GetMapping("/logging-limit")
+    public StringResponse loggingLimit(HttpServletRequest request){ return _authService.limitRedirect(request); }
 }
