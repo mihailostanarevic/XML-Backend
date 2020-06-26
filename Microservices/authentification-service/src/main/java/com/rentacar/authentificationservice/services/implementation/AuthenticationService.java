@@ -71,7 +71,7 @@ public class AuthenticationService implements IAuthenticationService {
         long startTime = System.nanoTime();
         User user = _userRepository.findOneByUsername(request.getUsername());
 
-        if(user == null || !user.getPassword().equals(request.getPassword())) {
+        if(user == null || !_passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             if(la == null){
                 LoginAttempts loginAttempts = new LoginAttempts();
                 loginAttempts.setIpAddress(httpServletRequest.getRemoteAddr());

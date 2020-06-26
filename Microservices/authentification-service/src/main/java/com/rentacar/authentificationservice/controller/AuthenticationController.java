@@ -12,11 +12,9 @@ import javassist.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -48,8 +46,9 @@ public class AuthenticationController {
     }
 
     @PutMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginCredentialsDTO request, HttpServletRequest httpServletRequest) throws GeneralException {
-        return new ResponseEntity<>(_authService.login(request, httpServletRequest), HttpStatus.OK);
+    public UserResponse login(@RequestBody LoginCredentialsDTO request, HttpServletRequest httpServletRequest) throws GeneralException {
+//        return new ResponseEntity<>(_authService.login(request, httpServletRequest), HttpStatus.OK);
+        return _authService.login(request, httpServletRequest);
     }
 
     @PostMapping("/create-agent")
