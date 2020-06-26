@@ -21,6 +21,8 @@ import com.rentacar.carservice.repository.IMessageCarAccessoriesRepository;
 import com.rentacar.carservice.repository.IMessageRepository;
 import com.rentacar.carservice.dto.request.SendMessageRequest;
 import com.rentacar.carservice.service.IMessageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +53,8 @@ public class MessageService implements IMessageService {
 
     @Autowired
     private IMessageCarAccessoriesRepository _messageCarAccessoriesRepository;
+
+    private final Logger logger = LoggerFactory.getLogger("Ad service app: " + this.getClass());
 
     @Override
     public List<MessageResponse> getAllReceivedMessagesForUser(UUID id) {
@@ -96,6 +100,7 @@ public class MessageService implements IMessageService {
             mca.setCar_accessory(carAccess);
             _messageCarAccessoriesRepository.save(mca);
         }
+        logger.info("Message interchange from user " + msg.getUserSender() + " to user " + msg.getUserReceiver());
         return new ResponseEntity<>("Message sent", HttpStatus.CREATED);
     }
 
