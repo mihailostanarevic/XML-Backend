@@ -9,6 +9,8 @@ import com.rentacar.carservice.entity.*;
 import com.rentacar.carservice.repository.*;
 import com.rentacar.carservice.service.IAdService;
 import com.rentacar.carservice.util.exception.GeneralException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +35,7 @@ public class AdService implements IAdService {
     private final ICarRepository _carRepository;
     private final IPhotoRepository _photoRepository;
     private final AuthClient _authClient;
+    private final Logger logger = LoggerFactory.getLogger("Ad service app: " + AdService.class);
 
     public AdService(IAdRepository adRepository, ICarModelRepository carModelRepository, IGearshiftTypeRepository gearshiftTypeRepository, IFuelTypeRepository fuelTypeRepository, ICarRepository carRepository, IPhotoRepository photoRepository, AuthClient authClient) {
         _adRepository = adRepository;
@@ -115,6 +118,7 @@ public class AdService implements IAdService {
 
     @Override
     public AdResponse createAd(List<MultipartFile> fileList, AddAdRequest request) throws GeneralException, IOException {
+        long startTime = System.nanoTime();
         CarModel carModel = findCarModel(request.getCarModel());
         GearshiftType gearshiftType = findGearshiftType(request.getGearshiftType());
         FuelType fuelType = findFuelType(request.getFuelType());
