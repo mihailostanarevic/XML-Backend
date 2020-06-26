@@ -7,13 +7,13 @@ import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
 import com.rentacar.authentificationservice.entity.SimpleUser;
 import com.rentacar.authentificationservice.entity.User;
-import com.rentacar.authentificationservice.dto.client.UUIDResponse;
-import com.rentacar.authentificationservice.entity.Authority;
 import com.rentacar.authentificationservice.repository.IAuthorityRepository;
 import com.rentacar.authentificationservice.repository.ISimpleUserRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.ISimpleUserService;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,6 +24,7 @@ public class SimpleUserService implements ISimpleUserService {
     private final ISimpleUserRepository _simpleUserRepository;
     private final IUserRepository _userRepository;
     private final IAuthorityRepository _authorityRepository;
+    private final Logger logger = LoggerFactory.getLogger("Auth service app: " + SimpleUserService.class);
 
     public SimpleUserService(ISimpleUserRepository simpleUserRepository, IUserRepository userRepository, IAuthorityRepository authorityRepository) {
         _simpleUserRepository = simpleUserRepository;
@@ -65,6 +66,7 @@ public class SimpleUserService implements ISimpleUserService {
         simpleUser.getUser().setDeleted(true);
         _userRepository.save(simpleUser.getUser());
         _simpleUserRepository.save(simpleUser);
+        logger.info("User with id: " + id + " has been deleted");
     }
 
     @Override
@@ -105,6 +107,7 @@ public class SimpleUserService implements ISimpleUserService {
         User user = simpleUser.getUser();
         Authority authority = _authorityRepository.findByName(userRole);
         user.getRoles().add(authority);
+        logger.info("A new role has been added to user: " + user.getId());
         _userRepository.save(user);
     }
 

@@ -19,6 +19,9 @@ entrypoint.sh
 *.iws
 *.iml
 *.ipr
+*.log
+!*/config/logs
+*/logs
 
 ### NetBeans ###
 /nbproject/private/

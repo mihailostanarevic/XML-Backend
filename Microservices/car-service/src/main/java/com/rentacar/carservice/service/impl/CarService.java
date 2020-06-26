@@ -10,6 +10,8 @@ import com.rentacar.carservice.entity.Car;
 import com.rentacar.carservice.entity.CarAccessories;
 import com.rentacar.carservice.repository.*;
 import com.rentacar.carservice.service.ICarService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -26,6 +28,7 @@ public class CarService implements ICarService {
     private final IFuelTypeRepository _fuelTypeRepository;
     private final ICarAccessoriesRepository _carAccessoriesRepository;
     private final CarAccessoriesService _carAccessoriesService;
+    private final Logger logger = LoggerFactory.getLogger("Ad service app: " + this.getClass());
 
     public CarService(ICarRepository carRepository, ICarModelRepository carModelRepository, IGearshiftTypeRepository gearshiftTypeRepository, IFuelTypeRepository fuelTypeRepository, ICarAccessoriesRepository carAccessoriesRepository, CarAccessoriesService carAccessoriesService) {
         _carRepository = carRepository;
@@ -45,6 +48,7 @@ public class CarService implements ICarService {
         car.setGearshiftType(_gearshiftTypeRepository.findOneById(request.getGearshiftTypeId()));
         car.setFuelType(_fuelTypeRepository.findOneById(request.getFuelTypeId()));
         Car savedCar = _carRepository.save(car);
+        logger.info("A new car has been created with id: " + car.getId());
         return mapCarToCarResponse(savedCar);
     }
 
@@ -55,6 +59,7 @@ public class CarService implements ICarService {
         car.getFuelType().setGas(request.isGas());
         _fuelTypeRepository.save(car.getFuelType());
         Car savedCar = _carRepository.save(car);
+        logger.info("Car with id: " + car.getId() + " has been updated");
         return mapCarToCarResponse(savedCar);
     }
 
@@ -63,6 +68,7 @@ public class CarService implements ICarService {
         Car car = _carRepository.findOneById(id);
         car.setDeleted(true);
         _carRepository.save(car);
+        logger.info("Car with id: " + car.getId() + " has been deleted");
     }
 
     @Override

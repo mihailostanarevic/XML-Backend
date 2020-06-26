@@ -14,6 +14,8 @@ import com.rentacar.carservice.entity.Rating;
 import com.rentacar.carservice.repository.IAdRepository;
 import com.rentacar.carservice.repository.IRatingRepository;
 import com.rentacar.carservice.service.IRatingService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -32,6 +34,8 @@ public class RatingService implements IRatingService {
 
     private final IAdRepository _adRepository;
 
+    private final Logger logger = LoggerFactory.getLogger("Ad service app: " + AdService.class);
+
     public RatingService(AuthClient authClient, RentClient rentClient, IRatingRepository ratingRepository, IAdRepository adRepository) {
         _authClient = authClient;
         _rentClient = rentClient;
@@ -46,11 +50,13 @@ public class RatingService implements IRatingService {
 
         List<ReqDTO> simpleUsersRequests = _rentClient.getAllPaidRequestsByCustomer(simpleUser.getId());
         if(simpleUsersRequests.isEmpty()){
+            logger.debug("Simple user with id: " + simpleUser.getId() + " can't rate ads");
             throw new Exception("You cannot rate any ad because you did not have any paid rents.");
         }
 
         Rating temp = _ratingRepository.findOneBySimpleUserAndAd_Id(simpleUser.getId(), ad.getId());
         if(temp != null){
+            logger.debug("Simple user with id: " + simpleUser.getId() + " has already rated ad with id: " + ad.getId());
             throw new Exception("You have already rated this ad.");
         }
 
@@ -75,6 +81,7 @@ public class RatingService implements IRatingService {
             }
         }
         if(ratingRequest == null){
+            logger.debug("Simple user with id: " + simpleUser.getId() + " can't rate this particular ad (id: " + ad.getId() + ")");
             throw new Exception("You cannot rate this ad.");
         }
 
@@ -85,8 +92,7 @@ public class RatingService implements IRatingService {
         Rating savedRating = _ratingRepository.save(rating);
         ad.getRatings().add(savedRating);
         _adRepository.save(ad);
-
-
+        logger.info("Simple user with id: " + simpleUser.getId() + " has rated ad with id: " + ad.getId());
         return mapRatingToRatingResponse(savedRating);
     }
 

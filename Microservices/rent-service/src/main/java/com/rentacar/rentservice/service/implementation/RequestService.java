@@ -19,6 +19,8 @@ import com.rentacar.rentservice.repository.IRequestAdRepository;
 import com.rentacar.rentservice.repository.IRequestRepository;
 import com.rentacar.rentservice.service.IRequestService;
 import com.rentacar.rentservice.util.enums.RequestStatus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -33,6 +35,7 @@ public class RequestService implements IRequestService {
     private final IRequestAdRepository _requestAdRepository;
     private final AuthClient _authClient;
     private final AdClient _adClient;
+    private final Logger logger = LoggerFactory.getLogger("Rent service app: " + this.getClass());
 
     public RequestService(IRequestRepository requestRepository, IRequestAdRepository requestAdRepository, AuthClient authClient, AdClient adClient) {
         _requestRepository = requestRepository;
@@ -116,6 +119,7 @@ public class RequestService implements IRequestService {
                 System.out.println("Request performed on: " + LocalTime.now() + ", " +
                         "Request id: " + Thread.currentThread().getName());
                 if(request.getStatus().equals(RequestStatus.PENDING)) {
+                    logger.info("Status of request with id: " + request.getId() + " changed from " + request.getStatus() + " to " + RequestStatus.CANCELED);
                     request.setStatus(RequestStatus.CANCELED);
                     _requestRepository.save(request);
                 }
@@ -125,6 +129,7 @@ public class RequestService implements IRequestService {
         long delay = (24 * 60 * 60 * 1000);
         System.out.println("Request received at: " + LocalTime.now());
         timer.schedule(taskPending, delay);
+        logger.info("Request created with status pending");
 
         return request;
     }
@@ -143,6 +148,7 @@ public class RequestService implements IRequestService {
                 System.out.println("Bundle request performed on: " + LocalTime.now() + ", " +
                         "Request id: " + Thread.currentThread().getName());
                 if(request.getStatus().equals(RequestStatus.PENDING)) {
+                    logger.info("Status of request with id: " + request.getId() + " changed from " + request.getStatus() + " to " + RequestStatus.CANCELED);
                     request.setStatus(RequestStatus.CANCELED);
                     _requestRepository.save(request);
                 }
@@ -152,6 +158,7 @@ public class RequestService implements IRequestService {
         long delay = (24 * 60 * 60 * 1000);
         System.out.println("Bundle received at: " + LocalTime.now());
         timer.schedule(taskPending, delay);
+        logger.info("Bundle request created with status pending");
         return request;
     }
 
@@ -187,6 +194,7 @@ public class RequestService implements IRequestService {
         }
 
         changeStatusOfRequests(request, RequestStatus.CHECKED, RequestStatus.CANCELED);
+        logger.info("User with id: " + userId + " has paid his request and request has been changed to " + RequestStatus.PAID);
         return getAllUserRequests(userId, RequestStatus.RESERVED);
     }
 
@@ -265,6 +273,7 @@ public class RequestService implements IRequestService {
     public Collection<AgentRequests> approveRequest(UUID agentId, UUID requestID) {
         Request request = _requestRepository.findOneById(requestID);
         request.setStatus(RequestStatus.RESERVED);
+        logger.info("Status of request with id: " + request.getId() + " changed from " + request.getStatus() + " to " + RequestStatus.RESERVED);
         _requestRepository.save(request);
 
         changeStatusOfRequests(request, RequestStatus.PENDING, RequestStatus.CHECKED);
@@ -274,6 +283,7 @@ public class RequestService implements IRequestService {
                 System.out.println("Approved request performed on: " + LocalTime.now() + ", " +
                         "Request id: " + Thread.currentThread().getName());
                 if(!request.getStatus().equals(RequestStatus.PAID)) {
+                    logger.info("Status of request with id: " + request.getId() + " changed from " + request.getStatus() + " to " + RequestStatus.CANCELED);
                     request.setStatus(RequestStatus.CANCELED);
                     _requestRepository.save(request);
 
