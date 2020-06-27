@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.request.CreateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.response.CarAccessoriesResponse;
 import com.rentacar.carservice.service.ICarAccessoriesService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,6 +41,7 @@ public class CarAccessoriesController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('VIEW_AD')")
     public List<CarAccessoriesResponse> getAllCarAccessories() throws Exception{
         return _carAccessoriesService.getAllCarAccessories();
     }

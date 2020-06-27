@@ -71,29 +71,30 @@ public class AuthenticationService implements IAuthenticationService {
         long startTime = System.nanoTime();
         User user = _userRepository.findOneByUsername(request.getUsername());
 
-        if(user == null || !user.getPassword().equals(request.getPassword())) {
-            if(la == null){
-                LoginAttempts loginAttempts = new LoginAttempts();
-                loginAttempts.setIpAddress(httpServletRequest.getRemoteAddr());
-                loginAttempts.setAttempts("1");
-                loginAttempts.setFirstMistakeDateTime(LocalDateTime.now());
-                LoginAttempts saved = _loginAttemptsRepository.save(loginAttempts);
-                System.out.println(saved.getId());
-                throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
-            }
-            if(la.getFirstMistakeDateTime().plusHours(12L).isBefore(LocalDateTime.now())){
-                la.setFirstMistakeDateTime(LocalDateTime.now());
-                la.setAttempts("0");
-            }
-            int attempts = Integer.parseInt(la.getAttempts());
-            attempts++;
-            la.setAttempts(String.valueOf(attempts));
-            _loginAttemptsRepository.save(la);
-//            UserResponse userResponse = new UserResponse();
-//            return userResponse;
-            throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
-//            throw new GeneralException("Unknown user", HttpStatus.BAD_REQUEST);
-        }
+        String hashedPassword = _passwordEncoder.encode(request.getPassword());
+//        if(user == null || !user.getPassword().equals(hashedPassword)) {
+//            if(la == null){
+//                LoginAttempts loginAttempts = new LoginAttempts();
+//                loginAttempts.setIpAddress(httpServletRequest.getRemoteAddr());
+//                loginAttempts.setAttempts("1");
+//                loginAttempts.setFirstMistakeDateTime(LocalDateTime.now());
+//                LoginAttempts saved = _loginAttemptsRepository.save(loginAttempts);
+//                System.out.println(saved.getId());
+//                throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
+//            }
+//            if(la.getFirstMistakeDateTime().plusHours(12L).isBefore(LocalDateTime.now())){
+//                la.setFirstMistakeDateTime(LocalDateTime.now());
+//                la.setAttempts("0");
+//            }
+//            int attempts = Integer.parseInt(la.getAttempts());
+//            attempts++;
+//            la.setAttempts(String.valueOf(attempts));
+//            _loginAttemptsRepository.save(la);
+////            UserResponse userResponse = new UserResponse();
+////            return userResponse;
+//            throw new GeneralException("Bad credentials.", HttpStatus.BAD_REQUEST);
+////            throw new GeneralException("Unknown user", HttpStatus.BAD_REQUEST);
+//        }
         if(user.getSimpleUser() != null && user.getSimpleUser().getRequestStatus().equals(RequestStatus.PENDING)){
             throw new GeneralException("Your registration hasn't been approved yet.", HttpStatus.BAD_REQUEST);
         }
@@ -122,6 +123,7 @@ public class AuthenticationService implements IAuthenticationService {
             e.printStackTrace();
         }
 
+        SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = "";
         int expiresIn = 0;
         if(!user.isHasSignedIn()){
@@ -221,6 +223,7 @@ public class AuthenticationService implements IAuthenticationService {
         authorities.add(_authorityRepository.findByName("ROLE_AD_USER"));
         authorities.add(_authorityRepository.findByName("ROLE_MESSAGE_USER"));
         authorities.add(_authorityRepository.findByName("ROLE_AGENT"));
+        authorities.add(_authorityRepository.findByName("ROLE_COMMENT_USER"));
         user.setAuthorities(new HashSet<>(authorities));
         user.setUserRole(UserRole.AGENT);
         agent.setName(request.getName());
@@ -253,6 +256,10 @@ public class AuthenticationService implements IAuthenticationService {
         List<Authority> authorities = new ArrayList<>();
         authorities.add(_authorityRepository.findByName("ROLE_SIMPLE_USER"));
         authorities.add(_authorityRepository.findByName("ROLE_RENT_USER"));
+        authorities.add(_authorityRepository.findByName("ROLE_REQUEST"));       // treba da se dodaje kada se rentira
+        authorities.add(_authorityRepository.findByName("ROLE_COMMENT_USER"));  // treba da se dodaje kada se rentira
+        authorities.add(_authorityRepository.findByName("ROLE_MESSAGE_USER"));  // treba da se dodaje kada se rentira
+        authorities.add(_authorityRepository.findByName("ROLE_REVIEWER_USER")); // treba da se dodaje kada se rentira
         user.setAuthorities(new HashSet<>(authorities));
         user.setUserRole(UserRole.SIMPLE_USER);
         simpleUser.setAddress(request.getCountry()+", "+request.getCity()+","+request.getAddress());

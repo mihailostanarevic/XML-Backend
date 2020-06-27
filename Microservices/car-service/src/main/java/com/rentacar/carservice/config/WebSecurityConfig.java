@@ -45,9 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/**").permitAll()         // permitovati samo odredjene putanje
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers("/ads/hello").permitAll()
+                .antMatchers("/ads/hello", "/ads/**").permitAll()
                 .anyRequest().authenticated();
 
         http.addFilterAfter(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class);
