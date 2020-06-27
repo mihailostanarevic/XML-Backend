@@ -15,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.UUID;
 
 @SuppressWarnings("unused")
@@ -68,6 +69,12 @@ public class AuthenticationController {
         return _authService.setNewPassword(id,request);
     }
 
+    @GetMapping("/registration-requests")
+    @PreAuthorize("hasAuthority('CREATE_AGENT')")
+    public List<UserResponse> getAllPendingRegistrations() throws Exception {
+        return _authService.getAllRegistrationRequests();
+    }
+
     @PutMapping("/confirm-registration-request")
     @PreAuthorize("hasAuthority('CREATE_AGENT')")
     public void confirmRegistrationRequest(@RequestBody GetIdRequest request) {
@@ -75,7 +82,6 @@ public class AuthenticationController {
     }
 
     @PutMapping("/approve-registration-request")
-    @PreAuthorize("hasAuthority('CREATE_AGENT')")
     public void approveRegistrationRequest(@RequestBody GetIdRequest request) {
         _authService.approveRegistrationRequest(request);
     }

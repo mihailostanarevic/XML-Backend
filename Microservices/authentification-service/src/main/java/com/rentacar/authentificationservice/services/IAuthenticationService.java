@@ -5,6 +5,7 @@ import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.UUID;
 
 public interface IAuthenticationService {
@@ -38,4 +39,6 @@ public interface IAuthenticationService {
     String getPermission(String token);
 
     StringResponse limitRedirect(HttpServletRequest request);
+
+    List<UserResponse> getAllRegistrationRequests() throws Exception;
 }

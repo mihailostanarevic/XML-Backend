@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService implements IAuthenticationService {
@@ -383,6 +384,23 @@ public class AuthenticationService implements IAuthenticationService {
             }
         }
         return response;
+    }
+
+    @Override
+    public List<UserResponse> getAllRegistrationRequests() throws Exception {
+        List<User> users = _userRepository.findAllByDeleted(false);
+        List<User> requests = new ArrayList<>();
+        for (User u: users){
+            if(u.getRoles().contains(_authorityRepository.findByName("ROLE_SIMPLE_USER"))){
+                SimpleUser simpleUser = _simpleUserRepository.findOneByUser(u);
+                if(simpleUser != null && simpleUser.getRequestStatus().equals(RequestStatus.PENDING)){
+                    requests.add(u);
+                }
+            }
+        }
+        return requests.stream()
+                .map(user -> mapUserToUserResponse(user))
+                .collect(Collectors.toList());
     }
 
 }
