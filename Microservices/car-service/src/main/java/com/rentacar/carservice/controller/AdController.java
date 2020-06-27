@@ -38,6 +38,7 @@ public class AdController {
     }
 
     @PostMapping("/image")
+    @PreAuthorize("hasAuthority('VIEW_IMAGE')")
     public ResponseEntity<?> image(@RequestParam("imageFile") List<MultipartFile> file) throws Exception{
         return new ResponseEntity<>("ok", HttpStatus.CREATED);
     }
@@ -49,6 +50,7 @@ public class AdController {
     }
 
     @GetMapping("/{id}/image" )
+    @PreAuthorize("hasAuthority('VIEW_IMAGE')")
     public ResponseEntity<PhotoResponse> getImage(@PathVariable("id") UUID adId) {
         return new ResponseEntity<>(_adService.getPhoto(adId), HttpStatus.OK);
     }
@@ -60,7 +62,7 @@ public class AdController {
     }
 
     @GetMapping("/{id}/agent")
-    @PreAuthorize("hasAuthority('VIEW_AD')")
+//    @PreAuthorize("hasAuthority('VIEW_AD')")
     public ResponseEntity<AgentResponse> getAgentIDByAdID(@PathVariable("id") UUID id) throws Exception{
         return new ResponseEntity<>(_adService.getAgentByAdID(id), HttpStatus.OK);
     }

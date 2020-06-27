@@ -28,6 +28,6 @@ public interface AuthClient {
     @GetMapping("/agents/{id}/user")
     UserMessageDTO getUserFromAgent(@PathVariable("id") UUID id);
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/auth/users/{id}")
     UserMessageDTO getUser(@PathVariable("id") UUID id);
 }

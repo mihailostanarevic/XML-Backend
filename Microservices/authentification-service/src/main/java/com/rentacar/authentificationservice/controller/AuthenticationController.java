@@ -69,16 +69,19 @@ public class AuthenticationController {
     }
 
     @PutMapping("/confirm-registration-request")
+    @PreAuthorize("hasAuthority('CREATE_AGENT')")
     public void confirmRegistrationRequest(@RequestBody GetIdRequest request) {
         _authService.confirmRegistrationRequest(request);
     }
 
     @PutMapping("/approve-registration-request")
+    @PreAuthorize("hasAuthority('CREATE_AGENT')")
     public void approveRegistrationRequest(@RequestBody GetIdRequest request) {
         _authService.approveRegistrationRequest(request);
     }
 
     @PutMapping("/deny-registration-request")
+    @PreAuthorize("hasAuthority('CREATE_AGENT')")
     public void denyRegistrationRequest(@RequestBody GetIdRequest request) {
         _authService.denyRegistrationRequest(request);
     }

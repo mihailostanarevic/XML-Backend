@@ -5,6 +5,7 @@ import com.rentacar.authentificationservice.dto.response.UserResponse;
 import com.rentacar.authentificationservice.services.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/customer")
+    @PreAuthorize("hasAuthority('CREATE_REQUEST')")
     public ResponseEntity<List<UserResponse>> getCustomers() {
         return new ResponseEntity<>(_userService.getCustomers(), HttpStatus.OK);
     }

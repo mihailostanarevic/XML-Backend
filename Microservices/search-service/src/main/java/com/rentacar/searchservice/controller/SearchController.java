@@ -19,7 +19,9 @@ public class SearchController {
     }
 
     @GetMapping("/light")
-    public List<SearchResultResponse> search(@RequestParam(value="city") String city, @RequestParam(value="from") String from, @RequestParam(value="to") String to){
+    public List<SearchResultResponse> search(@RequestParam(value="city") String city,
+                                             @RequestParam(value="from") String from,
+                                             @RequestParam(value="to") String to){
         return searchService.searchAds(city, from, to);
     }
 }
