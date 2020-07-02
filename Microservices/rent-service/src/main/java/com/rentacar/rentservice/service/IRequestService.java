@@ -40,4 +40,6 @@ public interface IRequestService {
     List<RequestDTO> getAllPaidRequestsByCustomer(UUID id);
 
     List<RequestAdDTO> getAllRequestAdsByRequest(UUID id);
+
+    void updateRequestStatus(UUID requestId, RequestStatus denied);
 }

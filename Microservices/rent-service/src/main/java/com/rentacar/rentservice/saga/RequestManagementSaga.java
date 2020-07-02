@@ -1,6 +1,7 @@
 package com.rentacar.rentservice.saga;
 
 import com.rentacar.CoreAPI.commands.CreateRoleCommand;
+import com.rentacar.CoreAPI.commands.RollbackRequestCommand;
 import com.rentacar.CoreAPI.events.RequestCreatedEvent;
 import com.rentacar.CoreAPI.events.RoleCreatedEvent;
 import com.rentacar.CoreAPI.events.RoleCreatedFailedEvent;
@@ -43,7 +44,7 @@ public class RequestManagementSaga {
         System.out.println("Saga declined, starting compensation transaction!");
 
         SagaLifecycle.end();
-//        commandGateway.send(new RollbackOrderCommand(ticketCreatedFailedEvent.getOrderId(), ticketCreatedFailedEvent.getReason()));
+        commandGateway.send(new RollbackRequestCommand(ticketCreatedFailedEvent.getRequestId(), ticketCreatedFailedEvent.getReason()));
     }
 
 }

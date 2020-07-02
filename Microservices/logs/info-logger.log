@@ -1,31 +1,5 @@
-2020-07-02 12:08:52,074 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 12:09:30,930 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 12:10:01,764 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 12:10:30,388 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 12:10:44,328 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 15.321 seconds (JVM running for 15.857)
-2020-07-02 12:12:23,752 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 12:12:36,439 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 14.148 seconds (JVM running for 14.667)
-2020-07-02 12:14:44,613 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 12:14:57,433 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 14.151 seconds (JVM running for 14.68)
-2020-07-02 12:20:36,108 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 12:20:53,310 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 18.976 seconds (JVM running for 19.544)
-2020-07-02 13:13:18,193 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:13:51,783 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:14:22,600 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:14:51,785 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:15:06,350 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 15.997 seconds (JVM running for 16.568)
-2020-07-02 13:29:45,430 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:29:56,719 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 13.073 seconds (JVM running for 13.621)
-2020-07-02 13:31:01,231 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:33:03,314 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:33:12,289 INFO org.springframework.boot.StartupInfoLogger [main] Started RentServiceApplication in 10.563 seconds (JVM running for 11.123)
-2020-07-02 13:35:38,263 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:35:47,782 INFO org.springframework.boot.StartupInfoLogger [main] Started RentServiceApplication in 11.004 seconds (JVM running for 11.568)
-2020-07-02 13:35:52,879 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:36:05,213 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 13.996 seconds (JVM running for 14.553)
-2020-07-02 13:39:36,203 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:39:44,936 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 10.189 seconds (JVM running for 10.737)
-2020-07-02 13:41:38,469 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:41:48,771 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 11.713 seconds (JVM running for 12.313)
-2020-07-02 13:43:09,344 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
-2020-07-02 13:43:18,644 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 10.761 seconds (JVM running for 11.323)
+2020-07-02 14:52:31,395 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 12.567 seconds (JVM running for 13.135)
+2020-07-02 14:56:11,830 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-02 14:56:24,000 INFO org.springframework.boot.StartupInfoLogger [main] Started RentServiceApplication in 13.893 seconds (JVM running for 14.543)
+2020-07-02 14:57:58,182 INFO org.springframework.boot.SpringApplication [main] No active profile set, falling back to default profiles: default
+2020-07-02 14:58:08,913 INFO org.springframework.boot.StartupInfoLogger [main] Started AuthentificationServiceApplication in 12.196 seconds (JVM running for 12.707)

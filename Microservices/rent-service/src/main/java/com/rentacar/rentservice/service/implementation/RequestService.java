@@ -452,4 +452,11 @@ public class RequestService implements IRequestService {
         }
         return requestAdDTOS;
     }
+
+    @Override
+    public void updateRequestStatus(UUID requestId, RequestStatus denied) {
+        Request request = _requestRepository.findOneById(requestId);
+        request.setStatus(denied);
+        _requestRepository.save(request);
+    }
 }
