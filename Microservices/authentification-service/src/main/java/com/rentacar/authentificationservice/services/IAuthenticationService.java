@@ -1,8 +1,10 @@
 package com.rentacar.authentificationservice.services;
 
+import com.rentacar.CoreAPI.dto.RoleList;
 import com.rentacar.authentificationservice.dto.request.*;
 import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
+import javassist.NotFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -41,4 +43,6 @@ public interface IAuthenticationService {
     StringResponse limitRedirect(HttpServletRequest request);
 
     List<UserResponse> getAllRegistrationRequests() throws Exception;
+
+    void addUserRole(UUID simpleUserId, RoleList roleList) throws NotFoundException;
 }

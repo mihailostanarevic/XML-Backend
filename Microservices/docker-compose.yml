@@ -16,6 +16,12 @@ services:
       - postgresdata:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
+  axon-server:
+    image: axoniq/axonserver:4.3.2
+    ports:
+      - 8024:8024
+      - 8124:8124
+
   eureka-serviceregistry:
     build: ./Eureka
     ports:
@@ -98,6 +104,7 @@ services:
     container_name: zuul
     tty: true
     depends_on:
+      - axon-server
       - eureka-serviceregistry
       - postgresDB
 volumes: 

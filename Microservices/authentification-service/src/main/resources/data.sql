@@ -48,11 +48,11 @@ insert into user_authority (user_id, authority_id) values
     ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 3),
     ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 6),
     ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 7),
-    ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 8),
+--    ('4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54', 8),
     ('b9362264-17db-411e-8ed0-db8310cba9f1', 3),
     ('b9362264-17db-411e-8ed0-db8310cba9f1', 6),
-    ('b9362264-17db-411e-8ed0-db8310cba9f1', 7),
-    ('b9362264-17db-411e-8ed0-db8310cba9f1', 8);
+--    ('b9362264-17db-411e-8ed0-db8310cba9f1', 8),
+    ('b9362264-17db-411e-8ed0-db8310cba9f1', 7);
 
 insert into admin (id, first_name, last_name, user_id) values
     ('51d5e58d-ac22-4233-a1dc-e4251a18e815', 'Ms', 'Misoni', '9bbbd6c1-34b4-4ea6-8889-be247cfebc34');

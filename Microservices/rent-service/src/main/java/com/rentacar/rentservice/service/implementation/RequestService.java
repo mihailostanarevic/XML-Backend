@@ -1,5 +1,8 @@
 package com.rentacar.rentservice.service.implementation;
 
+import com.rentacar.CoreAPI.commands.CreateRequestCommand;
+import com.rentacar.CoreAPI.dto.Role;
+import com.rentacar.CoreAPI.dto.RoleList;
 import com.rentacar.rentservice.client.AdClient;
 import com.rentacar.rentservice.client.AuthClient;
 import com.rentacar.rentservice.dto.client.AdClientResponse;
@@ -19,10 +22,12 @@ import com.rentacar.rentservice.repository.IRequestAdRepository;
 import com.rentacar.rentservice.repository.IRequestRepository;
 import com.rentacar.rentservice.service.IRequestService;
 import com.rentacar.rentservice.util.enums.RequestStatus;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -36,6 +41,9 @@ public class RequestService implements IRequestService {
     private final AuthClient _authClient;
     private final AdClient _adClient;
     private final Logger logger = LoggerFactory.getLogger("Rent service app: " + this.getClass());
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     public RequestService(IRequestRepository requestRepository, IRequestAdRepository requestAdRepository, AuthClient authClient, AdClient adClient) {
         _requestRepository = requestRepository;
@@ -97,14 +105,14 @@ public class RequestService implements IRequestService {
     @Override
     public Request createRequest(RequestRequest requestDTO) {
         Request request = new Request();
-        UUID simpleUser = null;
+        UUID simpleUserId = null;
         if(requestDTO.getCustomerID() != null) {
-            simpleUser = requestDTO.getCustomerID();
+            simpleUserId = requestDTO.getCustomerID();
         } else {
             UUIDResponse uuidResponse = _authClient.getIDByUsername(requestDTO.getCustomerUsername());
-            simpleUser = uuidResponse.getId();
+            simpleUserId = uuidResponse.getId();
         }
-        request.setCustomerID(simpleUser);
+        request.setCustomerID(simpleUserId);
         request.setStatus(RequestStatus.PENDING);
         request.setPickUpAddress(requestDTO.getPickUpAddress());
         request.setDeleted(false);
@@ -112,7 +120,14 @@ public class RequestService implements IRequestService {
         requestDTOList.add(requestDTO);
         _requestRepository.save(request);
         createRequestAd(request, requestDTOList);
-        _authClient.addUserRole(simpleUser, "ROLE_REQUEST");
+
+//        _authClient.addUserRole(simpleUser, "ROLE_REQUEST");
+        RoleList roleList = new RoleList();
+        Role role = new Role();
+        role.setRole("ROLE_REQUEST");
+        roleList.getRoleList().add(role);
+        commandGateway.send(new CreateRequestCommand(request.getId(),
+                simpleUserId, roleList));
 
         TimerTask taskPending = new TimerTask() {
             public void run() {
