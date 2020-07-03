@@ -13,9 +13,6 @@ import java.util.UUID;
 @FeignClient(name = "auth")
 public interface AuthClient {
 
-    @GetMapping("/simple-users/{username}")
-    UUID getIDByUsername(@PathVariable("username") String username);
-
     @GetMapping("/agents/{id}/address")
     String getAgentAddress(@PathVariable("id") UUID id);
 
