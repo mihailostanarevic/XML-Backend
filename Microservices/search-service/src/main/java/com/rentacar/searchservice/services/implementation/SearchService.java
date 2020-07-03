@@ -110,12 +110,12 @@ public class SearchService implements ISearchService {
         if(ad != null) {
             throw new Exception("Ad already exist!");
         }
-        createAdFromAdCommand(adSaga);
+        createAdFromAdCommand(adId, adSaga);
     }
 
-    private void createAdFromAdCommand(AdSaga adSaga) {
+    private void createAdFromAdCommand(UUID adId, AdSaga adSaga) {
         Car car = createCarFromAdSaga(adSaga);
-        Ad ad = createAdFromAdSaga(adSaga, car);
+        Ad ad = createAdFromAdSaga(adId, adSaga, car);
         createPhotosFromAdSaga(adSaga, ad);
     }
 
@@ -130,7 +130,7 @@ public class SearchService implements ISearchService {
         }
     }
 
-    private Ad createAdFromAdSaga(AdSaga adSaga, Car car) {
+    private Ad createAdFromAdSaga(UUID adId, AdSaga adSaga, Car car) {
         Ad ad = new Ad();
         ad.setAgent(adSaga.getAdDetails().getAgentId());
         ad.setCar(car);
@@ -138,6 +138,7 @@ public class SearchService implements ISearchService {
         ad.setAvailableKilometersPerRent(adSaga.getAdDetails().getAvailableKilometersPerRent());
         ad.setSeats(adSaga.getAdDetails().getSeats());
         ad.setCdw(adSaga.getAdDetails().isCdw());
+        ad.setId(adId);
         return _adRepository.save(ad);
     }
 
