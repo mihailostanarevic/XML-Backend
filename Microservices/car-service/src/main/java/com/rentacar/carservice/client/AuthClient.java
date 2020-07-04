@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.feignClient.AgentDTO;
 import com.rentacar.carservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.carservice.dto.feignClient.UserDTO;
 import com.rentacar.carservice.dto.feignClient.UserMessageDTO;
+import com.rentacar.carservice.dto.response.SimpleUserAgentIdResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,4 +28,7 @@ public interface AuthClient {
 
     @GetMapping("/auth/users/{id}")
     UserMessageDTO getUser(@PathVariable("id") UUID id);
+
+    @GetMapping("/simple-users/{id}/agent")
+    SimpleUserAgentIdResponse getAgentIDFromSimpleUser(@PathVariable("id") UUID id);
 }

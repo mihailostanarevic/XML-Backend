@@ -123,9 +123,12 @@ public class RequestService implements IRequestService {
 
 //        _authClient.addUserRole(simpleUser, "ROLE_REQUEST");
         RoleList roleList = new RoleList();
-        Role role = new Role();
-        role.setRole("ROLE_REQUEST");
-        roleList.getRoleList().add(role);
+        Role roleRequest = new Role();
+        roleRequest.setRole("ROLE_REQUEST");
+        Role roleComment = new Role();
+        roleComment.setRole("ROLE_COMMENT_USER");
+        roleList.getRoleList().add(roleRequest);
+        roleList.getRoleList().add(roleComment);
         commandGateway.send(new CreateRequestCommand(request.getId(),
                 simpleUserId, roleList));
 

@@ -8,7 +8,8 @@ insert into permission (name) values
     ('DENY_AGENT'), ('CHANGE_PERMISSION');
 
 insert into authority (name) values ('ROLE_ADMIN'), ('ROLE_AGENT'), ('ROLE_SIMPLE_USER'),
-    ('ROLE_REVIEWER_USER'), ('ROLE_MESSAGE_USER'), ('ROLE_RENT_USER'), ('ROLE_COMMENT_USER'), ('ROLE_REQUEST');
+    ('ROLE_REVIEWER_USER'), ('ROLE_MESSAGE_USER'), ('ROLE_RENT_USER'), ('ROLE_COMMENT_USER'),
+    ('ROLE_REQUEST'), ('ROLE_AD_USER');
 
 insert into authorities_permissions (authority_id, permission_id) values
     (1, 1), (1, 2), (1, 3), (1, 4), (1, 5), (1, 6), (1, 7), (1, 8), (1, 9), (1, 10), (1, 11), (1, 12), (1, 13), (1, 14),
@@ -19,7 +20,8 @@ insert into authorities_permissions (authority_id, permission_id) values
     (5, 14), (5, 18), (5, 24),
     (6, 16), (6, 12), (6, 24),
     (7, 5), (7, 6), (7, 7), (7, 8), (7, 24),
-    (8, 22), (8, 24);
+    (8, 22), (8, 24),
+    (9, 1);
 
 -- admin@gmail.com -> Admin123!!!
 -- agent@gmail.com -> Agent123!!!
@@ -57,9 +59,9 @@ insert into user_authority (user_id, authority_id) values
 insert into admin (id, first_name, last_name, user_id) values
     ('51d5e58d-ac22-4233-a1dc-e4251a18e815', 'Ms', 'Misoni', '9bbbd6c1-34b4-4ea6-8889-be247cfebc34');
 
-insert into agent (id, bank_account_number, date_founded, name, tin, user_id, address) values
-    ('b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', 'DE72 3702 0500 0009 7097 00', '2020/02/25', 'Marko Kraljevic',  '123-45-6789', '105496cd-30f2-4b62-8082-cc14d282e845', 'Serbia,Novi Sad,Svetislava Kasapinovica, 69'),
-    ('c72721c4-437f-4a06-b3cc-00b9a86056bc', '0500 0009 3702 FE22 7097 00', '2020/02/25', 'Dragan Topalovic', '321-54-9876', 'd0535564-08ec-464c-a2db-d930d2c4fcde', 'Serbia,Beograd,Knez Mihailova, 15');
+insert into agent (id, bank_account_number, date_founded, name, tin, user_id, address, simple_user_id) values
+    ('b38a64e2-299b-4a05-bc30-5a45dd2ebdc0', 'DE72 3702 0500 0009 7097 00', '2020/02/25', 'Marko Kraljevic',  '123-45-6789', '105496cd-30f2-4b62-8082-cc14d282e845', 'Serbia,Novi Sad,Svetislava Kasapinovica, 69', null),
+    ('c72721c4-437f-4a06-b3cc-00b9a86056bc', '0500 0009 3702 FE22 7097 00', '2020/02/25', 'Dragan Topalovic', '321-54-9876', 'd0535564-08ec-464c-a2db-d930d2c4fcde', 'Serbia,Beograd,Knez Mihailova, 15', null);
 
 insert into simple_user (id, address, first_name, last_name, request_status, ssn, user_id) values
     ('1cfe4238-9b0c-4611-abea-ddd20b4cc415', 'Serbia, Novi Sad, Pionirska,26', 'Somi', 'Misoni', 'APPROVED', '1547854896523', '4fb1b61b-cc4e-45c3-86f0-cbf50de4cf54'),

@@ -48,15 +48,17 @@ public class AgentController {
         return _agentService.getAgentAddress(id);
     }
 
+    @GetMapping("/{id}")
+    public AgentDTO getAgent(@PathVariable UUID id) throws Exception{
+        return _agentService.getAgent(id);
+    }
+
     @GetMapping("/{id}/get")
     public AgentResponse getOneAgent(@PathVariable UUID id) throws Exception{
         return _agentService.getOneAgent(id);
     }
 
-    @GetMapping("/{id}")
-    public AgentDTO getAgent(@PathVariable UUID id) throws Exception{
-        return _agentService.getAgent(id);
-    }
+
 
     @GetMapping("/{id}/user")
     public UserMessageDTO getUserFromAgent(@PathVariable("id") UUID id){

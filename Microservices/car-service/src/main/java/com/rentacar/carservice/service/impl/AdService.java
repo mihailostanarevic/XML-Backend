@@ -14,6 +14,7 @@ import com.rentacar.carservice.util.exception.GeneralException;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -137,7 +138,16 @@ public class AdService implements IAdService {
         Car savedCar = _carRepository.save(car);
 
         Ad ad = new Ad();
-        ad.setAgent(request.getAgentId());
+        if(request.isSimpleUser()) {
+            SimpleUserAgentIdResponse agentId =  _authClient.getAgentIDFromSimpleUser(request.getAgentId());
+            List<Ad> simpleUserListOfAds = _adRepository.findAllByAgent(agentId.getAgentId());
+            if(simpleUserListOfAds.size() == 3) {
+                throw new GeneralException("You have reached the max limit of 3 created ads.", HttpStatus.BAD_REQUEST);
+            }
+            ad.setAgent(agentId.getAgentId());
+        } else {
+            ad.setAgent(request.getAgentId());
+        }
         ad.setCar(savedCar);
         ad.setLimitedDistance(request.isLimitedDistance());
         ad.setAvailableKilometersPerRent(request.getAvailableKilometersPerRent());
