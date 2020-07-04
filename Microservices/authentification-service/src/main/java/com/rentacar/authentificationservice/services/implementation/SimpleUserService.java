@@ -2,11 +2,14 @@ package com.rentacar.authentificationservice.services.implementation;
 
 import com.rentacar.authentificationservice.dto.client.CustomerResponse;
 import com.rentacar.authentificationservice.dto.client.UUIDResponse;
+import com.rentacar.authentificationservice.dto.response.SimpleUserAgentIdResponse;
+import com.rentacar.authentificationservice.entity.Agent;
 import com.rentacar.authentificationservice.entity.Authority;
 import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserDTO;
 import com.rentacar.authentificationservice.entity.SimpleUser;
 import com.rentacar.authentificationservice.entity.User;
+import com.rentacar.authentificationservice.repository.IAgentRepository;
 import com.rentacar.authentificationservice.repository.IAuthorityRepository;
 import com.rentacar.authentificationservice.repository.ISimpleUserRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
@@ -23,12 +26,14 @@ public class SimpleUserService implements ISimpleUserService {
 
     private final ISimpleUserRepository _simpleUserRepository;
     private final IUserRepository _userRepository;
+    private final IAgentRepository _agentRepository;
     private final IAuthorityRepository _authorityRepository;
     private final Logger logger = LoggerFactory.getLogger("Auth service app: " + SimpleUserService.class);
 
-    public SimpleUserService(ISimpleUserRepository simpleUserRepository, IUserRepository userRepository, IAuthorityRepository authorityRepository) {
+    public SimpleUserService(ISimpleUserRepository simpleUserRepository, IUserRepository userRepository, IAgentRepository agentRepository, IAuthorityRepository authorityRepository) {
         _simpleUserRepository = simpleUserRepository;
         _userRepository = userRepository;
+        _agentRepository = agentRepository;
         _authorityRepository = authorityRepository;
     }
 
@@ -129,6 +134,11 @@ public class SimpleUserService implements ISimpleUserService {
         }
     }
 
+    @Override
+    public SimpleUserAgentIdResponse getAgentIDFromSimpleUser(UUID simpleUserId) {
+        Agent agent = _agentRepository.findOneBySimpleUserId(simpleUserId);
+        return new SimpleUserAgentIdResponse(agent.getId());
+    }
 
 
 }

@@ -13,6 +13,8 @@ public class AgentDTO {
 
     private UUID agentID;
 
+    private UUID simpleUserID;
+
     private String agentName;
 
     private String dateFounded;

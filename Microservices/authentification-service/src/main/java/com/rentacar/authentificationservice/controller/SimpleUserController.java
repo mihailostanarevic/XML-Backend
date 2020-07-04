@@ -3,6 +3,7 @@ package com.rentacar.authentificationservice.controller;
 import com.rentacar.authentificationservice.dto.client.CustomerResponse;
 import com.rentacar.authentificationservice.dto.feignClient.SimpleUserDTO;
 import com.rentacar.authentificationservice.dto.client.UUIDResponse;
+import com.rentacar.authentificationservice.dto.response.SimpleUserAgentIdResponse;
 import com.rentacar.authentificationservice.services.ISimpleUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,6 +65,11 @@ public class SimpleUserController {
     @GetMapping("/get/{id}")
     public SimpleUserDTO getSimpleUser(@PathVariable("id") UUID id){
         return _simpleUserService.getSimpleUser(id);
+    }
+
+    @GetMapping("/{id}/agent")
+    public SimpleUserAgentIdResponse getSimpleUserFromAgent(@PathVariable("id") UUID simpleUserId){
+        return _simpleUserService.getAgentIDFromSimpleUser(simpleUserId);
     }
 
 }

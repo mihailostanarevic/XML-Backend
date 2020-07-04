@@ -9,8 +9,6 @@ import java.util.UUID;
 
 @SuppressWarnings("SpellCheckingInspection")
 @Data
-@Getter
-@Setter
 public class AddAdRequest {
 
     private String carModel;
@@ -32,4 +30,6 @@ public class AddAdRequest {
     private int seats;
 
     private boolean cdw;
+
+    private boolean simpleUser;
 }

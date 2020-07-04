@@ -215,7 +215,7 @@ public class SearchService implements ISearchService {
         carDTO.setGetGearshiftTypeNumberOfGears(ad.getCar().getGearshiftType().getNumberOfGears());
 
         AgentDTO agentdto = _authClient.getAgent(ad.getAgent());
-        AgentSearchResponse agentDTO = new AgentSearchResponse(agentdto.getAgentID(), agentdto.getAgentName(), agentdto.getDateFounded(), agentdto.getAddress());
+        AgentSearchResponse agentDTO = new AgentSearchResponse(agentdto.getAgentID(), agentdto.getSimpleUserID(), agentdto.getAgentName(), agentdto.getDateFounded(), agentdto.getAddress());
 
         retVal.setAd(adDTO);
         retVal.setAgent(agentDTO);
@@ -306,7 +306,7 @@ public class SearchService implements ISearchService {
     }
 
     public String parseCity(String address){
-        return address.split(",")[1];
+        return address.split(",")[1].trim();
     }
 
     public List<PhotoResponse> getAllPhotos(UUID adID){

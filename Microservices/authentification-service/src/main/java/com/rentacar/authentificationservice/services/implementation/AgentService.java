@@ -68,7 +68,12 @@ public class AgentService implements IAgentService {
 
     @Override
     public String getAgentAddress(UUID id) {
-        return _agentRepository.findOneById(id).getAddress();
+        Agent agent = _agentRepository.findOneById(id);
+        if(agent == null){
+            Agent agentSimpleUser = _agentRepository.findOneBySimpleUserId(id);
+            return agentSimpleUser.getAddress();
+        }
+        return agent.getAddress();
     }
 
     @Override
@@ -94,9 +99,10 @@ public class AgentService implements IAgentService {
     public AgentDTO getAgent(UUID id){
         Agent agent =  _agentRepository.findOneById(id);
         if(agent == null){
-            return new AgentDTO();
+            Agent agentSimpleUser = _agentRepository.findOneBySimpleUserId(id);
+            return new AgentDTO(agentSimpleUser.getId(), agentSimpleUser.getSimpleUserId(), agentSimpleUser.getName(), agentSimpleUser.getDateFounded().toString(), agentSimpleUser.getAddress());
         }
-        AgentDTO retVal = new AgentDTO(agent.getId(), agent.getName(), agent.getDateFounded().toString(), agent.getAddress());
+        AgentDTO retVal = new AgentDTO(agent.getId(), null,  agent.getName(), agent.getDateFounded().toString(), agent.getAddress());
         return retVal;
     }
 

@@ -11,7 +11,6 @@ import java.util.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class Agent extends BaseEntity {
 
@@ -29,4 +28,9 @@ public class Agent extends BaseEntity {
 
     private String address;
 
+    private UUID simpleUserId;
+
+    public Agent() {
+        this.dateFounded = new Date();
+    }
 }
