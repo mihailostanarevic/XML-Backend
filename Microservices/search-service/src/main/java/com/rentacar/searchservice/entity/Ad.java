@@ -1,20 +1,23 @@
 package com.rentacar.searchservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
-public class Ad extends BaseEntity {
+public class Ad {
+
+    @Id
+    private UUID id;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id", referencedColumnName = "id")

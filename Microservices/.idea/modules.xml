@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/AxonSaga.iml" filepath="$PROJECT_DIR$/AxonSaga.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Core-API/Core-API.iml" filepath="$PROJECT_DIR$/Core-API/Core-API.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Eureka/Eureka.iml" filepath="$PROJECT_DIR$/Eureka/Eureka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Microservices.iml" filepath="$PROJECT_DIR$/Microservices.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Zuul/Zuul.iml" filepath="$PROJECT_DIR$/Zuul/Zuul.iml" />
+      <module fileurl="file://$PROJECT_DIR$/authentification-service/authentification-service.iml" filepath="$PROJECT_DIR$/authentification-service/authentification-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/car-service/car-service.iml" filepath="$PROJECT_DIR$/car-service/car-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/message-service/message-service.iml" filepath="$PROJECT_DIR$/message-service/message-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/rent-service/rent-service.iml" filepath="$PROJECT_DIR$/rent-service/rent-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/search-service/search-service.iml" filepath="$PROJECT_DIR$/search-service/search-service.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,5 +1,7 @@
 package com.rentacar.authentificationservice.services.implementation;
 
+import com.rentacar.CoreAPI.dto.Role;
+import com.rentacar.CoreAPI.dto.RoleList;
 import com.rentacar.authentificationservice.dto.request.*;
 import com.rentacar.authentificationservice.dto.response.StringResponse;
 import com.rentacar.authentificationservice.dto.response.UserResponse;
@@ -11,6 +13,7 @@ import com.rentacar.authentificationservice.services.IEmailService;
 import com.rentacar.authentificationservice.util.enums.GeneralException;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import com.rentacar.authentificationservice.util.enums.UserRole;
+import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -401,6 +404,23 @@ public class AuthenticationService implements IAuthenticationService {
         return requests.stream()
                 .map(user -> mapUserToUserResponse(user))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addUserRole(UUID simpleUserId, RoleList roleList) throws NotFoundException {
+        SimpleUser simpleUser = _simpleUserRepository.findOneById(simpleUserId);
+        if(simpleUser == null) {
+            throw new NotFoundException("Simple user not found!");
+        }
+        addRolesToSimpleUser(simpleUser, roleList);
+    }
+
+    private void addRolesToSimpleUser(SimpleUser simpleUser, RoleList roleList) {
+        User user = simpleUser.getUser();
+        for (Role role : roleList.getRoleList()) {
+            user.getRoles().add(_authorityRepository.findByName(role.getRole()));
+        }
+        _userRepository.save(user);
     }
 
 }

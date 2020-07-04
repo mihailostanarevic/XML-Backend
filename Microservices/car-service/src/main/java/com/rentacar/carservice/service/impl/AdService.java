@@ -1,5 +1,7 @@
 package com.rentacar.carservice.service.impl;
 
+import com.rentacar.CoreAPI.commands.CreateAdCommand;
+import com.rentacar.CoreAPI.dto.*;
 import com.rentacar.carservice.client.AuthClient;
 import com.rentacar.carservice.dto.client.AdClientResponse;
 import com.rentacar.carservice.dto.feignClient.AgentDTO;
@@ -9,11 +11,13 @@ import com.rentacar.carservice.entity.*;
 import com.rentacar.carservice.repository.*;
 import com.rentacar.carservice.service.IAdService;
 import com.rentacar.carservice.util.exception.GeneralException;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,6 +40,9 @@ public class AdService implements IAdService {
     private final IPhotoRepository _photoRepository;
     private final AuthClient _authClient;
     private final Logger logger = LoggerFactory.getLogger("Ad service app: " + AdService.class);
+
+    @Inject
+    private transient CommandGateway commandGateway;
 
     public AdService(IAdRepository adRepository, ICarModelRepository carModelRepository, IGearshiftTypeRepository gearshiftTypeRepository, IFuelTypeRepository fuelTypeRepository, ICarRepository carRepository, IPhotoRepository photoRepository, AuthClient authClient) {
         _adRepository = adRepository;
@@ -128,6 +135,7 @@ public class AdService implements IAdService {
         car.setFuelType(fuelType);
         car.setKilometersTraveled(request.getKilometersTraveled());
         Car savedCar = _carRepository.save(car);
+
         Ad ad = new Ad();
         ad.setAgent(request.getAgentId());
         ad.setCar(savedCar);
@@ -145,9 +153,58 @@ public class AdService implements IAdService {
             _photoRepository.save(photo);
         }
 
+        AdSaga adSaga = createAdCommand(request, fileList);
+        commandGateway.send(new CreateAdCommand(ad.getId(), adSaga));
+
         return mapAdToAdResponse(ad);
     }
 
+    private AdSaga createAdCommand(AddAdRequest request, List<MultipartFile> fileList) {
+        CarDetails carDetails = createCarDetails(request);
+        AdDetails adDetails = createAdDetails(request);
+        PhotoDetailsList photosDetails = createPhotosDetails(request, fileList);
+        return createAdSaga(carDetails, adDetails, photosDetails);
+    }
+
+    private AdSaga createAdSaga(CarDetails carDetails, AdDetails adDetails, PhotoDetailsList photosDetails) {
+        return new AdSaga(carDetails, adDetails, photosDetails);
+    }
+
+    private AdDetails createAdDetails(AddAdRequest request) {
+        AdDetails adDetails = new AdDetails();
+        adDetails.setAgentId(request.getAgentId());
+        adDetails.setAvailableKilometersPerRent(request.getAvailableKilometersPerRent());
+        adDetails.setKilometersTraveled(request.getKilometersTraveled());
+        adDetails.setCdw(request.isCdw());
+        adDetails.setLimitedDistance(request.isLimitedDistance());
+        adDetails.setSeats(request.getSeats());
+        return adDetails;
+    }
+
+    private CarDetails createCarDetails(AddAdRequest request) {
+        CarDetails carDetails = new CarDetails();
+        carDetails.setCarModelName(request.getCarModel());
+        carDetails.setGearshiftTypeName(request.getGearshiftType());
+        carDetails.setFuelTypeName(request.getFuelType());
+        carDetails.setKilometersTraveled(request.getKilometersTraveled());
+        return carDetails;
+    }
+
+    private PhotoDetailsList createPhotosDetails(AddAdRequest request, List<MultipartFile> fileList) {
+        PhotoDetailsList photoDetailsList = new PhotoDetailsList();
+        for (MultipartFile file : fileList) {
+            PhotoDetails photoDetails = new PhotoDetails();
+            photoDetails.setName(file.getName());
+            photoDetails.setType(file.getContentType());
+            try {
+                photoDetails.setPicByte(compressBytes(file.getBytes()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            photoDetailsList.getPhotosDetails().add(photoDetails);
+        }
+        return photoDetailsList;
+    }
 
     public static byte[] compressBytes(byte[] data) {
         Deflater deflater = new Deflater();
@@ -166,6 +223,7 @@ public class AdService implements IAdService {
         System.out.println("Compressed Image Byte Size - " + outputStream.toByteArray().length);
         return outputStream.toByteArray();
     }
+
     // uncompress the image bytes before returning it to the angular application
     public static byte[] decompressBytes(byte[] data) {
         Inflater inflater = new Inflater();

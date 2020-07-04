@@ -9,4 +9,6 @@ import java.util.UUID;
 @Repository
 public interface ICarModelRepository extends JpaRepository<CarModel, UUID> {
 
+    CarModel findOneByName(String name);
+
 }

@@ -1,19 +1,19 @@
 package com.rentacar.searchservice.services.implementation;
 
+import com.rentacar.CoreAPI.dto.AdSaga;
+import com.rentacar.CoreAPI.dto.PhotoDetails;
 import com.rentacar.searchservice.clients.AuthClient;
 import com.rentacar.searchservice.clients.RentClient;
 import com.rentacar.searchservice.dto.feignClient.AgentDTO;
 import com.rentacar.searchservice.dto.feignClient.RequestAdDTO;
 import com.rentacar.searchservice.dto.feignClient.RequestDTO;
 import com.rentacar.searchservice.dto.response.*;
-import com.rentacar.searchservice.entity.Ad;
-import com.rentacar.searchservice.entity.Photo;
-import com.rentacar.searchservice.repository.IAdRepository;
+import com.rentacar.searchservice.entity.*;
+import com.rentacar.searchservice.repository.*;
 import com.rentacar.searchservice.services.ISearchService;
-import com.rentacar.searchservice.util.enums.RequestStatus;
-import org.bouncycastle.cert.ocsp.Req;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,6 +38,21 @@ public class SearchService implements ISearchService {
 
     @Autowired
     private AuthClient _authClient;
+
+    @Autowired
+    private ICarModelRepository _carModelRepository;
+
+    @Autowired
+    private IGearshiftTypeRepository _gearshiftTypeRepository;
+
+    @Autowired
+    private IFuelTypeRepository _fuelTypeRepository;
+
+    @Autowired
+    private ICarRepository _carRepository;
+
+    @Autowired
+    private IPhotoRepository _photoRepository;
 
     @Override
     public List<SearchResultResponse> searchAds(String city, String from, String to) {
@@ -87,6 +102,100 @@ public class SearchService implements ISearchService {
         }
 
         return retVal;
+    }
+
+    @Override
+    public void createAd(UUID adId, AdSaga adSaga) throws Exception {
+        Ad ad = _adRepository.findOneById(adId);
+        if(ad != null) {
+            throw new Exception("Ad already exist!");
+        }
+        createAdFromAdCommand(adId, adSaga);
+    }
+
+    private void createAdFromAdCommand(UUID adId, AdSaga adSaga) {
+        Car car = createCarFromAdSaga(adSaga);
+        Ad ad = createAdFromAdSaga(adId, adSaga, car);
+        createPhotosFromAdSaga(adSaga, ad);
+    }
+
+    private void createPhotosFromAdSaga(AdSaga adSaga, Ad ad){
+        for (PhotoDetails photoDetails : adSaga.getPhotosDetails().getPhotosDetails()) {
+            Photo photo = new Photo();
+            photo.setAd(ad);
+            photo.setName(photoDetails.getName());
+            photo.setType(photoDetails.getType());
+            photo.setPicByte(photoDetails.getPicByte());
+            _photoRepository.save(photo);
+        }
+    }
+
+    private Ad createAdFromAdSaga(UUID adId, AdSaga adSaga, Car car) {
+        Ad ad = new Ad();
+        ad.setAgent(adSaga.getAdDetails().getAgentId());
+        ad.setCar(car);
+        ad.setLimitedDistance(adSaga.getAdDetails().isLimitedDistance());
+        ad.setAvailableKilometersPerRent(adSaga.getAdDetails().getAvailableKilometersPerRent());
+        ad.setSeats(adSaga.getAdDetails().getSeats());
+        ad.setCdw(adSaga.getAdDetails().isCdw());
+        ad.setId(adId);
+        return _adRepository.save(ad);
+    }
+
+    private Car createCarFromAdSaga(AdSaga adSaga) {
+        Car car = new Car();
+        car.setCarModel(findCarModel(adSaga.getCarDetails().getCarModelName()));
+        car.setGearshiftType(findGearshiftType(adSaga.getCarDetails().getGearshiftTypeName()));
+        car.setFuelType(findFuelType(adSaga.getCarDetails().getFuelTypeName()));
+        car.setKilometersTraveled(adSaga.getCarDetails().getKilometersTraveled());
+        return _carRepository.save(car);
+    }
+
+    private CarModel findCarModel(String carModelString) {
+        String[] carModelArray = carModelString.split(",");
+        String carBrand = carModelArray[0].trim();
+        String carModelName = carModelArray[1].trim();
+        String carClass = carModelArray[2].trim();
+        for (CarModel carModel : _carModelRepository.findAll()) {
+            if(carModel.getCarBrand().getName().equalsIgnoreCase(carBrand)
+                    && carModel.getName().equalsIgnoreCase(carModelName)
+                    && carModel.getCarClass().getName().equalsIgnoreCase(carClass)){
+                return carModel;
+            }
+        }
+        return null;
+    }
+
+    private GearshiftType findGearshiftType(String gearshifTypeString) {
+        String[] gearshiftTypeArray = gearshifTypeString.split(",");
+        String type = gearshiftTypeArray[0].trim();
+        String numberOfGears = gearshiftTypeArray[1].trim();
+        for (GearshiftType gearshiftType : _gearshiftTypeRepository.findAll()) {
+            if(gearshiftType.getType().equalsIgnoreCase(type)
+                    && gearshiftType.getNumberOfGears().equalsIgnoreCase(numberOfGears)) {
+                return gearshiftType;
+            }
+        }
+        return null;
+    }
+
+    private FuelType findFuelType(String fuelTypeString) {
+        String[] fuelTypeArray = fuelTypeString.split(",");
+        String type = fuelTypeArray[0].trim();
+        String tankCapacity = fuelTypeArray[1].trim();
+        String gas_string = fuelTypeArray[2].trim();
+        boolean gas = false;
+        if(gas_string.trim().equalsIgnoreCase("gas")) {
+            gas = true;
+        }
+        for (FuelType fuelType : _fuelTypeRepository.findAll()) {
+            if(fuelType.getType().equalsIgnoreCase(type)
+                    && fuelType.getTankCapacity().equalsIgnoreCase(tankCapacity)
+                    && fuelType.isGas() == gas) {
+                return fuelType;
+            }
+        }
+        return null;
     }
 
     private SearchResultResponse makeDTO(Ad ad) {

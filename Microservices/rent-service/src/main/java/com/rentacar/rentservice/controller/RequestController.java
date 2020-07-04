@@ -86,13 +86,13 @@ public class RequestController {
     @PreAuthorize("hasAuthority('READ_REQUEST')")
     public ResponseEntity<List<SimpleUserRequests>> usersRequestFromStatus(@PathVariable("id") UUID userId, @PathVariable("status") String status){
         List<SimpleUserRequests> simpleUserRequests;
-        if(status.equalsIgnoreCase("PENDING")) {
+        if(status.trim().equalsIgnoreCase("PENDING")) {
             simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.PENDING);
-        } else if(status.equalsIgnoreCase("RESERVED")) {
+        } else if(status.trim().equalsIgnoreCase("RESERVED")) {
             simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.RESERVED);
-        } else if(status.equalsIgnoreCase("PAID")) {
+        } else if(status.trim().equalsIgnoreCase("PAID")) {
             simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.PAID);
-        } else if(status.equalsIgnoreCase("CHECKED")) {
+        } else if(status.trim().equalsIgnoreCase("CHECKED")) {
             simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.CHECKED);
         } else {
             simpleUserRequests = _requestService.getAllUserRequests(userId, RequestStatus.CANCELED);
