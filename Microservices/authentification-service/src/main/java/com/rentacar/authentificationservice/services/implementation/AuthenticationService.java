@@ -9,13 +9,14 @@ import com.rentacar.authentificationservice.entity.*;
 import com.rentacar.authentificationservice.repository.*;
 import com.rentacar.authentificationservice.security.TokenUtils;
 import com.rentacar.authentificationservice.services.IAuthenticationService;
-import com.rentacar.authentificationservice.services.IEmailService;
 import com.rentacar.authentificationservice.util.enums.GeneralException;
 import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import com.rentacar.authentificationservice.util.enums.UserRole;
+import com.rentacar.authentificationservice.util.rabbit.QueueProducer;
 import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -47,11 +48,13 @@ public class AuthenticationService implements IAuthenticationService {
     private final IAdminRepository _adminRepository;
     private final ISimpleUserRepository _simpleUserRepository;
     private final IAuthorityRepository _authorityRepository;
-    private final IEmailService _emailService;
     private final ILoginAttemptsRepository _loginAttemptsRepository;
     private final Logger logger = LoggerFactory.getLogger("Auth service app: " + AuthenticationService.class);
 
-    public AuthenticationService(AuthenticationManager authenticationManager, TokenUtils tokenUtils, PasswordEncoder passwordEncoder, IUserRepository userRepository, IAgentRepository agentRepository, IAdminRepository adminRepository, ISimpleUserRepository simpleUserRepository, IAuthorityRepository authorityRepository, IEmailService emailService, ILoginAttemptsRepository loginAttemptsRepository) {
+    @Autowired
+    private QueueProducer queueProducer;
+
+    public AuthenticationService(AuthenticationManager authenticationManager, TokenUtils tokenUtils, PasswordEncoder passwordEncoder, IUserRepository userRepository, IAgentRepository agentRepository, IAdminRepository adminRepository, ISimpleUserRepository simpleUserRepository, IAuthorityRepository authorityRepository, ILoginAttemptsRepository loginAttemptsRepository) {
         _authenticationManager = authenticationManager;
         _tokenUtils = tokenUtils;
         _passwordEncoder = passwordEncoder;
@@ -60,7 +63,6 @@ public class AuthenticationService implements IAuthenticationService {
         _adminRepository = adminRepository;
         _simpleUserRepository = simpleUserRepository;
         _authorityRepository = authorityRepository;
-        _emailService = emailService;
         _loginAttemptsRepository = loginAttemptsRepository;
     }
 
@@ -238,7 +240,19 @@ public class AuthenticationService implements IAuthenticationService {
         user.setAgent(savedAgent);
         User savedUser = _userRepository.save(user);
 
-        _emailService.agentRegistrationMail(savedAgent);
+        System.out.println("Slanje emaila...");
+
+        MailDTO mail = new MailDTO();
+        mail.setId(savedAgent.getId());
+        mail.setUsername(savedAgent.getUser().getUsername());
+        mail.setRole("Agent");
+        mail.setName(savedAgent.getName());
+        try {
+            queueProducer.produce(mail);
+        } catch (Exception e) {
+            System.out.println("Nisam poslao agent mail");
+            e.printStackTrace();
+        }
 
         logger.info(user.getUsername() + " account has been successfully created as an agent");
         return mapUserToUserResponse(savedUser);
@@ -353,7 +367,21 @@ public class AuthenticationService implements IAuthenticationService {
         LocalDateTime currentTime = LocalDateTime.now();
         simpleUser.setConfirmationTime(currentTime);
         _simpleUserRepository.save(simpleUser);
-        _emailService.approveRegistrationMail(simpleUser);
+
+        System.out.println("Slanje emaila...");
+
+        MailDTO mail = new MailDTO();
+        mail.setId(simpleUser.getId());
+        mail.setRole("Simple");
+        mail.setFirstName(simpleUser.getFirstName());
+        mail.setLastName(simpleUser.getLastName());
+        mail.setUsername(simpleUser.getUser().getUsername());
+        try {
+            queueProducer.produce(mail);
+        } catch (Exception e) {
+            System.out.println("Nisam poslao simple user registration mail");
+            e.printStackTrace();
+        }
     }
 
     @Override

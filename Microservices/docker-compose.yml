@@ -82,18 +82,6 @@ services:
       - postgresDB
       - eureka-serviceregistry
 
-  #message-service:
-   # build: ./message-service
-    #ports:
-    #- "8085:8085"
-    #restart: always
-    #container_name: message-service
-    #environment:
-      #- REGISTRY_HOST=eureka-serviceregistry
-    #tty: true
-    #depends_on:
-     # - eureka-serviceregistry
-
   zuul:
     build: ./Zuul
     ports:
