@@ -1,6 +1,5 @@
 package com.rentacar.authentificationservice.services.implementation;
 
-import com.rentacar.authentificationservice.dto.response.AgentRequests;
 import com.rentacar.authentificationservice.dto.response.AgentResponse;
 import com.rentacar.authentificationservice.dto.feignClient.AgentDTO;
 import com.rentacar.authentificationservice.dto.feignClient.UserMessageDTO;
@@ -9,13 +8,7 @@ import com.rentacar.authentificationservice.entity.User;
 import com.rentacar.authentificationservice.repository.IAgentRepository;
 import com.rentacar.authentificationservice.repository.IUserRepository;
 import com.rentacar.authentificationservice.services.IAgentService;
-import com.rentacar.authentificationservice.util.enums.RequestStatus;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalTime;
-import java.util.Collection;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 @Service
