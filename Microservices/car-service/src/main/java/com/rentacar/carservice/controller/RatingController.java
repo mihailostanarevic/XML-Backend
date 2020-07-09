@@ -34,7 +34,6 @@ public class RatingController {
     }
 
     @GetMapping("/{id}/ad")
-    @PreAuthorize("hasAuthority('VIEW_AD')")
     List<RatingResponse> getAllRatingsByAd(@PathVariable UUID id) throws Exception{
         return _ratingService.getAllRatingsByAd(id);
     }

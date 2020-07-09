@@ -1,9 +1,11 @@
 package com.rentacar.carservice.controller;
 
 import com.rentacar.carservice.dto.client.AdClientResponse;
+import com.rentacar.carservice.dto.client.AdCreationDateDTO;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.response.AdResponse;
 import com.rentacar.carservice.dto.response.AgentResponse;
+import com.rentacar.carservice.dto.feignClient.CarResponse;
 import com.rentacar.carservice.dto.response.PhotoResponse;
 import com.rentacar.carservice.service.IAdService;
 import org.springframework.http.HttpStatus;
@@ -67,4 +69,13 @@ public class AdController {
         return new ResponseEntity<>(_adService.getAgentByAdID(id), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}/car")
+    public CarResponse getCarFromAd(@PathVariable("id") UUID id){
+        return _adService.getCarFromAd(id);
+    }
+
+    @GetMapping("/{id}/creation-date")
+    AdCreationDateDTO getDateOfCreation(@PathVariable("id") UUID id){
+        return _adService.getDateOfCreation(id);
+    }
 }

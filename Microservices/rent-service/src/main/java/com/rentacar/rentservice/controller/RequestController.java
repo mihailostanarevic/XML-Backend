@@ -3,10 +3,7 @@ package com.rentacar.rentservice.controller;
 import com.rentacar.rentservice.dto.request.RequestBodyID;
 import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.request.RequestRequest;
-import com.rentacar.rentservice.dto.response.AdResponse;
-import com.rentacar.rentservice.dto.response.AgentRequests;
-import com.rentacar.rentservice.dto.response.RequestResponseDTO;
-import com.rentacar.rentservice.dto.response.SimpleUserRequests;
+import com.rentacar.rentservice.dto.response.*;
 import com.rentacar.rentservice.service.IRequestService;
 import com.rentacar.rentservice.util.enums.RequestStatus;
 import org.springframework.http.HttpStatus;
@@ -125,5 +122,29 @@ public class RequestController {
     @GetMapping("/{id}/simple-user")
     public List<RequestDTO> getAllPaidRequestsByCustomer(@PathVariable UUID id){
         return _requestService.getAllPaidRequestsByCustomer(id);
+    }
+
+    @GetMapping("/user/{id}")
+    @PreAuthorize("hasAuthority('VIEW_AD')")
+    public List<UsersAdsResponse> usersAdsFromStatus(@PathVariable("id") UUID userId, @RequestParam("status") String string){
+        String stringStatus = string.toUpperCase();
+        RequestStatus status;
+        switch (stringStatus){
+            case "PAID" : status = RequestStatus.PAID;
+                break;
+            case "CANCELED" : status = RequestStatus.CANCELED;
+                break;
+            case "CONFIRMED" : status = RequestStatus.CONFIRMED;
+                break;
+            case "DENIED" : status = RequestStatus.DENIED;
+                break;
+            case "APPROVED" : status = RequestStatus.APPROVED;
+                break;
+            case "RESERVED" : status = RequestStatus.RESERVED;
+                break;
+            default: status = RequestStatus.PENDING;
+        }
+
+        return _requestService.getUsersRequestFromStatus(userId,status);
     }
 }

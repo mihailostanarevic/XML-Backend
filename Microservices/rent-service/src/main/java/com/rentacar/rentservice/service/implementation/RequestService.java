@@ -5,17 +5,12 @@ import com.rentacar.CoreAPI.dto.Role;
 import com.rentacar.CoreAPI.dto.RoleList;
 import com.rentacar.rentservice.client.AdClient;
 import com.rentacar.rentservice.client.AuthClient;
-import com.rentacar.rentservice.dto.client.AdClientResponse;
-import com.rentacar.rentservice.dto.client.AgentResponse;
-import com.rentacar.rentservice.dto.client.CustomerResponse;
+import com.rentacar.rentservice.dto.client.*;
 import com.rentacar.rentservice.dto.feignClient.RequestAdDTO;
 import com.rentacar.rentservice.dto.feignClient.RequestDTO;
 import com.rentacar.rentservice.dto.feignClient.SimpleUserDTO;
-import com.rentacar.rentservice.dto.client.UUIDResponse;
 import com.rentacar.rentservice.dto.request.RequestRequest;
-import com.rentacar.rentservice.dto.response.AdResponse;
-import com.rentacar.rentservice.dto.response.AgentRequests;
-import com.rentacar.rentservice.dto.response.SimpleUserRequests;
+import com.rentacar.rentservice.dto.response.*;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.entity.RequestAd;
 import com.rentacar.rentservice.repository.IRequestAdRepository;
@@ -461,5 +456,63 @@ public class RequestService implements IRequestService {
         Request request = _requestRepository.findOneById(requestId);
         request.setStatus(denied);
         _requestRepository.save(request);
+    }
+
+    @Override
+    public List<UsersAdsResponse> getUsersRequestFromStatus(UUID id, RequestStatus status) {
+        List<UsersAdsResponse> retVal = new ArrayList<>();
+        List<Request> requests = _requestRepository.findAllByStatus(status);
+
+        for(Request request : requests){
+            if(request.getCustomerID().equals(id)){
+                for(RequestAd rqAd : request.getRequestAds()){
+                    retVal.add(makeUsersAdDTO(rqAd));
+                }
+            }
+        }
+
+        return retVal;
+    }
+
+    private UsersAdsResponse makeUsersAdDTO(RequestAd requestAd){
+        AdClientResponse ad = _adClient.getAdByID(requestAd.getAdID());
+        UsersAdsResponse retVal = new UsersAdsResponse();
+        List<PhotoResponse> photos = new ArrayList<PhotoResponse>();
+        System.out.println(ad.getAdResponse().getId());
+        List<RatingResponse> ratings = _adClient.allRatingsByAd_Id(ad.getAdResponse().getId());
+        int sum = 0;
+        for(RatingResponse rating : ratings){
+            sum += Integer.parseInt(rating.getGrade());
+        }
+        double avgRating = 0;
+        if(ratings.size() != 0){
+            avgRating = ((double)sum) / ratings.size();
+        }
+        AdCreationDateDTO dateOfCreation = _adClient.getDateOfCreation(ad.getAdResponse().getId());
+        AdSearchResponse adDTO = new AdSearchResponse(ad.getAdResponse().getId(), ad.getAdResponse().isLimitedDistance(), ad.getAdResponse().getAvailableKilometersPerRent(), ad.getAdResponse().getSeats(), ad.getAdResponse().isCdw(), dateOfCreation.getCreationDate(), photos, avgRating);
+        CarResponse car = _adClient.getCarFromAdId(ad.getAdResponse().getId());
+        CarSearchResponse carDTO = new CarSearchResponse();
+        carDTO.setCarID(car.getCarID());
+        carDTO.setCarModelName(car.getCarModelName());
+        carDTO.setCarBrandName(car.getCarBrandName());
+        carDTO.setCarClassName(car.getCarClassName());
+        carDTO.setCarClassDesc(car.getCarClassDescription());
+        carDTO.setFuelTypeType(car.getCarFuelType());
+        carDTO.setFuelTypeTankCapacity(car.getCarTankCapacity());
+        carDTO.setFuelTypeGas(car.isGas());
+        carDTO.setGearshiftTypeType(car.getCarGearshiftType());
+        carDTO.setGetGearshiftTypeNumberOfGears(car.getCarNumberOfGears());
+        carDTO.setKilometersTraveled(car.getKilometersTraveled());
+        AgentDTO agent = _authClient.getAgent(ad.getAdResponse().getAgentID());
+        AgentSearchResponse agentDTO = new AgentSearchResponse(agent.getAgentID(), agent.getAgentName(), agent.getDateFounded(), agent.getAddress());
+        retVal.setAd(adDTO);
+        retVal.setAgent(agentDTO);
+        retVal.setCar(carDTO);
+        retVal.setDateFrom(requestAd.getPickUpDate().toString());
+        retVal.setDateTo(requestAd.getReturnDate().toString());
+        retVal.setTimeFrom(requestAd.getPickUpTime().toString());
+        retVal.setTimeTo(requestAd.getReturnTime().toString());
+
+        return retVal;
     }
 }

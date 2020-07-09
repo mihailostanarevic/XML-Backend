@@ -4,6 +4,7 @@ import com.rentacar.CoreAPI.commands.CreateAdCommand;
 import com.rentacar.CoreAPI.dto.*;
 import com.rentacar.carservice.client.AuthClient;
 import com.rentacar.carservice.dto.client.AdClientResponse;
+import com.rentacar.carservice.dto.client.AdCreationDateDTO;
 import com.rentacar.carservice.dto.feignClient.AgentDTO;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.response.*;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import com.rentacar.carservice.dto.feignClient.CarResponse;
 
 import javax.inject.Inject;
 import java.io.ByteArrayOutputStream;
@@ -105,6 +107,32 @@ public class AdService implements IAdService {
         AgentResponse agentResponse = new AgentResponse();
         agentResponse.setId(ad.getAgent());
         return agentResponse;
+    }
+
+    @Override
+    public CarResponse getCarFromAd(UUID id) {
+        Ad ad = _adRepository.getOne(id);
+
+        CarResponse retVal = new CarResponse();
+        retVal.setCarID(ad.getCar().getId());
+        retVal.setCarBrandName(ad.getCar().getCarModel().getCarBrand().getName());
+        retVal.setCarModelName(ad.getCar().getCarModel().getName());
+        retVal.setCarClassDescription(ad.getCar().getCarModel().getCarClass().getDescription());
+        retVal.setGas(ad.getCar().getFuelType().isGas());
+        retVal.setCarClassName(ad.getCar().getCarModel().getCarClass().getName());
+        retVal.setCarFuelType(ad.getCar().getFuelType().getType());
+        retVal.setCarGearshiftType(ad.getCar().getGearshiftType().getType());
+        retVal.setCarNumberOfGears(ad.getCar().getGearshiftType().getNumberOfGears());
+        retVal.setCarTankCapacity(ad.getCar().getFuelType().getTankCapacity());
+        retVal.setKilometersTraveled(ad.getCar().getKilometersTraveled());
+
+        return retVal;
+    }
+
+    @Override
+    public AdCreationDateDTO getDateOfCreation(UUID id) {
+        Ad ad = _adRepository.getOne(id);
+        return new AdCreationDateDTO(ad.getCreationDate());
     }
 
     @Override
