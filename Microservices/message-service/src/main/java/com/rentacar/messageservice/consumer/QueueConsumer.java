@@ -1,5 +1,6 @@
 package com.rentacar.messageservice.consumer;
 
+import com.rentacar.messageservice.dto.request.MailDTO;
 import com.rentacar.messageservice.service.impl.EmailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +21,11 @@ public class QueueConsumer {
         processMessage(strMessage);
     }
     private void processMessage(String message) {
-        boolean sent = false;
         try {
-            SimpleUserDTO simpleUser = new ObjectMapper().readValue(message, SimpleUserDTO.class);
-            emailService.approveRegistrationMail(simpleUser);
-            sent = true;
+            MailDTO mail = new ObjectMapper().readValue(message, MailDTO.class);
+            emailService.receiveMessage(mail);
         } catch(Exception e) {
-            System.out.println("This is not a simple user mail");
-        }
-
-        if(!sent){
-            try {
-                AgentDTO agent = new ObjectMapper().readValue(message, AgentDTO.class);
-                emailService.agentRegistrationMail(agent);
-                sent = true;
-            } catch(Exception e) {
-                System.out.println("This is not a agent user mail");
-            }
+            System.out.println("Mail not sent");
         }
     }
 }
