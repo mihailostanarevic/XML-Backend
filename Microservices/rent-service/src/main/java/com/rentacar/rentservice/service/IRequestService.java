@@ -6,6 +6,7 @@ import com.rentacar.rentservice.dto.request.RequestRequest;
 import com.rentacar.rentservice.dto.response.AdResponse;
 import com.rentacar.rentservice.dto.response.AgentRequests;
 import com.rentacar.rentservice.dto.response.SimpleUserRequests;
+import com.rentacar.rentservice.dto.response.UsersAdsResponse;
 import com.rentacar.rentservice.entity.Request;
 import com.rentacar.rentservice.util.enums.RequestStatus;
 
@@ -42,4 +43,6 @@ public interface IRequestService {
     List<RequestAdDTO> getAllRequestAdsByRequest(UUID id);
 
     void updateRequestStatus(UUID requestId, RequestStatus denied);
+
+    public List<UsersAdsResponse> getUsersRequestFromStatus(UUID id, RequestStatus status);
 }

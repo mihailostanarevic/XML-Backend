@@ -66,7 +66,7 @@ public class MessageService implements IMessageService {
             userDTO.setName(simpleUser.getFirstName());
             userDTO.setLastName(simpleUser.getLastName());
         }else {
-            userDTO = _authClient.getUser(id);
+            userDTO = _authClient.getUserFromAgent(id);
         }
         return mapMessagesToResponseDTO(userDTO);
     }
@@ -80,10 +80,15 @@ public class MessageService implements IMessageService {
         Ad ad = _adRepository.findOneById(request.getAd());
         newMessage.setAd(ad);
 
-        newMessage.setUserSender(request.getSender());
+        SimpleUserDTO simpleUserSender = _authClient.getSimpleUser(request.getSender());
+        if(simpleUserSender.getUser() != null){
+            newMessage.setUserSender(simpleUserSender.getUser().getId());
+        }else {
+            UserMessageDTO userDTO = _authClient.getUserFromAgent(request.getSender());
+            newMessage.setUserSender(userDTO.getId());
+        }
 
         SimpleUserDTO simpleUserReceiver = _authClient.getSimpleUser(request.getReceiver());
-        System.out.println(simpleUserReceiver);
         if(simpleUserReceiver.getUser() != null){
             newMessage.setUserReceiver(simpleUserReceiver.getUser().getId());
         }else {

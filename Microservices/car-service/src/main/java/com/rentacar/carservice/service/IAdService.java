@@ -1,6 +1,8 @@
 package com.rentacar.carservice.service;
 
 import com.rentacar.carservice.dto.client.AdClientResponse;
+import com.rentacar.carservice.dto.client.AdCreationDateDTO;
+import com.rentacar.carservice.dto.feignClient.CarResponse;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.request.UpdateAdRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAvailability;
@@ -25,5 +27,9 @@ public interface IAdService {
     AdClientResponse getAd(UUID adId);
 
     AgentResponse getAgentByAdID(UUID id);
+
+    CarResponse getCarFromAd(UUID id);
+
+    AdCreationDateDTO getDateOfCreation(UUID id);
 
 }

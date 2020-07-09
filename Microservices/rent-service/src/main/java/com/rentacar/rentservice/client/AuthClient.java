@@ -1,5 +1,6 @@
 package com.rentacar.rentservice.client;
 
+import com.rentacar.rentservice.dto.client.AgentDTO;
 import com.rentacar.rentservice.dto.client.AgentResponse;
 import com.rentacar.rentservice.dto.client.CustomerResponse;
 import com.rentacar.rentservice.dto.feignClient.SimpleUserDTO;
@@ -23,5 +24,8 @@ public interface AuthClient {
 
     @GetMapping("/simple-users/get/{id}")
     SimpleUserDTO getSimpleUser(@PathVariable("id") UUID id);
+
+    @GetMapping("/agents/{id}")
+    AgentDTO getAgent(@PathVariable("id") UUID id);
 }
 
