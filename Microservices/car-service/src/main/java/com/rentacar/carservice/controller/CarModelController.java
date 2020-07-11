@@ -56,4 +56,10 @@ public class CarModelController {
     public List<CarModelResponse> getAllCarModelsWithFilter(GetCarModelsFilterRequest request) throws Exception{
         return _carModelService.getAllCarModelsWithFilter(request);
     }
+
+    @GetMapping("/car-brand/{id}")
+    @PreAuthorize("hasAuthority('VIEW_AD')")
+    public List<CarModelResponse> getCarModelsByBrand(@PathVariable("id") UUID id){
+        return _carModelService.getCarModelsByBrand(id);
+    }
 }

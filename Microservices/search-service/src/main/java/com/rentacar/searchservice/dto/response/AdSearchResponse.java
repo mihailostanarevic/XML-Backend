@@ -17,6 +17,8 @@ public class AdSearchResponse {
 
     private boolean limitedDistance;
 
+    private String distance;
+
     private int seats;
 
     private boolean cdw;
@@ -24,4 +26,6 @@ public class AdSearchResponse {
     private LocalDate creationDate;
 
     private List<PhotoResponse> photos;       //
+
+    private float avgRating;
 }

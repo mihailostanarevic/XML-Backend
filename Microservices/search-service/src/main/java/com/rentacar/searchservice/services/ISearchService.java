@@ -11,4 +11,6 @@ public interface ISearchService {
     List<SearchResultResponse> searchAds(String city, String from, String to);
 
     void createAd(UUID adId, AdSaga adSaga) throws Exception;
+
+    List<SearchResultResponse> advancedSearch(String city, String from, String to, String brand, String model, String fuelType, String gearshiftType, String carClass, int priceFrom, int priceTo, int estimatedDistance, boolean cdw, int childrenSeats);
 }
