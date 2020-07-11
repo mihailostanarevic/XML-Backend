@@ -113,6 +113,123 @@ public class SearchService implements ISearchService {
         createAdFromAdCommand(adId, adSaga);
     }
 
+    @Override
+    public List<SearchResultResponse> advancedSearch(String city, String from, String to, String brand, String model, String fuelType, String gearshiftType, String carClass, int priceFrom, int priceTo, int estimatedDistance, boolean cdw, int childrenSeats) {
+        List<SearchResultResponse> retVal = new ArrayList<SearchResultResponse>();
+
+        String paramTimeFrom = from.split(" ")[0];
+        String paramDateFrom = from.split(" ")[1];
+        String paramTimeTo = to.split(" ")[0];
+        String paramDateTo = to.split(" ")[1];
+
+        LocalTime timeFrom = LocalTime.parse(paramTimeFrom);
+        LocalDate dateFrom = LocalDate.parse(paramDateFrom);
+        LocalTime timeTo = LocalTime.parse(paramTimeTo);
+        LocalDate dateTo = LocalDate.parse(paramDateTo);
+
+        List<Ad> allAds = removeIncorrectAds(city, brand, model, fuelType, gearshiftType, carClass, priceFrom, priceTo, estimatedDistance, cdw, childrenSeats);
+
+        List<RequestDTO> allRequestsApproved = _rentClient.getRequestByStatus("APPROVED");
+        List<RequestDTO> allRequestsPaid = _rentClient.getRequestByStatus("PAID");
+        List<RequestDTO> allRequests = new ArrayList<>();
+
+        for(RequestDTO request : allRequestsApproved){
+            allRequests.add(request);
+        }
+
+        for(RequestDTO request : allRequestsPaid){
+            allRequests.add(request);
+        }
+
+        allAds = ignoreNonRelevantAds(allAds, allRequests, dateFrom, timeFrom, dateTo, timeTo, city);
+        List<RequestAdDTO> requestAds = passableRequests(allRequests, dateFrom, timeFrom, dateTo, timeTo, city);
+        boolean found = false;
+
+        List<UUID> ids = new ArrayList<>();
+        for(Ad ad : allAds){
+            ids.add(ad.getId());
+        }
+
+        for(Ad ad : allAds){
+            found = false;
+            for(RequestAdDTO rqAd : requestAds){
+                if(rqAd.getAd_id().equals(ad.getId())){
+                    found = true;
+                    if(ids.contains(rqAd.getAd_id())) {
+                        ids.remove(rqAd.getAd_id());
+                        SearchResultResponse dto = makeDTO(ad);
+                        retVal.add(dto);
+                    }
+                }
+            }
+
+            if(!found){
+                SearchResultResponse dto = makeDTO(ad);
+                retVal.add(dto);
+            }
+        }
+
+        return retVal;
+    }
+
+    private List<Ad> removeIncorrectAds(String city, String brand, String model, String fuelType, String gearshiftType, String carClass, int priceFrom, int priceTo, int estimatedDistance, boolean cdw, int childrenSeats) {
+        List<Ad> allAds = _adRepository.findAllByDeleted(false);
+        return allAds
+                .stream()
+                .filter(ad -> {
+                    if(city != null && city != "") {
+                        String agentCity = _authClient.getAgentAddress(ad.getAgent());
+                        return parseCity(agentCity).toUpperCase().equals(city.toUpperCase());
+                    } else {
+                        return true;
+                    }
+                })
+                .filter(ad -> {
+                    if(brand != null && brand != "") {
+                        return ad.getCar().getCarModel().getCarBrand().getName().toUpperCase().equals(brand.toUpperCase());
+                    } else {
+                        return true;
+                    }
+                })
+                .filter(ad -> {
+                    if(model != null && model != ""){
+                        return ad.getCar().getCarModel().getName().toUpperCase().equals(model.toUpperCase());
+                    }else {
+                        return true;
+                    }
+                })
+                .filter(ad -> {
+                    if(fuelType != null && fuelType != ""){
+                        return ad.getCar().getFuelType().getType().toUpperCase().equals(fuelType.toUpperCase());
+                    }else {
+                        return true;
+                    }
+                })
+                .filter(ad -> {
+                    if(gearshiftType != null && gearshiftType != ""){
+                        return ad.getCar().getGearshiftType().getType().toUpperCase().toUpperCase().equals(gearshiftType.toUpperCase());
+                    }else {
+                        return true;
+                    }
+                })
+                .filter(ad -> {
+                    if(carClass != null && carClass != ""){
+                        return ad.getCar().getCarModel().getCarClass().getName().toUpperCase().equals(carClass.toUpperCase());
+                    }else {
+                        return true;
+                    }
+                })
+                .filter(ad -> ad.isCdw() == cdw)
+                .filter(ad -> {
+                    if(childrenSeats != -1){
+                        return ad.getSeats() == childrenSeats;
+                    }else {
+                        return true;
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
     private void createAdFromAdCommand(UUID adId, AdSaga adSaga) {
         Car car = createCarFromAdSaga(adSaga);
         Ad ad = createAdFromAdSaga(adId, adSaga, car);
@@ -201,7 +318,15 @@ public class SearchService implements ISearchService {
     private SearchResultResponse makeDTO(Ad ad) {
         SearchResultResponse retVal = new SearchResultResponse();
         List<PhotoResponse> photos = getAllPhotos(ad.getId());
-        AdSearchResponse adDTO = new AdSearchResponse(ad.getId(), ad.isLimitedDistance(), ad.getSeats(), ad.isCdw(), ad.getCreationDate(), photos);
+        int sum = 0;
+        for(Rating rating : ad.getRatings()) {
+            sum += Integer.parseInt(rating.getGrade());
+        }
+        float avg = 0;
+        if(ad.getRatings().size() != 0){
+            avg = (float)sum/(ad.getRatings().size());
+        }
+        AdSearchResponse adDTO = new AdSearchResponse(ad.getId(), ad.isLimitedDistance(), ad.getAvailableKilometersPerRent(), ad.getSeats(), ad.isCdw(), ad.getCreationDate(), photos, avg);
         CarSearchResponse carDTO = new CarSearchResponse();
         carDTO.setCarID(ad.getCar().getId());
         carDTO.setCarModelName(ad.getCar().getCarModel().getName());
@@ -213,6 +338,7 @@ public class SearchService implements ISearchService {
         carDTO.setFuelTypeGas(ad.getCar().getFuelType().isGas());
         carDTO.setGearshiftTypeType(ad.getCar().getGearshiftType().getType());
         carDTO.setGetGearshiftTypeNumberOfGears(ad.getCar().getGearshiftType().getNumberOfGears());
+        carDTO.setKilometersTraveled(ad.getCar().getKilometersTraveled());
 
         AgentDTO agentdto = _authClient.getAgent(ad.getAgent());
         AgentSearchResponse agentDTO = new AgentSearchResponse(agentdto.getAgentID(), agentdto.getSimpleUserID(), agentdto.getAgentName(), agentdto.getDateFounded(), agentdto.getAddress());
