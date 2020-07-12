@@ -48,6 +48,7 @@ public class CarService implements ICarService {
         car.setCarModel(_carModelRepository.findOneById(request.getCarModelId()));
         car.setGearshiftType(_gearshiftTypeRepository.findOneById(request.getGearshiftTypeId()));
         car.setFuelType(_fuelTypeRepository.findOneById(request.getFuelTypeId()));
+        car.setId(UUID.randomUUID());
         Car savedCar = _carRepository.save(car);
         logger.info("A new car has been created with id: " + car.getId());
         return mapCarToCarResponse(savedCar);

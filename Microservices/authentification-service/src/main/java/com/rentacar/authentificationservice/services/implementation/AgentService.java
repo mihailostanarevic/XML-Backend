@@ -63,7 +63,11 @@ public class AgentService implements IAgentService {
     public String getAgentAddress(UUID id) {
         Agent agent = _agentRepository.findOneById(id);
         if(agent == null){
+
             Agent agentSimpleUser = _agentRepository.findOneBySimpleUserId(id);
+            if(agentSimpleUser == null){
+                System.out.println("Null je user sa id-em " + id);
+            }
             return agentSimpleUser.getAddress();
         }
         return agent.getAddress();

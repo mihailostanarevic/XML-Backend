@@ -29,6 +29,7 @@ public class CarAccessoriesService implements ICarAccessoriesService {
         CarAccessories carAccessories = new CarAccessories();
         carAccessories.setDeleted(false);
         carAccessories.setDescription(request.getDescription());
+        carAccessories.setId(UUID.randomUUID());
         CarAccessories savedCarAccessories = _carAccessoriesRepository.save(carAccessories);
         return mapCarAccessoriesToCarAccessoriesResponse(savedCarAccessories);
     }

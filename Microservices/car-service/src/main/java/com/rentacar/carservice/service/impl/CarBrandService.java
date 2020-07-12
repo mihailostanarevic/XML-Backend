@@ -29,6 +29,7 @@ public class CarBrandService implements ICarBrandService {
         carBrand.setDeleted(false);
         carBrand.setName(request.getName());
         carBrand.setCountry(request.getCountry());
+        carBrand.setId(UUID.randomUUID());
         CarBrand savedCarBrand = _carBrandRepository.save(carBrand);
         return mapCarBrandToCarBrandResponse(savedCarBrand);
     }
