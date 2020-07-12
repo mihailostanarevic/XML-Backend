@@ -32,7 +32,7 @@ public class Ad {
 
     private boolean cdw;
 
-    @OneToMany(mappedBy = "ad")
+    @OneToMany(mappedBy = "ad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Photo> adPhotos;
 
     private LocalDate creationDate; //date when ad was created

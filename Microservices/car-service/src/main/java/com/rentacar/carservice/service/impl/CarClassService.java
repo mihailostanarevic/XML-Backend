@@ -30,6 +30,7 @@ public class CarClassService implements ICarClassService {
         carClass.setDeleted(false);
         carClass.setName(request.getName());
         carClass.setDescription(request.getDescription());
+        carClass.setId(UUID.randomUUID());
         CarClass savedCarClass = _carClassRepository.save(carClass);
 
         return mapCarClassToCarClassResponse(savedCarClass);

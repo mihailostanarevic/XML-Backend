@@ -30,6 +30,7 @@ public class FuelTypeService implements IFuelTypeService {
         fuelType.setGas(request.isGas());
         fuelType.setTankCapacity(request.getTankCapacity());
         fuelType.setType(request.getType());
+        fuelType.setId(UUID.randomUUID());
         FuelType savedFuelType = _fuelTypeRepository.save(fuelType);
         return mapFuelTypeToFuelTypeResponse(savedFuelType);
     }

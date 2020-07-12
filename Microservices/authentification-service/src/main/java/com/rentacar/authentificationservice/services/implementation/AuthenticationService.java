@@ -284,22 +284,21 @@ public class AuthenticationService implements IAuthenticationService {
         simpleUser.setFirstName(request.getFirstName());
         simpleUser.setLastName(request.getLastName());
         simpleUser.setSsn(request.getSsn());
-//        simpleUser.setRequestStatus(RequestStatus.PENDING);
-        simpleUser.setRequestStatus(RequestStatus.APPROVED);
+        simpleUser.setRequestStatus(RequestStatus.PENDING);
         SimpleUser savedSimpleUser = _simpleUserRepository.save(simpleUser);
         savedSimpleUser.setUser(user);
         user.setSimpleUser(savedSimpleUser);
         User savedUser = _userRepository.save(user);
 
         // brisati ovo za agenta
-        Agent agent = new Agent();
-        agent.setUser(simpleUser.getUser());
-        agent.setAddress(simpleUser.getAddress());
-        agent.setBankAccountNumber("none");
-        agent.setName(simpleUser.getFirstName() + " " + simpleUser.getLastName());
-        agent.setSimpleUserId(simpleUser.getId());
-        agent.setTin(simpleUser.getSsn());
-        _agentRepository.save(agent);
+//        Agent agent = new Agent();
+//        agent.setUser(simpleUser.getUser());
+//        agent.setAddress(simpleUser.getAddress());
+//        agent.setBankAccountNumber("none");
+//        agent.setName(simpleUser.getFirstName() + " " + simpleUser.getLastName());
+//        agent.setSimpleUserId(simpleUser.getId());
+//        agent.setTin(simpleUser.getSsn());
+//        _agentRepository.save(agent);
 
         logger.info(user.getUsername() + " account has been successfully created as a simple user");
         return mapUserToUserResponse(savedUser);

@@ -184,10 +184,10 @@ public class AdService implements IAdService {
         ad.setSeats(request.getSeats());
         ad.setCdw(request.isCdw());
         ad.setId(UUID.randomUUID());
-        _adRepository.save(ad);
+        Ad savedAd = _adRepository.save(ad);
         for (MultipartFile file : fileList) {
             Photo photo = new Photo();
-            photo.setAd(ad);
+            photo.setAd(savedAd);
             photo.setName(file.getOriginalFilename());
             photo.setType(file.getContentType());
             photo.setPicByte(compressBytes(file.getBytes()));
@@ -380,7 +380,9 @@ public class AdService implements IAdService {
         AddressDTO addressDTO = new AddressDTO();
         addressDTO.setCity(addressSplited[1].trim());
         addressDTO.setStreet(addressSplited[2].trim());
-        addressDTO.setNumber(Integer.parseInt(addressSplited[3].trim()));
+        if(addressSplited.length > 3){
+            addressDTO.setNumber(Integer.parseInt(addressSplited[3].trim()));
+        }
         fullLocations.add(addressDTO);
         adResponse.setFullLocations(fullLocations);
         return adResponse;

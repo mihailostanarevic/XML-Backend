@@ -29,6 +29,7 @@ public class GearshiftTypeService implements IGearshiftTypeService {
         gearshiftType.setDeleted(false);
         gearshiftType.setNumberOfGears(request.getNumberOfGears());
         gearshiftType.setType(request.getType());
+        gearshiftType.setId(UUID.randomUUID());
         GearshiftType savedGearshiftType = _gearshiftTypeRepository.save(gearshiftType);
         return mapGearshiftTypeToGearshiftTypeResponse(savedGearshiftType);
     }

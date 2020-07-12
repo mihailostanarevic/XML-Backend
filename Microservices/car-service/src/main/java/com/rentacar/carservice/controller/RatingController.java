@@ -22,13 +22,13 @@ public class RatingController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('POST_RATE')")
+    //@PreAuthorize("hasAuthority('POST_RATE')")
     RatingResponse rateAd(@RequestBody RateAdRequest request) throws Exception{
         return _ratingService.rateAd(request);
     }
 
     @GetMapping("/{id}/simple-user")
-    @PreAuthorize("hasAuthority('VIEW_AD')")
+    //@PreAuthorize("hasAuthority('VIEW_AD')")
     List<RatingResponse> getAllRatingsByCustomer(@PathVariable UUID id) throws Exception{
         return _ratingService.getAllRatingsByCustomer(id);
     }
@@ -39,7 +39,7 @@ public class RatingController {
     }
 
     @GetMapping("/avg/{id}/ad")
-    @PreAuthorize("hasAuthority('VIEW_AD')")
+    //@PreAuthorize("hasAuthority('VIEW_AD')")
     AvgRatingResponse getAvgRatingByAd(@PathVariable UUID id) throws Exception{
         return _ratingService.getAvgRatingByAd(id);
     }

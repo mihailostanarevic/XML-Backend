@@ -38,6 +38,7 @@ public class CarModelService implements ICarModelService {
         carModel.setName(request.getName());
         carModel.setCarBrand(_carBrandRepository.findOneById(request.getBrandId()));
         carModel.setCarClass(_carClassRepository.findOneById(request.getClassId()));
+        carModel.setId(UUID.randomUUID());
         CarModel savedCarModel = _carModelRepository.save(carModel);
         return mapCarModelToCarModelResponse(savedCarModel);
     }
