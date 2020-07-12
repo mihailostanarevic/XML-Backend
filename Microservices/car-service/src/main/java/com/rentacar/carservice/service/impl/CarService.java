@@ -6,6 +6,7 @@ import com.rentacar.carservice.dto.request.CreateCarRequest;
 import com.rentacar.carservice.dto.request.UpdateCarRequest;
 import com.rentacar.carservice.dto.response.CarAccessoryResponse;
 import com.rentacar.carservice.dto.response.CarResponse;
+import com.rentacar.carservice.dto.soap.CreateCarSOAP;
 import com.rentacar.carservice.entity.Car;
 import com.rentacar.carservice.entity.CarAccessories;
 import com.rentacar.carservice.repository.*;
@@ -50,6 +51,19 @@ public class CarService implements ICarService {
         Car savedCar = _carRepository.save(car);
         logger.info("A new car has been created with id: " + car.getId());
         return mapCarToCarResponse(savedCar);
+    }
+
+    @Override
+    public void createCarViaSOAP(CreateCarSOAP request){
+        Car car = new Car();
+        car.setDeleted(request.isDeleted());
+        car.setKilometersTraveled(request.getKilometersTraveled());
+        car.setCarModel(_carModelRepository.findOneById(request.getCarModelId()));
+        car.setGearshiftType(_gearshiftTypeRepository.findOneById(request.getGearshiftTypeId()));
+        car.setFuelType(_fuelTypeRepository.findOneById(request.getFuelTypeId()));
+        car.setId(request.getCarID());
+        Car savedCar = _carRepository.save(car);
+        System.out.println("Car saved via SOAP");
     }
 
     @Override

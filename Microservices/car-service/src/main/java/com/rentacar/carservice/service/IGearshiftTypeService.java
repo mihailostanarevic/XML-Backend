@@ -13,7 +13,7 @@ public interface IGearshiftTypeService {
 
     GearshiftTypeResponse createGearshiftType(CreateGearshiftTypeRequest request) throws Exception;
 
-    Long createGearshiftTypeViaSOAP(CreateGearshiftTypeRequestDTO request);
+    void createGearshiftTypeViaSOAP(CreateGearshiftTypeRequestDTO request);
 
     GearshiftTypeResponse updateGearshiftType(UpdateGearshiftTypeRequest request, UUID id) throws Exception;
 

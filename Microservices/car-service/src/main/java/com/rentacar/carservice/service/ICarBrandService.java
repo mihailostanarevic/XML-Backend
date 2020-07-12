@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.request.CreateCarBrandRequest;
 import com.rentacar.carservice.dto.request.GetCarBrandsFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateCarBrandRequest;
 import com.rentacar.carservice.dto.response.CarBrandResponse;
+import com.rentacar.carservice.dto.soap.CreateCarBrandSOAP;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,4 +22,6 @@ public interface ICarBrandService {
     List<CarBrandResponse> getAllCarBrands() throws Exception;
 
     List<CarBrandResponse> getAllCarBrandsWithFilter(GetCarBrandsFilterRequest request);
+
+    void createCarBrandViaSOAP(CreateCarBrandSOAP request);
 }

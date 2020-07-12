@@ -4,7 +4,6 @@ import com.rentacar.CoreAPI.commands.CreateAdSearchCommand;
 import com.rentacar.CoreAPI.events.AdSearchCreatedEvent;
 import com.rentacar.CoreAPI.events.AdSearchFailedEvent;
 import com.rentacar.searchservice.services.implementation.SearchService;
-import javassist.NotFoundException;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;

@@ -4,6 +4,8 @@ import com.rentacar.carservice.dto.request.CreateFuelTypeRequest;
 import com.rentacar.carservice.dto.request.GetFuelTypesWithFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateFuelTypeRequest;
 import com.rentacar.carservice.dto.response.FuelTypeResponse;
+import com.rentacar.carservice.dto.soap.CreateFuelTypeRequestSOAP;
+import com.rentacar.carservice.model.FuelType;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,4 +23,6 @@ public interface IFuelTypeService {
     List<FuelTypeResponse> getAllFuelTypes() throws Exception;
 
     List<FuelTypeResponse> getAllFuelTypesWithFilter(GetFuelTypesWithFilterRequest request);
+
+    void createFuelTypeViaSOAP(CreateFuelTypeRequestSOAP request);
 }
