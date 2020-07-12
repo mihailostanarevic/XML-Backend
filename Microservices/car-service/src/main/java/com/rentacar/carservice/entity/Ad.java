@@ -13,7 +13,10 @@ import java.util.*;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Ad extends BaseEntity {
+public class Ad {
+
+    @Id
+    private UUID id;
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "car_id", referencedColumnName = "id")

@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.request.CreateCarBrandRequest;
 import com.rentacar.carservice.dto.request.GetCarBrandsFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateCarBrandRequest;
 import com.rentacar.carservice.dto.response.CarBrandResponse;
+import com.rentacar.carservice.dto.soap.CreateCarBrandSOAP;
 import com.rentacar.carservice.entity.CarBrand;
 import com.rentacar.carservice.repository.ICarBrandRepository;
 import com.rentacar.carservice.service.ICarBrandService;
@@ -30,6 +31,17 @@ public class CarBrandService implements ICarBrandService {
         carBrand.setCountry(request.getCountry());
         CarBrand savedCarBrand = _carBrandRepository.save(carBrand);
         return mapCarBrandToCarBrandResponse(savedCarBrand);
+    }
+
+    @Override
+    public void createCarBrandViaSOAP(CreateCarBrandSOAP request){
+        CarBrand carBrand = new CarBrand();
+        carBrand.setDeleted(request.isDeleted());
+        carBrand.setName(request.getName());
+        carBrand.setCountry(request.getCountry());
+        carBrand.setId(request.getBrandID());
+        _carBrandRepository.save(carBrand);
+        System.out.println("Car brand saved");
     }
 
     @Override

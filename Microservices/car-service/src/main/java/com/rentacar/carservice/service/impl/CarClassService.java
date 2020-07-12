@@ -4,9 +4,11 @@ import com.rentacar.carservice.dto.request.CreateCarClassRequest;
 import com.rentacar.carservice.dto.request.GetCarClassesWithFilter;
 import com.rentacar.carservice.dto.request.UpdateCarClassRequest;
 import com.rentacar.carservice.dto.response.CarClassResponse;
+import com.rentacar.carservice.dto.soap.CreateCarClassSOAP;
 import com.rentacar.carservice.entity.CarClass;
 import com.rentacar.carservice.repository.ICarClassRepository;
 import com.rentacar.carservice.service.ICarClassService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +31,20 @@ public class CarClassService implements ICarClassService {
         carClass.setName(request.getName());
         carClass.setDescription(request.getDescription());
         CarClass savedCarClass = _carClassRepository.save(carClass);
+
         return mapCarClassToCarClassResponse(savedCarClass);
+    }
+
+    @Override
+    public void createCarClassViaSOAP(CreateCarClassSOAP request){
+        System.out.println("U servisu sam");
+        CarClass carClass = new CarClass();
+        carClass.setDeleted(request.isDeleted());
+        carClass.setName(request.getName());
+        carClass.setDescription(request.getDescription());
+        carClass.setId(request.getCarClassID());
+        _carClassRepository.save(carClass);
+        System.out.println("Car class saved via SOAP");
     }
 
     @Override

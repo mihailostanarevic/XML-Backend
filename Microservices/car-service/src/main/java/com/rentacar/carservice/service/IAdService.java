@@ -9,6 +9,7 @@ import com.rentacar.carservice.dto.request.UpdateCarAvailability;
 import com.rentacar.carservice.dto.response.AdResponse;
 import com.rentacar.carservice.dto.response.AgentResponse;
 import com.rentacar.carservice.dto.response.PhotoResponse;
+import com.rentacar.carservice.dto.soap.CreateAdSOAP;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -31,5 +32,7 @@ public interface IAdService {
     CarResponse getCarFromAd(UUID id);
 
     AdCreationDateDTO getDateOfCreation(UUID id);
+
+    void createAdViaSOAP(CreateAdSOAP request);
 
 }

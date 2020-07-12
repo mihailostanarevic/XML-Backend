@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.request.CreateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.request.UpdateCarAccessoriesRequest;
 import com.rentacar.carservice.dto.response.CarAccessoriesResponse;
 import com.rentacar.carservice.dto.response.CarAccessoryResponse;
+import com.rentacar.carservice.dto.soap.CreateCarAccessoriesSOAP;
 import com.rentacar.carservice.entity.CarAccessories;
 import com.rentacar.carservice.repository.ICarAccessoriesRepository;
 import com.rentacar.carservice.service.ICarAccessoriesService;
@@ -30,6 +31,16 @@ public class CarAccessoriesService implements ICarAccessoriesService {
         carAccessories.setDescription(request.getDescription());
         CarAccessories savedCarAccessories = _carAccessoriesRepository.save(carAccessories);
         return mapCarAccessoriesToCarAccessoriesResponse(savedCarAccessories);
+    }
+
+    @Override
+    public void createCarAccessoriesViaSOAP(CreateCarAccessoriesSOAP request){
+        CarAccessories carAccessories = new CarAccessories();
+        carAccessories.setId(request.getCarAccessoriesID());
+        carAccessories.setDeleted(request.isDeleted());
+        carAccessories.setDescription(request.getDescription());
+        _carAccessoriesRepository.save(carAccessories);
+        System.out.println("Car accessory saved");
     }
 
     @Override

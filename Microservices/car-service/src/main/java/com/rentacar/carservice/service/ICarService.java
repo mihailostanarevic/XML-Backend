@@ -6,6 +6,7 @@ import com.rentacar.carservice.dto.request.CreateCarRequest;
 import com.rentacar.carservice.dto.request.UpdateCarRequest;
 import com.rentacar.carservice.dto.response.CarAccessoryResponse;
 import com.rentacar.carservice.dto.response.CarResponse;
+import com.rentacar.carservice.dto.soap.CreateCarSOAP;
 
 import java.util.List;
 import java.util.UUID;
@@ -27,4 +28,6 @@ public interface ICarService {
     void addCarAccessories(AddCarAccessoriesRequest request) throws Exception; //u request dva id-a
 
     List<CarAccessoryResponse> getCarAccessories(UUID id);
+
+    void createCarViaSOAP(CreateCarSOAP request);
 }

@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.request.CreateFuelTypeRequest;
 import com.rentacar.carservice.dto.request.GetFuelTypesWithFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateFuelTypeRequest;
 import com.rentacar.carservice.dto.response.FuelTypeResponse;
+import com.rentacar.carservice.dto.soap.CreateFuelTypeRequestSOAP;
 import com.rentacar.carservice.entity.FuelType;
 import com.rentacar.carservice.repository.IFuelTypeRepository;
 import com.rentacar.carservice.service.IFuelTypeService;
@@ -32,6 +33,19 @@ public class FuelTypeService implements IFuelTypeService {
         FuelType savedFuelType = _fuelTypeRepository.save(fuelType);
         return mapFuelTypeToFuelTypeResponse(savedFuelType);
     }
+
+    @Override
+    public void createFuelTypeViaSOAP(CreateFuelTypeRequestSOAP request){
+        FuelType fuelType = new FuelType();
+        fuelType.setDeleted(false);
+        fuelType.setGas(request.isGas());
+        fuelType.setTankCapacity(request.getTankCapacity());
+        fuelType.setType(request.getType());
+        fuelType.setId(request.getFuelTypeID());
+        _fuelTypeRepository.save(fuelType);
+        System.out.println("Fuel type saved");
+    }
+
 
     @Override
     public FuelTypeResponse updateFuelType(UpdateFuelTypeRequest request, UUID id) throws Exception {

@@ -44,5 +44,5 @@ public interface IRequestService {
 
     void updateRequestStatus(UUID requestId, RequestStatus denied);
 
-    public List<UsersAdsResponse> getUsersRequestFromStatus(UUID id, RequestStatus status);
+    List<UsersAdsResponse> getUsersRequestFromStatus(UUID id, RequestStatus status);
 }

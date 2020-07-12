@@ -4,6 +4,7 @@ import com.rentacar.carservice.dto.request.CreateCarModelRequest;
 import com.rentacar.carservice.dto.request.GetCarModelsFilterRequest;
 import com.rentacar.carservice.dto.request.UpdateCarModelRequest;
 import com.rentacar.carservice.dto.response.CarModelResponse;
+import com.rentacar.carservice.dto.soap.CreateCarModelSOAP;
 import com.rentacar.carservice.entity.CarModel;
 import com.rentacar.carservice.repository.ICarBrandRepository;
 import com.rentacar.carservice.repository.ICarClassRepository;
@@ -39,6 +40,18 @@ public class CarModelService implements ICarModelService {
         carModel.setCarClass(_carClassRepository.findOneById(request.getClassId()));
         CarModel savedCarModel = _carModelRepository.save(carModel);
         return mapCarModelToCarModelResponse(savedCarModel);
+    }
+
+    @Override
+    public void createCarModelViaSOAP(CreateCarModelSOAP request){
+        CarModel carModel = new CarModel();
+        carModel.setDeleted(false);
+        carModel.setName(request.getName());
+        carModel.setCarBrand(_carBrandRepository.findOneById(request.getCarBrand()));
+        carModel.setCarClass(_carClassRepository.findOneById(request.getCarClass()));
+        carModel.setId(request.getCarModelID());
+        _carModelRepository.save(carModel);
+        System.out.println("Car model saved via SOAP");
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.rentacar.carservice.dto.client.AdCreationDateDTO;
 import com.rentacar.carservice.dto.feignClient.AgentDTO;
 import com.rentacar.carservice.dto.request.AddAdRequest;
 import com.rentacar.carservice.dto.response.*;
+import com.rentacar.carservice.dto.soap.CreateAdSOAP;
 import com.rentacar.carservice.entity.*;
 import com.rentacar.carservice.repository.*;
 import com.rentacar.carservice.service.IAdService;
@@ -163,6 +164,7 @@ public class AdService implements IAdService {
         car.setGearshiftType(gearshiftType);
         car.setFuelType(fuelType);
         car.setKilometersTraveled(request.getKilometersTraveled());
+        car.setId(UUID.randomUUID());
         Car savedCar = _carRepository.save(car);
 
         Ad ad = new Ad();
@@ -181,6 +183,7 @@ public class AdService implements IAdService {
         ad.setAvailableKilometersPerRent(request.getAvailableKilometersPerRent());
         ad.setSeats(request.getSeats());
         ad.setCdw(request.isCdw());
+        ad.setId(UUID.randomUUID());
         _adRepository.save(ad);
         for (MultipartFile file : fileList) {
             Photo photo = new Photo();
@@ -195,6 +198,40 @@ public class AdService implements IAdService {
         commandGateway.send(new CreateAdCommand(ad.getId(), adSaga));
 
         return mapAdToAdResponse(ad);
+    }
+
+    @Override
+    public void createAdViaSOAP(CreateAdSOAP request){
+        CarModel carModel = findCarModel(request.getCarModel());
+
+        GearshiftType gearshiftType = findGearshiftType(request.getGearshiftType());
+        FuelType fuelType = findFuelType(request.getFuelType());
+        Car car = new Car();
+        car.setCarModel(carModel);
+        car.setGearshiftType(gearshiftType);
+        car.setFuelType(fuelType);
+        car.setKilometersTraveled(request.getKilometersTraveled());
+        car.setId(UUID.fromString(request.getAvailableKilometersPerRent().split(",")[1]));
+        Car savedCar = _carRepository.save(car);
+
+        Ad ad = new Ad();
+        if(request.isSimpleUser()) {
+            SimpleUserAgentIdResponse agentId =  _authClient.getAgentIDFromSimpleUser(request.getAgentId());
+            List<Ad> simpleUserListOfAds = _adRepository.findAllByAgent(agentId.getAgentId());
+            if(simpleUserListOfAds.size() == 3) {
+                throw new GeneralException("You have reached the max limit of 3 created ads.", HttpStatus.BAD_REQUEST);
+            }
+            ad.setAgent(agentId.getAgentId());
+        } else {
+            ad.setAgent(request.getAgentId());
+        }
+        ad.setCar(savedCar);
+        ad.setLimitedDistance(request.isLimitedDistance());
+        ad.setAvailableKilometersPerRent(request.getAvailableKilometersPerRent().split(",")[0]);
+        ad.setSeats(request.getSeats());
+        ad.setCdw(request.isCdw());
+        ad.setId(request.getAdID());
+        _adRepository.save(ad);
     }
 
     private AdSaga createAdCommand(AddAdRequest request, List<MultipartFile> fileList) {
